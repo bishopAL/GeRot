@@ -44,6 +44,7 @@ NOTICE: If you have installed anaconda in Ubuntu and you want to use the API wit
 ------------------------------------------------------
 
 The first parameter is to set the motor's ID, the second one is to set the port(in Ubuntu is like '/dev/ttyUSB0', in Windows is like 'COM1'), the third one is to set baurdrate. Make sure you have make these parameters right.
+
 5. Finally you can run the "moveto.py" to test, in Windows just run
 
 ------------------------------------------------------
