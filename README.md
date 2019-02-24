@@ -1,5 +1,17 @@
-# Dynamixel_API_Python
-Before you using this API, make sure you have installed Python2 or Python3 correctly. If you haven't install anyone of them, I highly recommand you NOT to install Anaconda instead of originnal Python.
+## Dynamixel_API_Python
+NOTICE!
+I don't know how to change USB latency in windows, so I highly recommand you to use this API in this Ubuntu.
+
+
+Before you using this API, make sure you have installed Python2 or Python3 correctly. If you haven't install anyone of them, I highly recommand you NOT to install Anaconda instead of originnal Python, it will provide all the package needed. In Ubuntu, you should run the codes below in terminnal:
+
+------------------------------------------------------
+
+    sudo usermod -aG dialout $USER && echo 1 | sudo tee /sys/bus/usb-serial/devices/ttyUSB0/latency_timer
+   
+------------------------------------------------------
+
+I don't know how to change the parameter in Windows, if you got any idea about this, plz let me know.
 
 1. Go to https://github.com/ROBOTIS-GIT/DynamixelSDK, clone this repo.
 2. Open the repo in your terminal, then
