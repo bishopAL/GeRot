@@ -62,8 +62,9 @@ class DxlAPI(object):
 
     def set_position(self, angle):
         value = int(float(angle + math.pi) / (math.pi * 2) * 4095)
-        dxl_comm_result, dxl_error = self.packetHandler.write4ByteTxRx(self.portHandler, self.DXL_ID,
+        self.packetHandler.write4ByteTxRx(self.portHandler, self.DXL_ID,
                                                                        self.ADDR_PRO_GOAL_POSITION, value)
+
 
     def set_torque(self, torque):
         # if torque >= 0:
@@ -80,6 +81,7 @@ class DxlAPI(object):
         dxl_present_velocity, dxl_comm_result, dxl_error = self.packetHandler.read4ByteTxRx(self.portHandler,
                                                                                                   self.DXL_ID,
                                                                                                   self.ADDR_PRO_PRESENT_VELOCITY)
+
         if dxl_present_velocity > 0x7fffffff:
             dxl_present_velocity = dxl_present_velocity - 4294967296
         dxl_present_velocity = dxl_present_velocity * 0.229 / 60 * (2 * math.pi)  # 0.229 rev/min to rad/s
