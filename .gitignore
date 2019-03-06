@@ -1,0 +1,10 @@
+
+AMC_1motor.py
+.idea/Dynamixel_API_Python.iml
+.idea/encodings.xml
+.idea/misc.xml
+.idea/modules.xml
+*.xml
+dxl_api.pyc
+liuqi.py
+mt_dxl.pyc
