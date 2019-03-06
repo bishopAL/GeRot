@@ -9,9 +9,9 @@ target_p = target_pNv_array[:, 0:3]
 target_v = target_pNv_array[:, 3:6]
 
 # Parameter Setting
-beta = 0.05  # parameter
-a = 5.0  # parameter
-b = 2.0  # parameter
+beta = 0.1  # parameter
+a = 2.0  # parameter
+b = 1.0  # parameter
 
 # motor initialize
 motor_group = DxlAPI([0, 1, 2], 'COM3')

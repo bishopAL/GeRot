@@ -31,7 +31,7 @@ class DxlAPI(object):
         self.groupSyncWriteCurrent = GroupSyncWrite(self.portHandler, self.packetHandler, self.ADDR_PRO_GOAL_CURRENT,
                                                     self.ADDR_PRO_GOAL_CURRENT_LENGTH)
         self.groupSyncWritePosition = GroupSyncWrite(self.portHandler, self.packetHandler, self.ADDR_PRO_GOAL_POSITION,
-                                                    self.ADDR_PRO_GOAL_POSITION_LENGTH)
+                                                     self.ADDR_PRO_GOAL_POSITION_LENGTH)
 
         # Initialize GroupSyncRead
         self.groupSyncReadPosition = GroupSyncRead(self.portHandler, self.packetHandler, self.ADDR_PRO_PRESENT_POSITION,
