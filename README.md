@@ -3,7 +3,7 @@ NOTICE!
 I don't know how to change USB latency in windows, so I highly recommand you to use this API in this Ubuntu.
 
 
-Before you using this API, make sure you have installed Python2 or Python3 correctly. If you haven't install anyone of them, I highly recommand you NOT to install Anaconda instead of originnal Python, it will provide all the package needed. In Ubuntu, you should run the codes below in terminnal:
+Before you using this API, make sure you have installed Python2 or Python3 correctly. If you haven't install anyone of them, I highly recommand you NOT to install Anaconda instead of originnal Python, it makes the environment complex. In Ubuntu, you should run the codes below in terminnal:
 
 ------------------------------------------------------
 
