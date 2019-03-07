@@ -25,6 +25,8 @@ class DxlAPI(object):
         self.ADDR_PRO_PRESENT_CURRENT_LENGTH = 2
         self.ADDR_PRO_PRESENT_VELOCITY = 128  # 4 Bytes
         self.ADDR_PRO_PRESENT_VELOCITY_LENGTH = 4
+        self.ADDR_PRO_GOAL_VELOCITY = 104  # 4 Bytes
+        self.ADDR_PRO_GOAL_VELOCITY_LENGTH = 4
         self.portHandler = PortHandler(self.DEVICENAME)
         self.packetHandler = PacketHandler(self.PROTOCOL_VERSION)
         # Initialize GroupSyncWrite
@@ -32,6 +34,8 @@ class DxlAPI(object):
                                                     self.ADDR_PRO_GOAL_CURRENT_LENGTH)
         self.groupSyncWritePosition = GroupSyncWrite(self.portHandler, self.packetHandler, self.ADDR_PRO_GOAL_POSITION,
                                                      self.ADDR_PRO_GOAL_POSITION_LENGTH)
+        self.groupSyncWriteVelocity = GroupSyncWrite(self.portHandler, self.packetHandler, self.ADDR_PRO_GOAL_VELOCITY,
+                                                     self.ADDR_PRO_GOAL_VELOCITY_LENGTH)
 
         # Initialize GroupSyncRead
         self.groupSyncReadPosition = GroupSyncRead(self.portHandler, self.packetHandler, self.ADDR_PRO_PRESENT_POSITION,
@@ -92,6 +96,10 @@ class DxlAPI(object):
             for i in self.DXL_ID:
                 dxl_comm_result, dxl_error = self.packetHandler.write1ByteTxRx(self.portHandler, i,
                                                                                self.ADDR_OPERATING_MODE, 0)
+        if flag == 'v':
+            for i in self.DXL_ID:
+                dxl_comm_result, dxl_error = self.packetHandler.write1ByteTxRx(self.portHandler, i,
+                                                                               self.ADDR_OPERATING_MODE, 1)
 
     def set_position(self, dxl_goal_position):
         param_goal_position = []
@@ -110,6 +118,24 @@ class DxlAPI(object):
 
         # Clear syncwrite parameter storage
         self.groupSyncWritePosition.clearParam()
+
+    def set_velocity(self, dxl_goal_velocity):
+        param_goal_velocity = []
+        for item in dxl_goal_velocity:
+            param_goal_velocity.append([DXL_LOBYTE(DXL_LOWORD(item)),
+                                        DXL_HIBYTE(DXL_LOWORD(item)),
+                                        DXL_LOBYTE(DXL_HIWORD(item)),
+                                        DXL_HIBYTE(DXL_HIWORD(item))])
+        for i, item in enumerate(self.DXL_ID):
+            dxl_addparam_result = self.groupSyncWriteVelocity.addParam(item, param_goal_velocity[i])
+            if dxl_addparam_result != True:
+                print("[ID:%03d] groupSyncWrite addparam failed" % item)
+        dxl_comm_result = self.groupSyncWriteVelocity.txPacket()
+        if dxl_comm_result != COMM_SUCCESS:
+            print("%s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+
+        # Clear syncwrite parameter storage
+        self.groupSyncWriteVelocity.clearParam()
 
     def set_torque(self, dxl_goal_torque):
         dxl_goal_current = [int(0.578 * torque * 1000 / 2.69) for torque in dxl_goal_torque]
