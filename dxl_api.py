@@ -71,11 +71,11 @@ class DxlAPI(object):
         #     current = 0.578 * torque + 0.08
         # else:
         #     current = 0.578 * torque - 0.08
-        current = 0.578 * torque
-        value = int(current * 1000 / 2.69)
+        # current = 0.578 * torque
+        # value = int(current * 1000 / 2.69)
+        value = torque
         dxl_comm_result, dxl_error = self.packetHandler.write2ByteTxRx(self.portHandler, self.DXL_ID,
                                                                        self.ADDR_PRO_GOAL_CURRENT, value)
-        return value
 
     def get_velocity(self):
         dxl_present_velocity, dxl_comm_result, dxl_error = self.packetHandler.read4ByteTxRx(self.portHandler,

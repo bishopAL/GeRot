@@ -45,4 +45,5 @@ for i in range(len(target_j0_p)):
     B = time.time()
     print i, calc_torque, B-A
 motor0.torque_disable()
+
 print('ok!')

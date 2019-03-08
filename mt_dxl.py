@@ -138,7 +138,12 @@ class DxlAPI(object):
         self.groupSyncWriteVelocity.clearParam()
 
     def set_torque(self, dxl_goal_torque):
-        dxl_goal_current = [int(0.578 * torque * 1000 / 2.69) for torque in dxl_goal_torque]
+        dxl_goal_current = []
+        for item in dxl_goal_torque:
+            if item >= 0:
+                dxl_goal_current.append(int((0.578 * item + 0.00269) * 1000 / 2.69))
+            else:
+                dxl_goal_current.append(int((0.578 * item - 0.00269 * 4) * 1000 / 2.69))
         param_goal_current = []
         for item in dxl_goal_current:
             param_goal_current.append([DXL_LOBYTE(item),

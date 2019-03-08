@@ -15,12 +15,15 @@ motor_group.torque_enable()
 motor_group.set_position([2047, 2047, 2047])
 time.sleep(1)
 print('position control begin!')
+all0 = time.time()
 for i in range(len(target_p)):
     p = [int(item) for item in target_p[i]]
     A = time.time()
     motor_group.set_position(p)
     B = time.time()
     print(B-A)
-    time.sleep(0.015-(B-A))
+    # time.sleep(0.025-(B-A))
 motor_group.torque_disable()
-print('ok!')
+all1 = time.time()
+
+print(all1-all0)

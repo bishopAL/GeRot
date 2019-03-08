@@ -9,7 +9,7 @@ target_p = target_pNv_array[:, 0:3]
 target_v = target_pNv_array[:, 3:6]
 
 # Setting running mode
-MODE = 2  # 1 is AMC, 2 is force position hybrid control
+MODE = 1  # 1 is AMC, 2 is force position hybrid control
 
 # motor initialize
 motor_group = DxlAPI([0, 1, 2], 'COM3')
@@ -26,14 +26,15 @@ motor_group.torque_enable()
 # Parameter Setting
 if MODE == 1:
     beta = 0.2  # parameter
-    a = 2.0  # parameter
-    b = 1.0  # parameter
+    a = 17.0  # parameter
+    b = 8.0  # parameter
 if MODE == 2:
-    K = 0.5
-    D = 0.1
+    K = 0.4
+    D = 0.2
 
 if MODE == 1:
     print('AMC begin!')
+    all0 = time.time()
     for i in range(len(target_p)):
         A = time.time()
         v_p = motor_group.get_velocity()
@@ -50,10 +51,13 @@ if MODE == 1:
         calc_torque = -ff - p_gain * p_e - d_gain * v_e
         motor_group.set_torque(calc_torque.tolist())
         B = time.time()
-        time.sleep(0.015-(B-A))
+        # time.sleep(0.015-(B-A))
         print i, calc_torque, B-A
+        all1 = time.time()
     motor_group.torque_disable()
+    motor_group.portHandler.closePort()
     print('ok!')
+    print(all1-all0)
 if MODE == 2:
     print('force position hybrid control begin!')
     for i in range(len(target_p)):
@@ -67,6 +71,6 @@ if MODE == 2:
         calc_torque = - K * p_e - D * v_e
         motor_group.set_torque(calc_torque.tolist())
         B = time.time()
-        time.sleep(0.02-(B-A))
         print i, calc_torque, B-A
     motor_group.torque_disable()
+    motor_group.portHandler.closePort()
