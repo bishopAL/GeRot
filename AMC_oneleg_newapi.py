@@ -9,7 +9,7 @@ target_p = target_pNv_array[:, 0:3]
 target_v = target_pNv_array[:, 3:6]
 
 # Setting running mode
-MODE = 1  # 1 is AMC, 2 is force position hybrid control
+MODE = 2  # 1 is AMC, 2 is force position hybrid control
 
 # motor initialize
 motor_group = DxlAPI([0, 1, 2], 'COM3')
