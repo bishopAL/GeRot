@@ -51,7 +51,7 @@ if MODE == 1:
         calc_torque = -ff - p_gain * p_e - d_gain * v_e
         motor_group.set_torque(calc_torque.tolist())
         B = time.time()
-        # time.sleep(0.015-(B-A))
+        time.sleep(0.015-(B-A))
         print i, calc_torque, B-A
         all1 = time.time()
     motor_group.torque_disable()
