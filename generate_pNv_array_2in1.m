@@ -1,28 +1,31 @@
 syms p_alpha p_beta p_gamma px py pz t % If you are seeking for the details of the equation
 %Plz go for the paper written by Yang Bin.
+%Parameter Setting
+L1 = 65;
+L2 = 65;
+L3 = 10;
+DATANUM = 80;
+TIME_PERIORD = [0 2];
+TIME_PER_STEP = (TIME_PERIORD(2) - TIME_PERIORD(1)) / DATANUM;
+
+syms p_alpha p_beta p_gamma px py pz t
+%Gait planning
+px = L1;
+py = L2 + 10 * t;
+pz = -L3 - 10 * t^2 + 40 * t;
 p_array = [];
 v_array = [];
-for i=0:0.01:2.5
-    disp(i);
-    syms p_alpha p_beta p_gamma px py pz t
-    l1 = 65;
-    l2 = 65;
-    l3 = 10;
-    if i <= 2
-        px = 65;
-        py = 65 + 10 * t;
-        pz = -10 - 10 * t^2 + 40 * t;
-    else
-        px = 65;
-        py = 85;
-        pz = 30 - 80 * (t-2);
-    end
+% px = 65;
+% py = 85;
+% pz = 30 - 80 * (t-2);
 
-    p_alpha = asin(-l3/(px^2+pz^2)^0.5)-atan2(pz,px);
+for i=TIME_PERIORD(1):TIME_PER_STEP:TIME_PERIORD(2)
+    disp(i);   
+    p_alpha = asin(-L3/(px^2+pz^2)^0.5)-atan2(pz,px);
     v_alpha = diff(p_alpha,t);
-    p_beta = asin((l1^2 + l2^2 + l3^2 - px^2 - py^2 - pz^2)/(2*l1*l2));
+    p_beta = asin((L1^2 + L2^2 + L3^2 - px^2 - py^2 - pz^2)/(2*L1*L2));
     v_beta = diff(p_beta,t);
-    p_gamma = asin((px^2+py^2+pz^2+l1^2-l2^2-l3^2)/(2*l1*(px^2+py^2+pz^2-l3^2)^0.5))-atan2((px^2+pz^2-l3^2)^0.5,py);
+    p_gamma = asin((px^2+py^2+pz^2+L1^2-L2^2-L3^2)/(2*L1*(px^2+py^2+pz^2-L3^2)^0.5))-atan2((px^2+pz^2-L3^2)^0.5,py);
     v_gamma = diff(p_gamma,t);
 %     px_para = px;
 %     py_para = double(subs(py,t,i));
