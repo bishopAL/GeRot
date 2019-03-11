@@ -33,6 +33,5 @@ for i=TIME_PERIOD(1):TIME_PER_STEP:TIME_PERIOD(2)
                [double(subs(p_alpha, t, i)), double(subs(p_beta, t, i)), double(subs(p_gamma, t, i))]];
     v_array = [v_array 
                [double(subs(v_alpha, t, i)), double(subs(v_beta, t, i)), double(subs(v_gamma, t, i))]];
-    
 end
 final_array = [p_array v_array];

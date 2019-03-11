@@ -37,18 +37,18 @@ if MODE == 1:
     all0 = time.time()
     for i in range(len(target_p)):
         A = time.time()
-        v_p = motor_group.get_velocity()
-        p_p = motor_group.get_position()
-        v_t = target_v[i]
-        p_t = target_p[i]
-        v_e = v_p - v_t  # velocity error
-        p_e = p_p - p_t  # position error
-        tra_diff = p_e + beta * v_e  # track difference error(t)
-        co_diff = a / (1 + b * np.linalg.norm(tra_diff)**2)  # gamma(t)
-        ff = tra_diff / co_diff  # force F(t)
-        p_gain = ff * p_e
-        d_gain = ff * v_e
-        calc_torque = -ff - p_gain * p_e - d_gain * v_e
+        v_p = motor_group.get_velocity()  # 1xn
+        p_p = motor_group.get_position()  # 1xn
+        v_t = target_v[i]  # 1xn
+        p_t = target_p[i]  # 1xn
+        v_e = np.array([v_p - v_t]).T  # velocity error nx1
+        p_e = np.array([p_p - p_t]).T  # position error nx1
+        tra_diff = p_e + beta * v_e  # track difference error(t) nx1
+        co_diff = a / (1 + b * np.linalg.norm(tra_diff)**2)  # gamma(t) 1x1
+        ff = tra_diff / co_diff  # force F(t) nx1
+        p_gain = np.dot(ff, p_e.T)  # nxn
+        d_gain = np.dot(ff, v_e.T)  # nxn
+        calc_torque = (-ff - np.dot(p_gain, p_e) - np.dot(d_gain, v_e)).T[0]  # (nx1).T[0]
         motor_group.set_torque(calc_torque.tolist())
         B = time.time()
         time.sleep(0.015-(B-A))
@@ -58,6 +58,7 @@ if MODE == 1:
     motor_group.portHandler.closePort()
     print('ok!')
     print(all1-all0)
+
 if MODE == 2:
     print('force position hybrid control begin!')
     for i in range(len(target_p)):
