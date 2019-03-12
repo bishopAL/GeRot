@@ -1,17 +1,18 @@
 ## Dynamixel_API_Python
 NOTICE!
-I don't know how to change USB latency in windows, so I highly recommand you to use this API in this Ubuntu.
 
-
-Before you using this API, make sure you have installed Python2 or Python3 correctly. If you haven't install anyone of them, I highly recommand you NOT to install Anaconda instead of originnal Python, it makes the environment complex. In Ubuntu, you should run the codes below in terminnal:
+Before you using this API, make sure you have installed Python2 or Python3 correctly. If you haven't install anyone of them, I highly recommand you NOT to install Anaconda instead of originnal Python, it makes the environment complex.
+In Ubuntu, you should run the codes below in terminnal to reduce the USB latency:
 
 ------------------------------------------------------
 
     sudo usermod -aG dialout $USER && echo 1 | sudo tee /sys/bus/usb-serial/devices/ttyUSB0/latency_timer
    
 ------------------------------------------------------
+In windows, check https://www.instructables.com/id/Lampduino-an-8x8-RGB-Floor-Lamp/, you can find it in step 20.
 
-I don't know how to change the parameter in Windows, if you got any idea about this, plz let me know.
+Then, following the tutorial below:
+
 
 1. Go to https://github.com/ROBOTIS-GIT/DynamixelSDK, clone this repo.
 2. Open the repo in your terminal, then
@@ -57,12 +58,3 @@ NOTICE: If you have installed anaconda in Ubuntu and you want to use the API wit
 
 The first parameter is to set the motor's ID, the second one is to set the port(in Ubuntu is like '/dev/ttyUSB0', in Windows is like 'COM1'), the third one is to set baurdrate. Make sure you have make these parameters right.
 
-5. Finally you can run the "moveto.py" to test, in Windows just run
-
-------------------------------------------------------
-
-    python moveto.py
-
-------------------------------------------------------
-
-If in Ubuntu, I recommand you to run it in pycharm, I get some errors when I run it in terminal.     
