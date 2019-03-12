@@ -6,7 +6,9 @@ import pandas as pd
 target_pNv_array = np.array(pd.read_csv('pNv_array.csv'))
 print('Target array loaded.')
 target_p = target_pNv_array[:, 0:3]
+target_p[:, 1] = -target_p[:, 1]
 target_v = target_pNv_array[:, 3:6]
+target_v[:, 1] = -target_v[:, 1]
 
 # Setting running mode
 MODE = 1  # 1 is AMC, 2 is force position hybrid control
@@ -25,11 +27,11 @@ motor_group.torque_enable()
 
 # Parameter Setting
 if MODE == 1:
-    beta = 0.2  # parameter
-    a = 17.0  # parameter
-    b = 8.0  # parameter
+    beta = 0.1  # parameter
+    a = np.array([[2.5, 9.0, 9.0]])  # parameter # 17
+    b = np.array([[1.0, 4.0, 4.0]])  # parameter # 8
 if MODE == 2:
-    K = 0.4
+    K = 1
     D = 0.2
 
 if MODE == 1:
@@ -44,15 +46,16 @@ if MODE == 1:
         v_e = np.array([v_p - v_t]).T  # velocity error nx1
         p_e = np.array([p_p - p_t]).T  # position error nx1
         tra_diff = p_e + beta * v_e  # track difference error(t) nx1
-        co_diff = a / (1 + b * np.linalg.norm(tra_diff)**2)  # gamma(t) 1x1
-        ff = tra_diff / co_diff  # force F(t) nx1
+        co_diff = a / (1 + b * np.linalg.norm(tra_diff)**2)  # gamma(t) 1xn
+        ff = tra_diff / co_diff.T  # force F(t) nx1
         p_gain = np.dot(ff, p_e.T)  # nxn
         d_gain = np.dot(ff, v_e.T)  # nxn
         calc_torque = (-ff - np.dot(p_gain, p_e) - np.dot(d_gain, v_e)).T[0]  # (nx1).T[0]
+        # calc_torque[0] += 0.15
         motor_group.set_torque(calc_torque.tolist())
         B = time.time()
-        time.sleep(0.015-(B-A))
-        print i, calc_torque, B-A
+        time.sleep(0.01-(B-A))
+        print i, calc_torque, p_p[0], p_t[0]
         all1 = time.time()
     motor_group.torque_disable()
     motor_group.portHandler.closePort()
