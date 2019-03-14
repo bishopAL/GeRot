@@ -6,20 +6,20 @@ syms p_alpha p_beta p_gamma px py pz t
 L1 = 70;
 L2 = 50;
 L3 = 10;
-DATA_NUM = 10.0;
-TIME_PERIOD = [2.0, 2.5];
+DATA_NUM = 100.0;
+TIME_PERIOD = [0.0, 2.0];
 TIME_PER_STEP = (TIME_PERIOD(2) - TIME_PERIOD(1)) / DATA_NUM;
 
 syms p_alpha p_beta p_gamma px py pz t
 % Gait planning
 p_array = [];
 v_array = [];
-% px = L1;
-% py = L2 + 10 * t;
-% pz = -L3 - 10 * t^2 + 40 * t;
 px = L1;
-py = L2 + 20;
-pz = -L3 + 40 - 80 * (t-2);
+py = L2 + 10 * t;
+pz = -L3 - 10 * t^2 + 40 * t;
+% px = L1;
+% py = L2 + 20;
+% pz = -L3 + 40 - 80 * (t-2);
 
 for i=TIME_PERIOD(1):TIME_PER_STEP:TIME_PERIOD(2)
     disp(i);   

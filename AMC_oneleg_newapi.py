@@ -29,9 +29,9 @@ motor_group.torque_enable()
 #
 # Parameter Setting
 if MODE == 1:
-    beta = 0.05  # parameter
-    a = np.array([[1.3, 9.0, 9.0]])  # parameter # 17
-    b = np.array([[0.6, 4.0, 4.0]])  # parameter # 8
+    beta = 0.03  # parameter
+    a = np.array([[1.0, 9.0, 9.0]])  # parameter # 17
+    b = np.array([[0.3, 4.0, 4.0]])  # parameter # 8
 if MODE == 2:
     K = 0.3
     D = 0.2
@@ -53,7 +53,6 @@ if MODE == 1:
         p_gain = np.dot(ff, p_e.T)  # nxn
         d_gain = np.dot(ff, v_e.T)  # nxn
         calc_torque = (-ff - np.dot(p_gain, p_e) - np.dot(d_gain, v_e)).T[0]  # (nx1).T[0]
-        # calc_torque[0] += 0.15
         motor_group.set_torque(calc_torque.tolist())
         B = time.time()
         time.sleep(0.01-(B-A))
