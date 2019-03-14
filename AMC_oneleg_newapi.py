@@ -3,15 +3,19 @@ import math
 import time
 import numpy as np
 import pandas as pd
-target_pNv_array = np.array(pd.read_csv('pNv_array.csv'))
-print('Target array loaded.')
+from TargetGenerator import detach_array, attach_array0, attach_array1
+# target_pNv_array = np.array(pd.read_csv('pNv_array.csv'))
+# print('Target array loaded.')
+target_pNv_array = np.vstack((detach_array, attach_array0, attach_array1))
 target_p = target_pNv_array[:, 0:3]
 target_p[:, 1] = -target_p[:, 1]
 target_p[:, 2] = -target_p[:, 2]
 target_v = target_pNv_array[:, 3:6]
 target_v[:, 1] = -target_v[:, 1]
 target_v[:, 2] = -target_v[:, 2]
-
+p_rec = []
+init_position = (target_p[0, :] / (2 * math.pi) * 4096 + 2047).tolist()
+init_position = [int(i) for i in init_position]
 # Setting running mode
 MODE = 1  # 1 is AMC, 2 is force position hybrid control
 
@@ -20,7 +24,7 @@ motor_group = DxlAPI([0, 1, 2], 'COM3')
 # position initialize
 motor_group.set_operating_mode('p')
 motor_group.torque_enable()
-motor_group.set_position([2047, 2047, 2047])
+motor_group.set_position(init_position)
 time.sleep(1)
 motor_group.torque_disable()
 # torque control mode initialize
@@ -29,9 +33,9 @@ motor_group.torque_enable()
 #
 # Parameter Setting
 if MODE == 1:
-    beta = 0.03  # parameter
-    a = np.array([[1.0, 9.0, 9.0]])  # parameter # 17
-    b = np.array([[0.3, 4.0, 4.0]])  # parameter # 8
+    beta = 0.01  # parameter
+    a = np.array([[1.5, 3.0, 7.0]])  # parameter # 17
+    b = np.array([[0.4, 1.5, 4.0]])  # parameter # 8
 if MODE == 2:
     K = 0.3
     D = 0.2
@@ -40,9 +44,14 @@ if MODE == 1:
     print('AMC begin!')
     all0 = time.time()
     for i in range(len(target_p)):
+        if i < 101:
+            beta = 0.02  # parameter
+        else:
+            beta = 0.005
         A = time.time()
         v_p = motor_group.get_velocity()  # 1xn
         p_p = motor_group.get_position()  # 1xn
+        p_rec.append(p_p)
         v_t = target_v[i]  # 1xn
         p_t = target_p[i]  # 1xn
         v_e = np.array([v_p - v_t]).T  # velocity error nx1
@@ -55,7 +64,7 @@ if MODE == 1:
         calc_torque = (-ff - np.dot(p_gain, p_e) - np.dot(d_gain, v_e)).T[0]  # (nx1).T[0]
         motor_group.set_torque(calc_torque.tolist())
         B = time.time()
-        time.sleep(0.01-(B-A))
+        time.sleep(0.015-(B-A))
         print i, calc_torque, p_p[0], p_t[0]
         all1 = time.time()
     motor_group.torque_disable()

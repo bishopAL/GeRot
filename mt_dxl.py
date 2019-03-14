@@ -183,16 +183,15 @@ class DxlAPI(object):
             else:
                 print("Dynamixel#%d torque has been successfully disable" % i)
 
+# User Manual
+# Example:
 
 # motor_group = DxlAPI([0, 1, 2], 'COM3')
 # motor_group.set_operating_mode('p')
 # motor_group.torque_enable()
-#
 # motor_group.set_position([2047, 2047, 2047])
-# A = time.time()
 # pos = motor_group.get_position()
 # vel = motor_group.get_velocity()
-# B = time.time()
 # print(pos, vel, B-A)
 # time.sleep(1)
 #
