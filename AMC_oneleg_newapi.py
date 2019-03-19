@@ -41,7 +41,7 @@ motor_group.torque_enable()
 #
 # Parameter Setting
 if MODE == 1:
-    beta = np.array([[0.1], [0.1], [0.1]])  # parameter
+    beta = np.array([[0.1], [0.1], [0.1]])  # parameter # looks good
     a = np.array([[2.0, 1.5, 7.0]])  # parameter # 17
     b = np.array([[1.0, 1.0, 4.0]])  # parameter # 8
 if MODE == 2:
