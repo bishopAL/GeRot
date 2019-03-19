@@ -41,9 +41,9 @@ motor_group.torque_enable()
 #
 # Parameter Setting
 if MODE == 1:
-    beta = 0.01  # parameter
-    a = np.array([[1.5, 3.0, 7.0]])  # parameter # 17
-    b = np.array([[0.4, 1.5, 4.0]])  # parameter # 8
+    beta = np.array([[0.1], [0.02], [0.1]])  # parameter
+    a = np.array([[2.0, 1.0, 7.0]])  # parameter # 17
+    b = np.array([[1.0, 0.3, 4.0]])  # parameter # 8
 if MODE == 2:
     K = 0.3
     D = 0.2
@@ -52,10 +52,10 @@ if MODE == 1:
     print('AMC begin!')
     all0 = time.time()
     for i in range(len(target_p)):
-        if i < 101:
-            beta = 0.02  # parameter
-        else:
-            beta = 0.005
+        if i > 200:
+            beta = np.array([[0.05], [0.05], [0.05]])  # parameter
+            a = np.array([[5.0, 2.0, 7.0]])  # parameter # 17
+            b = np.array([[3.0, 1.0, 4.0]])  # parameter # 8
         A = time.time()
         v_p = motor_group.get_velocity()  # 1xn
         p_p = motor_group.get_position()  # 1xn
