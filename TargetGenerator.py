@@ -1,4 +1,4 @@
-from sympy import *
+from sympy import symbols, diff, asin, atan2
 import numpy as np
 
 # Parameter of detach array
@@ -31,8 +31,8 @@ for i in TIME_SERIAL:
 p_array = np.array(p_array)
 v_array = np.array(v_array)
 detach_array = np.hstack((p_array, v_array))
-detach_array[0, 0] = 0
-detach_array[0, 1] = detach_array[1, 1]
+# detach_array[0, 0] = 0
+# detach_array[0, 1] = detach_array[1, 1]
 
 # Parameter of attach array0
 DATA_NUM = 50

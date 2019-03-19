@@ -3,10 +3,18 @@ import math
 import time
 import numpy as np
 import pandas as pd
-from TargetGenerator import detach_array, attach_array0, attach_array1
+from Target_Generator import TargetGene
 # target_pNv_array = np.array(pd.read_csv('pNv_array.csv'))
 # print('Target array loaded.')
-target_pNv_array = np.vstack((detach_array, attach_array0, attach_array1))
+oneleg = TargetGene()
+oneleg.present_position = {'rf': np.array([oneleg.L1, oneleg.L2 - 15, -oneleg.L3]),
+                         'rh': np.array([oneleg.L1, oneleg.L2 - 15, -oneleg.L3]),
+                         'lf': np.array([oneleg.L1, oneleg.L2, -oneleg.L3]),
+                         'lh': np.array([oneleg.L1, oneleg.L2, -oneleg.L3])}
+detach = oneleg.detach('rf', 2, 0.01, 30, 40)
+moving = oneleg.moving('rf', 1, 0.01, np.array([oneleg.L1, oneleg.L2 + 15, -oneleg.L3]))
+#  target_pNv_array = np.vstack((detach_array, attach_array0, attach_array1))
+target_pNv_array = np.vstack((detach, moving))
 target_p = target_pNv_array[:, 0:3]
 target_p[:, 1] = -target_p[:, 1]
 target_p[:, 2] = -target_p[:, 2]
@@ -64,7 +72,7 @@ if MODE == 1:
         calc_torque = (-ff - np.dot(p_gain, p_e) - np.dot(d_gain, v_e)).T[0]  # (nx1).T[0]
         motor_group.set_torque(calc_torque.tolist())
         B = time.time()
-        time.sleep(0.015-(B-A))
+        time.sleep(0.010-(B-A))
         print i, calc_torque, p_p[0], p_t[0]
         all1 = time.time()
     motor_group.torque_disable()
