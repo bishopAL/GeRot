@@ -41,9 +41,9 @@ motor_group.torque_enable()
 #
 # Parameter Setting
 if MODE == 1:
-    beta = np.array([[0.1], [0.02], [0.1]])  # parameter
-    a = np.array([[2.0, 1.0, 7.0]])  # parameter # 17
-    b = np.array([[1.0, 0.3, 4.0]])  # parameter # 8
+    beta = np.array([[0.1], [0.1], [0.1]])  # parameter
+    a = np.array([[2.0, 1.5, 7.0]])  # parameter # 17
+    b = np.array([[1.0, 1.0, 4.0]])  # parameter # 8
 if MODE == 2:
     K = 0.3
     D = 0.2
@@ -53,8 +53,8 @@ if MODE == 1:
     all0 = time.time()
     for i in range(len(target_p)):
         if i > 200:
-            beta = np.array([[0.05], [0.05], [0.05]])  # parameter
-            a = np.array([[5.0, 2.0, 7.0]])  # parameter # 17
+            beta = np.array([[0.05], [0.1], [0.05]])  # parameter
+            a = np.array([[5.0, 1.5, 7.0]])  # parameter # 17
             b = np.array([[3.0, 1.0, 4.0]])  # parameter # 8
         A = time.time()
         v_p = motor_group.get_velocity()  # 1xn
@@ -73,7 +73,7 @@ if MODE == 1:
         motor_group.set_torque(calc_torque.tolist())
         B = time.time()
         time.sleep(0.010-(B-A))
-        print i, calc_torque, p_p[0], p_t[0]
+        print i, calc_torque, p_p[1], p_t[1]
         all1 = time.time()
     motor_group.torque_disable()
     motor_group.portHandler.closePort()
