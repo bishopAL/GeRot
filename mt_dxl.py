@@ -30,6 +30,7 @@ class DxlAPI(object):
         self.portHandler = PortHandler(self.DEVICENAME)
         self.packetHandler = PacketHandler(self.PROTOCOL_VERSION)
         # Initialize GroupSyncWrite
+
         self.groupSyncWriteCurrent = GroupSyncWrite(self.portHandler, self.packetHandler, self.ADDR_PRO_GOAL_CURRENT,
                                                     self.ADDR_PRO_GOAL_CURRENT_LENGTH)
         self.groupSyncWritePosition = GroupSyncWrite(self.portHandler, self.packetHandler, self.ADDR_PRO_GOAL_POSITION,
