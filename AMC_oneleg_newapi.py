@@ -4,6 +4,7 @@ import time
 import numpy as np
 import pandas as pd
 from Target_Generator import TargetGene
+
 # target_pNv_array = np.array(pd.read_csv('pNv_array.csv'))
 # print('Target array loaded.')
 oneleg = TargetGene()
@@ -11,15 +12,15 @@ oneleg.present_position = {'rf': np.array([oneleg.L1, oneleg.L2 - 15, -oneleg.L3
                            'rh': np.array([oneleg.L1, oneleg.L2 - 15, -oneleg.L3]),
                            'lf': np.array([oneleg.L1, oneleg.L2, -oneleg.L3]),
                            'lh': np.array([oneleg.L1, oneleg.L2, -oneleg.L3])}
-detach = oneleg.detach('rf', 2, 0.01, 30, 50)
-moving0 = oneleg.moving('rf', 1, 0.01, np.array([oneleg.L1, oneleg.L2 + 15, -oneleg.L3 - 10]))
-moving1 = oneleg.moving('rf', 0.2, 0.01, np.array([oneleg.L1, oneleg.L2 + 15, -oneleg.L3]))
+p_detach, v_detach = oneleg.detach('rf', 2, 0.01, 30, 50)
+p_moving0, v_moving0 = oneleg.moving('rf', 1, 0.01, np.array([oneleg.L1, oneleg.L2 + 15, -oneleg.L3 - 10]))
+p_moving1, v_moving1 = oneleg.moving('rf', 0.2, 0.01, np.array([oneleg.L1, oneleg.L2 + 15, -oneleg.L3]))
 # target_pNv_array = np.vstack((detach_array, attach_array0, attach_array1))
-target_pNv_array = np.vstack((detach, moving0, moving1))
-target_p = target_pNv_array[:, 0:3]
+# target_pNv_array = np.vstack((detach, moving0, moving1))
+target_p = np.vstack((p_detach, p_moving0, p_moving1))
 target_p[:, 1] = -target_p[:, 1]
 target_p[:, 2] = -target_p[:, 2]
-target_v = target_pNv_array[:, 3:6]
+target_v = np.vstack((v_detach, v_moving0, v_moving1))
 target_v[:, 1] = -target_v[:, 1]
 target_v[:, 2] = -target_v[:, 2]
 p_rec = []
