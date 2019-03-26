@@ -107,6 +107,3 @@ target_v = np.vstack((target_v0, target_v1, target_v_m0, target_v2, target_v3, t
 np.savetxt('target_p.csv', target_p, delimiter=',')
 np.savetxt('target_v.csv', target_v, delimiter=',')
 
-
-
-
