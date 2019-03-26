@@ -302,6 +302,9 @@ dynamixel_ros_interface_BINARY_DIR:STATIC=/home/sdh/dyna_ros_inter/GeRo_V1/Ros_I
 //Value Computed by CMake
 dynamixel_ros_interface_SOURCE_DIR:STATIC=/home/sdh/dyna_ros_inter/GeRo_V1/Ros_Interface/catkin_ws/src/dynamixel_ros_interface
 
+//The directory containing a CMake configuration file for dynamixel_sdk.
+dynamixel_sdk_DIR:PATH=/opt/ros/melodic/share/dynamixel_sdk/cmake
+
 //Value Computed by CMake
 gmock_BINARY_DIR:STATIC=/home/sdh/dyna_ros_inter/GeRo_V1/Ros_Interface/catkin_ws/build/gtest/googlemock
 
@@ -362,6 +365,12 @@ my_dynamixel_tutorial_BINARY_DIR:STATIC=/home/sdh/dyna_ros_inter/GeRo_V1/Ros_Int
 
 //Value Computed by CMake
 my_dynamixel_tutorial_SOURCE_DIR:STATIC=/home/sdh/dyna_ros_inter/GeRo_V1/Ros_Interface/catkin_ws/src/my_dynamixel_tutorial
+
+//Value Computed by CMake
+my_test_BINARY_DIR:STATIC=/home/sdh/dyna_ros_inter/GeRo_V1/Ros_Interface/catkin_ws/build/my_test
+
+//Value Computed by CMake
+my_test_SOURCE_DIR:STATIC=/home/sdh/dyna_ros_inter/GeRo_V1/Ros_Interface/catkin_ws/src/my_test
 
 //The directory containing a CMake configuration file for rosconsole.
 rosconsole_DIR:PATH=/opt/ros/melodic/share/rosconsole/cmake
@@ -500,7 +509,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=5
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=6
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP

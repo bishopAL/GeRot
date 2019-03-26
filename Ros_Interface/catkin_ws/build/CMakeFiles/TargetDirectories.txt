@@ -57,3 +57,10 @@
 /home/sdh/dyna_ros_inter/GeRo_V1/Ros_Interface/catkin_ws/build/dynamixel_ros_interface/CMakeFiles/roscpp_generate_messages_nodejs.dir
 /home/sdh/dyna_ros_inter/GeRo_V1/Ros_Interface/catkin_ws/build/dynamixel_ros_interface/CMakeFiles/std_msgs_generate_messages_py.dir
 /home/sdh/dyna_ros_inter/GeRo_V1/Ros_Interface/catkin_ws/build/dynamixel_ros_interface/CMakeFiles/test.dir
+/home/sdh/dyna_ros_inter/GeRo_V1/Ros_Interface/catkin_ws/build/my_test/CMakeFiles/install/strip.dir
+/home/sdh/dyna_ros_inter/GeRo_V1/Ros_Interface/catkin_ws/build/my_test/CMakeFiles/edit_cache.dir
+/home/sdh/dyna_ros_inter/GeRo_V1/Ros_Interface/catkin_ws/build/my_test/CMakeFiles/list_install_components.dir
+/home/sdh/dyna_ros_inter/GeRo_V1/Ros_Interface/catkin_ws/build/my_test/CMakeFiles/test.dir
+/home/sdh/dyna_ros_inter/GeRo_V1/Ros_Interface/catkin_ws/build/my_test/CMakeFiles/install/local.dir
+/home/sdh/dyna_ros_inter/GeRo_V1/Ros_Interface/catkin_ws/build/my_test/CMakeFiles/rebuild_cache.dir
+/home/sdh/dyna_ros_inter/GeRo_V1/Ros_Interface/catkin_ws/build/my_test/CMakeFiles/install.dir

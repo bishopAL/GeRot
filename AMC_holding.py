@@ -10,7 +10,7 @@ motor_group = DxlAPI(range(12), 'COM3')
 motor_group.set_operating_mode('p')
 motor_group.torque_enable()
 motor_group.set_position([2047 for i in range(12)])
-time.sleep(5)
+time.sleep(2)
 motor_group.torque_disable()
 # torque control mode initialize
 motor_group.set_operating_mode('t')
@@ -18,13 +18,13 @@ motor_group.torque_enable()
 p_rec = []
 v_t = [0 for i in range(12)]  # 1xn
 p_t = [0 for i in range(12)]  # 1xn
-beta = 0.02  # parameter
-a = np.array([[1.5, 3.0, 7.0]])  # parameter # 17
-b = np.array([[0.4, 1.5, 4.0]])  # parameter # 8
+beta = 0.04  # parameter
+a = np.array([[2.0 for i in range(12)]])  # parameter # 17  # good parameter
+b = np.array([[1.0 for i in range(12)]])  # parameter # 8
 print('AMC begin!')
 
 
-for i in range(1000):
+for i in range(5000):
     A = time.time()
     v_p = motor_group.get_velocity()  # 1xn
     p_p = motor_group.get_position()  # 1xn
@@ -39,7 +39,7 @@ for i in range(1000):
     calc_torque = (-ff - np.dot(p_gain, p_e) - np.dot(d_gain, v_e)).T[0]  # (nx1).T[0]
     motor_group.set_torque(calc_torque.tolist())
     B = time.time()
-    time.sleep(0.010-(B-A))
+
     print i, calc_torque, p_p[0], p_t[0]
 
 motor_group.torque_disable()

@@ -8,13 +8,14 @@ from Target_Generator import TargetGene
 # print('Target array loaded.')
 oneleg = TargetGene()
 oneleg.present_position = {'rf': np.array([oneleg.L1, oneleg.L2 - 15, -oneleg.L3]),
-                         'rh': np.array([oneleg.L1, oneleg.L2 - 15, -oneleg.L3]),
-                         'lf': np.array([oneleg.L1, oneleg.L2, -oneleg.L3]),
-                         'lh': np.array([oneleg.L1, oneleg.L2, -oneleg.L3])}
-detach = oneleg.detach('rf', 2, 0.01, 30, 40)
-moving = oneleg.moving('rf', 1, 0.01, np.array([oneleg.L1, oneleg.L2 + 15, -oneleg.L3]))
-#  target_pNv_array = np.vstack((detach_array, attach_array0, attach_array1))
-target_pNv_array = np.vstack((detach, moving))
+                           'rh': np.array([oneleg.L1, oneleg.L2 - 15, -oneleg.L3]),
+                           'lf': np.array([oneleg.L1, oneleg.L2, -oneleg.L3]),
+                           'lh': np.array([oneleg.L1, oneleg.L2, -oneleg.L3])}
+detach = oneleg.detach('rf', 2, 0.01, 30, 50)
+moving0 = oneleg.moving('rf', 1, 0.01, np.array([oneleg.L1, oneleg.L2 + 15, -oneleg.L3 - 10]))
+moving1 = oneleg.moving('rf', 0.2, 0.01, np.array([oneleg.L1, oneleg.L2 + 15, -oneleg.L3]))
+# target_pNv_array = np.vstack((detach_array, attach_array0, attach_array1))
+target_pNv_array = np.vstack((detach, moving0, moving1))
 target_p = target_pNv_array[:, 0:3]
 target_p[:, 1] = -target_p[:, 1]
 target_p[:, 2] = -target_p[:, 2]

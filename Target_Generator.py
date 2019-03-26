@@ -58,6 +58,7 @@ class TargetGene(object):
         t = symbols('t', real=True)
         if time_for_one_period == 0:
             time_for_one_period = self.time_for_one_period
+
         time_serial = np.linspace(0, time_period, int(time_period / time_for_one_period + 1))
         px = self.present_position[flag][0] + (target[0] - self.present_position[flag][0]) / time_period * t
         py = self.present_position[flag][1] + (target[1] - self.present_position[flag][1]) / time_period * t

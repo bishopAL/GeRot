@@ -917,6 +917,24 @@ clean: dynamixel_ros_interface/CMakeFiles/std_msgs_generate_messages_py.dir/clea
 .PHONY : clean
 
 #=============================================================================
+# Directory level rules for directory my_test
+
+# Convenience name for "all" pass in the directory.
+my_test/all:
+
+.PHONY : my_test/all
+
+# Convenience name for "clean" pass in the directory.
+my_test/clean:
+
+.PHONY : my_test/clean
+
+# Convenience name for "preinstall" pass in the directory.
+my_test/preinstall:
+
+.PHONY : my_test/preinstall
+
+#=============================================================================
 # Special targets to cleanup operation of make.
 
 # Special rule to run CMake to check the build system integrity.

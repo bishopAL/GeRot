@@ -123,6 +123,7 @@ if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
   include("/home/sdh/dyna_ros_inter/GeRo_V1/Ros_Interface/catkin_ws/build/gtest/cmake_install.cmake")
   include("/home/sdh/dyna_ros_inter/GeRo_V1/Ros_Interface/catkin_ws/build/dynamixel_ros_interface/cmake_install.cmake")
+  include("/home/sdh/dyna_ros_inter/GeRo_V1/Ros_Interface/catkin_ws/build/my_test/cmake_install.cmake")
 
 endif()
 
