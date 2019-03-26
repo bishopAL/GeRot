@@ -1,0 +1,8 @@
+prefix=/home/sdh/dyna_ros_inter/GeRo_V1/Ros_Interface/catkin_ws/devel
+
+Name: dynamixel_ros_interface
+Description: Description of dynamixel_ros_interface
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/sdh/dyna_ros_inter/GeRo_V1/Ros_Interface/catkin_ws/devel/lib 
+Requires: 
