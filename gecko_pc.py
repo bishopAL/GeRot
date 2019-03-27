@@ -4,12 +4,8 @@ import time
 
 target_p = np.loadtxt("target_p.csv", delimiter=",")
 target_v = np.loadtxt("target_v.csv", delimiter=",")
-target_p[:, 1] = -target_p[:, 1]
-target_p[:, 2] = -target_p[:, 2]
-target_p[:, 3] = -target_p[:, 3]
-target_p[:, 4] = -target_p[:, 4]
-target_p[:, 5] = -target_p[:, 5]
-target_p[:, 6] = -target_p[:, 6]
+target_p[:, 1:7] = -target_p[:, 1:7]
+target_v[:, 1:7] = -target_v[:, 1:7]
 motor_group = DxlAPI(range(12), 'COM3')
 # position initialize
 motor_group.set_operating_mode('p')
