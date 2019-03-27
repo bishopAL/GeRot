@@ -6,10 +6,10 @@ import numpy as np
 
 class DxlAPI(object):
 
-    def __init__(self, dxl_id, device_name, baudrate=4000000):
+    def __init__(self, dxl_id, port_name, baudrate=4000000):
         self.DXL_ID = dxl_id
         self.BAUDRATE = baudrate
-        self.DEVICENAME = device_name
+        self.DEVICENAME = port_name
         self.PROTOCOL_VERSION = 2.0
         self.ADDR_OPERATING_MODE = 11  # 1 Byte
         self.ADDR_OPERATING_MODE_LENGTH = 1  # 1 Byte
@@ -21,6 +21,8 @@ class DxlAPI(object):
         self.ADDR_PRO_PRESENT_POSITION_LENGTH = 4
         self.ADDR_PRO_GOAL_CURRENT = 102  # 2 Bytes
         self.ADDR_PRO_GOAL_CURRENT_LENGTH = 2
+        self.ADDR_PRO_PROFILE_VELOCITY = 112  # 4 Bytes
+        self.ADDR_PRO_PROFILE_VELOCITY_LENGTH = 4
         self.ADDR_PRO_PRESENT_CURRENT = 126  # 2 Bytes
         self.ADDR_PRO_PRESENT_CURRENT_LENGTH = 2
         self.ADDR_PRO_PRESENT_VELOCITY = 128  # 4 Bytes
@@ -37,12 +39,16 @@ class DxlAPI(object):
                                                      self.ADDR_PRO_GOAL_POSITION_LENGTH)
         self.groupSyncWriteVelocity = GroupSyncWrite(self.portHandler, self.packetHandler, self.ADDR_PRO_GOAL_VELOCITY,
                                                      self.ADDR_PRO_GOAL_VELOCITY_LENGTH)
+        self.groupSyncWriteProfileVelocity = GroupSyncWrite(self.portHandler, self.packetHandler, self.ADDR_PRO_PRESENT_VELOCITY,
+                                                            self.ADDR_PRO_PRESENT_VELOCITY_LENGTH)
 
         # Initialize GroupSyncRead
         self.groupSyncReadPosition = GroupSyncRead(self.portHandler, self.packetHandler, self.ADDR_PRO_PRESENT_POSITION,
                                                    self.ADDR_PRO_PRESENT_POSITION_LENGTH)
         self.groupSyncReadVelocity = GroupSyncRead(self.portHandler, self.packetHandler, self.ADDR_PRO_PRESENT_VELOCITY,
                                                    self.ADDR_PRO_PRESENT_VELOCITY_LENGTH)
+        self.groupSyncReadCurrent = GroupSyncRead(self.portHandler, self.packetHandler, self.ADDR_PRO_PRESENT_CURRENT,
+                                                  self.ADDR_PRO_PRESENT_CURRENT_LENGTH)
         # Open Port
         if self.portHandler.openPort():
             print("Succeeded to open the port")
@@ -77,16 +83,52 @@ class DxlAPI(object):
         return np.array(position_list)
 
     def get_velocity(self):
-        dxl_comm_result = self.groupSyncReadVelocity.txRxPacket()
+        dxl_comm_result = self.groupSyncReadCurrent.txRxPacket()
         velocity_list = []
         for i in self.DXL_ID:
-            dxl_present_velocity = self.groupSyncReadVelocity.getData(i, self.ADDR_PRO_PRESENT_VELOCITY,
+            dxl_present_velocity = self.groupSyncReadCurrent.getData(i, self.ADDR_PRO_PRESENT_VELOCITY,
                                                                       self.ADDR_PRO_PRESENT_VELOCITY_LENGTH)
             if dxl_present_velocity > 0x7fffffff:
                 dxl_present_velocity -= 4294967296
             dxl_present_velocity = dxl_present_velocity * 0.229 / 60 * (2 * math.pi)
             velocity_list.append(dxl_present_velocity)
         return np.array(velocity_list)
+
+    def get_torque(self):
+        dxl_comm_result = self.groupSyncReadVelocity.txRxPacket()
+        torque_list = []
+        for i in self.DXL_ID:
+            dxl_present_current = self.groupSyncReadVelocity.getData(i, self.ADDR_PRO_PRESENT_CURRENT,
+                                                                     self.ADDR_PRO_PRESENT_CURRENT_LENGTH)
+            if dxl_present_current > 0x7fff:
+                dxl_present_current -= 65536
+            dxl_present_current = dxl_present_current * 2.69 / 1000
+            if dxl_present_current < - 0.00269 * 4:
+                dxl_present_torque = (dxl_present_current + 0.00269 * 4) / 0.578
+            elif dxl_present_current > 0.00269:
+                dxl_present_torque = (dxl_present_current - 0.00269) / 0.578
+            else:
+                dxl_present_torque = 0
+            torque_list.append(dxl_present_torque)
+        return np.array(torque_list)
+
+    def set_profile_velocity(self, dxl_profile_velocity):
+        param_profile_velocity = []
+        for item in dxl_profile_velocity:
+            param_profile_velocity.append([DXL_LOBYTE(DXL_LOWORD(item)),
+                                          DXL_HIBYTE(DXL_LOWORD(item)),
+                                          DXL_LOBYTE(DXL_HIWORD(item)),
+                                          DXL_HIBYTE(DXL_HIWORD(item))])
+        for i, item in enumerate(self.DXL_ID):
+            dxl_addparam_result = self.groupSyncWriteProfileVelocity.addParam(item, param_profile_velocity[i])
+            if dxl_addparam_result != True:
+                print("[ID:%03d] groupSyncWrite addparam failed" % item)
+        dxl_comm_result = self.groupSyncWriteProfileVelocity.txPacket()
+        if dxl_comm_result != COMM_SUCCESS:
+            print("%s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+
+        # Clear syncwrite parameter storage
+        self.groupSyncWriteProfileVelocity.clearParam()
 
     def set_operating_mode(self, flag):
         if flag == 'p':  # p is Position Control Mode, and t is Torque Control Mode
