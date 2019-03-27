@@ -83,11 +83,11 @@ class DxlAPI(object):
         return np.array(position_list)
 
     def get_velocity(self):
-        dxl_comm_result = self.groupSyncReadCurrent.txRxPacket()
+        dxl_comm_result = self.groupSyncReadVelocity.txRxPacket()
         velocity_list = []
         for i in self.DXL_ID:
-            dxl_present_velocity = self.groupSyncReadCurrent.getData(i, self.ADDR_PRO_PRESENT_VELOCITY,
-                                                                      self.ADDR_PRO_PRESENT_VELOCITY_LENGTH)
+            dxl_present_velocity = self.groupSyncReadVelocity.getData(i, self.ADDR_PRO_PRESENT_VELOCITY,
+                                                                     self.ADDR_PRO_PRESENT_VELOCITY_LENGTH)
             if dxl_present_velocity > 0x7fffffff:
                 dxl_present_velocity -= 4294967296
             dxl_present_velocity = dxl_present_velocity * 0.229 / 60 * (2 * math.pi)
@@ -95,10 +95,10 @@ class DxlAPI(object):
         return np.array(velocity_list)
 
     def get_torque(self):
-        dxl_comm_result = self.groupSyncReadVelocity.txRxPacket()
+        dxl_comm_result = self.groupSyncReadCurrent.txRxPacket()
         torque_list = []
         for i in self.DXL_ID:
-            dxl_present_current = self.groupSyncReadVelocity.getData(i, self.ADDR_PRO_PRESENT_CURRENT,
+            dxl_present_current = self.groupSyncReadCurrent.getData(i, self.ADDR_PRO_PRESENT_CURRENT,
                                                                      self.ADDR_PRO_PRESENT_CURRENT_LENGTH)
             if dxl_present_current > 0x7fff:
                 dxl_present_current -= 65536
