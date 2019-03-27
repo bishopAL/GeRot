@@ -48,11 +48,10 @@ class TargetGene(object):
 
         p_array = np.array(p_array)
         v_array = np.array(v_array)
-        array = np.hstack((p_array, v_array))
         self.present_position[flag][0] = self.present_position[flag][0]
         self.present_position[flag][1] = self.present_position[flag][1] + width
         self.present_position[flag][2] = self.present_position[flag][2] + height
-        return array
+        return p_array, v_array
 
     def moving(self, flag, time_period, time_for_one_period, target):  # make sure time_for_one_period is same
         t = symbols('t', real=True)
@@ -82,11 +81,31 @@ class TargetGene(object):
 
         p_array = np.array(p_array)
         v_array = np.array(v_array)
-        array = np.hstack((p_array, v_array))
         self.present_position[flag][0] = target[0]
         self.present_position[flag][1] = target[1]
         self.present_position[flag][2] = target[2]
-        return array
+        return p_array, v_array
+
+    def steady(self, flag, data_num):
+        px = self.present_position[flag][0]
+        py = self.present_position[flag][1]
+        pz = self.present_position[flag][2]
+        p_alpha = asin(-self.L3 / (px ** 2 + pz ** 2) ** 0.5) - atan2(pz, px)
+        p_beta = asin(
+            (self.L1 ** 2 + self.L2 ** 2 + self.L3 ** 2 - px ** 2 - py ** 2 - pz ** 2) / (2 * self.L1 * self.L2))
+        p_gamma = asin((px ** 2 + py ** 2 + pz ** 2 + self.L1 ** 2 - self.L2 ** 2 - self.L3 ** 2) / (
+                2 * self.L1 * (px ** 2 + py ** 2 + pz ** 2 - self.L3 ** 2) ** 0.5)) - atan2(
+            (px ** 2 + pz ** 2 - self.L3 ** 2) ** 0.5, py)
+        p_array = []
+        v_array = []
+        for i in range(data_num):
+            p_array.append([p_alpha, p_beta, p_gamma])
+            v_array.append([0, 0, 0])
+        p_array = np.array(p_array)
+        v_array = np.array(v_array)
+        return p_array, v_array
+
+
 
 
 
