@@ -145,6 +145,7 @@ class DxlAPI(object):
                                                                                self.ADDR_OPERATING_MODE, 1)
 
     def set_position(self, dxl_goal_position):
+        dxl_goal_position = [int(i * 4096 / 2 / math.pi) + 2047 for i in dxl_goal_position]
         param_goal_position = []
         for item in dxl_goal_position:
             param_goal_position.append([DXL_LOBYTE(DXL_LOWORD(item)),
