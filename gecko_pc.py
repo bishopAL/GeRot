@@ -10,8 +10,11 @@ motor_group = DxlAPI(range(12), 'COM3')
 # position initialize
 motor_group.set_operating_mode('p')
 motor_group.torque_enable()
-for item in target_p:
-    motor_group.set_position(item)
-    time.sleep(0.005)
+for j in range(3):
+    for i, item in enumerate(target_p):
+        motor_group.set_position(item)
+        time.sleep(0.005)
+        if i == 0 and j == 0:
+            time.sleep(5)
 motor_group.torque_disable()
 motor_group.portHandler.closePort()
