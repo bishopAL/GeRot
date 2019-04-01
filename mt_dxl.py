@@ -41,6 +41,9 @@ class DxlAPI(object):
                                                      self.ADDR_PRO_GOAL_VELOCITY_LENGTH)
         self.groupSyncWriteProfileVelocity = GroupSyncWrite(self.portHandler, self.packetHandler, self.ADDR_PRO_PRESENT_VELOCITY,
                                                             self.ADDR_PRO_PRESENT_VELOCITY_LENGTH)
+        self.groupSyncWriteTorqueEnable = GroupSyncWrite(self.portHandler, self.packetHandler,
+                                                         self.ADDR_PRO_TORQUE_ENABLE,
+                                                         self.ADDR_PRO_TORQUE_ENABLE_LENGTH)
 
         # Initialize GroupSyncRead
         self.groupSyncReadPosition = GroupSyncRead(self.portHandler, self.packetHandler, self.ADDR_PRO_PRESENT_POSITION,
@@ -67,6 +70,9 @@ class DxlAPI(object):
             dxl_addparam_result = self.groupSyncReadVelocity.addParam(i)
             if dxl_addparam_result != True:
                 print("[ID:%03d] groupSyncReadVelocity addparam failed" % i)
+            dxl_addparam_result = self.groupSyncReadCurrent.addParam(i)
+            if dxl_addparam_result != True:
+                print("[ID:%03d] groupSyncReadCurrent addparam failed" % i)
         print('Initialize Completed!')
 
     def get_position(self):
@@ -215,6 +221,8 @@ class DxlAPI(object):
             else:
                 print("Dynamixel#%d torque has been successfully enable" % i)
 
+
+
     def torque_disable(self):
         for i in self.DXL_ID:
             dxl_comm_result, dxl_error = self.packetHandler.write1ByteTxRx(self.portHandler, i,
@@ -226,6 +234,7 @@ class DxlAPI(object):
                 print("%s" % self.packetHandler.getRxPacketError(dxl_error))
             else:
                 print("Dynamixel#%d torque has been successfully disable" % i)
+
 
 # User Manual
 # Example:

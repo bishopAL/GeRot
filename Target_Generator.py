@@ -5,7 +5,7 @@ import numpy as np
 class TargetGene(object):
     def __init__(self):
         self.MODE_FLAG = 1
-        self.__Author__ = 'Bing-cheng'
+        self.__Author = 'Bing-cheng'
         self.time_for_one_period = 0.01
 
         self.L1 = 70.0
