@@ -2,7 +2,7 @@ from Target_Generator import TargetGene
 import numpy as np
 
 width = 30
-height = 50
+height = 60
 depth = 5
 time_period = 0.01
 gecko = TargetGene()
