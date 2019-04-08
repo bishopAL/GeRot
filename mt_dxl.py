@@ -83,7 +83,7 @@ class DxlAPI(object):
                                                                       self.ADDR_PRO_PRESENT_POSITION_LENGTH)
             if dxl_present_position > 0x7fffffff:
                 dxl_present_position -= 4294967296
-            dxl_present_position = float(dxl_present_position) / 4095 * (math.pi * 2)
+            dxl_present_position = float(dxl_present_position) / 4096 * (math.pi * 2)
             dxl_present_position = dxl_present_position % (2 * math.pi) - math.pi
             position_list.append(dxl_present_position)
         return np.array(position_list)

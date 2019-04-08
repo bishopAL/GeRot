@@ -19,6 +19,7 @@ motor_group.torque_enable()
 breaking_flag = 0
 p_rec = []
 v_rec = []
+t_rec = []
 calc_torque_rec = []
 beta = np.array([[0.06], [0.03], [0.03], [0.06], [0.03], [0.03], [0.06], [0.03], [0.03], [0.06], [0.03], [0.03]])
 # a = np.array([[2.0, 1.5, 7.0, 2.0, 1.5, 7.0, 2.0, 1.5, 7.0, 2.0, 1.5, 7.0]]) # cannot detach
@@ -30,9 +31,9 @@ for j in range(3):
         t0 = time.time()
         v_t = target_v[i]
         p_t = target_p[i]
+        t_p = motor_group.get_torque()
         v_p = motor_group.get_velocity()  # 1xn
         p_p = motor_group.get_position()  # 1xn
-        p_rec.append(p_p)
         v_e = np.array([v_p - v_t]).T  # velocity error nx1
         p_e = np.array([p_p - p_t]).T  # position error nx1
         tra_diff = p_e + beta * v_e  # track difference error(t) nx1
@@ -54,6 +55,7 @@ for j in range(3):
         motor_group.set_torque(calc_torque.tolist())
         v_rec.append(v_p)
         p_rec.append(p_p)
+        t_rec.append(t_p)
         calc_torque_rec.append(calc_torque)
         t1 = time.time()
         if (0.01-(t1-t0)) > 0:
@@ -68,10 +70,31 @@ else:
 p_rec = np.array(p_rec)
 v_rec = np.array(v_rec)
 calc_torque_rec = np.array(calc_torque_rec)
+t_rec = np.array(t_rec)
+
 plt.figure()
+plt.title('position')
 plt.plot(p_rec[:, 0], label='j0_present')
-plt.plot(p_rec[:, 0], label='j1_present')
+plt.plot(p_rec[:, 1], label='j1_present')
 plt.plot(p_rec[:, 2], label='j2_present')
 plt.legend()
 plt.show()
+
+plt.figure()
+plt.title('calculate torque')
+plt.plot(calc_torque_rec[:, 0], label='j0_present')
+plt.plot(calc_torque_rec[:, 1], label='j1_present')
+plt.plot(calc_torque_rec[:, 2], label='j2_present')
+plt.legend()
+plt.show()
+
+plt.figure()
+plt.title('present torque')
+plt.plot(t_rec[:, 0], label='j0_present')
+plt.plot(t_rec[:, 1], label='j1_present')
+plt.plot(t_rec[:, 2], label='j2_present')
+plt.legend()
+plt.show()
+
+
 
