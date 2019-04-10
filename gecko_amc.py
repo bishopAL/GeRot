@@ -58,8 +58,8 @@ for j in range(3):
         t_rec.append(t_p)
         calc_torque_rec.append(calc_torque)
         t1 = time.time()
-        if (0.01-(t1-t0)) > 0:
-            time.sleep(0.01-(t1-t0))
+        if (0.005-(t1-t0)) > 0:
+            time.sleep(0.005-(t1-t0))
         print("Total time: %d, time for one period: %f" % (j, t1-t0))
 if breaking_flag == 0:
     motor_group.torque_disable()
@@ -77,6 +77,14 @@ plt.title('position')
 plt.plot(p_rec[:, 0], label='j0_present')
 plt.plot(p_rec[:, 1], label='j1_present')
 plt.plot(p_rec[:, 2], label='j2_present')
+plt.legend()
+plt.show()
+
+plt.figure()
+plt.title('position')
+plt.plot(target_p[:, 0], label='j0_present')
+plt.plot(target_p[:, 1], label='j1_present')
+plt.plot(target_p[:, 2], label='j2_present')
 plt.legend()
 plt.show()
 
