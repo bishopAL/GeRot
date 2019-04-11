@@ -21,11 +21,11 @@ p_rec = []
 v_rec = []
 t_rec = []
 calc_torque_rec = []
-beta = np.array([[0.06], [0.03], [0.03], [0.06], [0.03], [0.03], [0.06], [0.03], [0.03], [0.06], [0.03], [0.03]])
+beta = np.array([[0.02], [0.01], [0.01], [0.02], [0.01], [0.01], [0.02], [0.01], [0.01], [0.02], [0.01], [0.01]])
 # a = np.array([[2.0, 1.5, 7.0, 2.0, 1.5, 7.0, 2.0, 1.5, 7.0, 2.0, 1.5, 7.0]]) # cannot detach
-a = np.array([[1.0, 1.5, 7.0, 1.0, 1.5, 7.0, 1.0, 1.5, 7.0, 1.0, 1.5, 7.0]])
-b = np.array([[0.7, 1.0, 4.0, 0.7, 1.0, 4.0, 0.7, 1.0, 4.0, 0.7, 1.0, 4.0]])
-
+a = np.array([[1.0, 1.5, 4.0, 1.0, 1.5, 4.0, 1.0, 1.5, 4.0, 1.0, 1.5, 4.0]])
+b = np.array([[0.7, 0.8, 2.0, 0.7, 0.8, 2.0, 0.7, 0.8, 2.0, 0.7, 0.8, 2.0]])
+TA = time.time()
 for j in range(3):
     for i in range(target_p.shape[0]):
         t0 = time.time()
@@ -58,20 +58,20 @@ for j in range(3):
         t_rec.append(t_p)
         calc_torque_rec.append(calc_torque)
         t1 = time.time()
-        if (0.005-(t1-t0)) > 0:
-            time.sleep(0.005-(t1-t0))
+        if (0.01-(t1-t0)) > 0:
+            time.sleep(0.01-(t1-t0))
         print("Total time: %d, time for one period: %f" % (j, t1-t0))
 if breaking_flag == 0:
     motor_group.torque_disable()
     motor_group.portHandler.closePort()
 else:
     print('torque too big!')
-
+TB = time.time()
 p_rec = np.array(p_rec)
 v_rec = np.array(v_rec)
 calc_torque_rec = np.array(calc_torque_rec)
 t_rec = np.array(t_rec)
-
+print(TB-TA)
 plt.figure()
 plt.title('position')
 plt.plot(p_rec[:, 0], label='j0_present')

@@ -105,6 +105,38 @@ class TargetGene(object):
         v_array = np.array(v_array)
         return p_array, v_array
 
+    def dna(self, flag, time_period, time_for_one_period, width, height):
+        t = symbols('t', real=True)
+        if time_for_one_period == 0:
+            time_for_one_period = self.time_for_one_period
+        px = self.present_position[flag][0]
+        py = self.present_position[flag][1] + width / time_period * 2 * t
+        pz = self.present_position[flag][2] - height / time_period ** 2 * (t * 2) ** 2 + 2 * height / time_period * (t * 2)
+        time_serial = np.linspace(0, time_period, int(time_period / time_for_one_period + 1))
+        p_array = []
+        v_array = []
+
+        # Calculate detach array
+        for i in time_serial:
+            p_alpha = asin(-self.L3 / (px ** 2 + pz ** 2) ** 0.5) - atan2(pz, px)
+            v_alpha = diff(p_alpha, t)
+            p_beta = asin(
+                (self.L1 ** 2 + self.L2 ** 2 + self.L3 ** 2 - px ** 2 - py ** 2 - pz ** 2) / (2 * self.L1 * self.L2))
+            v_beta = diff(p_beta, t)
+            p_gamma = asin((px ** 2 + py ** 2 + pz ** 2 + self.L1 ** 2 - self.L2 ** 2 - self.L3 ** 2) / (
+                    2 * self.L1 * (px ** 2 + py ** 2 + pz ** 2 - self.L3 ** 2) ** 0.5)) - atan2(
+                (px ** 2 + pz ** 2 - self.L3 ** 2) ** 0.5, py)
+            v_gamma = diff(p_gamma, t)
+            p_array.append([float(p_alpha.subs(t, i)), float(p_beta.subs(t, i)), float(p_gamma.subs(t, i))])
+            v_array.append([float(v_alpha.subs(t, i)), float(v_beta.subs(t, i)), float(v_gamma.subs(t, i))])
+
+        p_array = np.array(p_array)
+        v_array = np.array(v_array)
+        self.present_position[flag][0] = self.present_position[flag][0]
+        self.present_position[flag][1] = self.present_position[flag][1] + width
+        self.present_position[flag][2] = self.present_position[flag][2]
+        return p_array, v_array
+
 
 
 
