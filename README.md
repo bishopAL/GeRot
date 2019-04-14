@@ -43,18 +43,18 @@ NOTICE: If you have installed anaconda in Ubuntu and you want to use the API wit
 
 ------------------------------------------------------
 
-    sudo ~/Anaconda2/bin/python setup.py install
+    sudo ~/Anaconda3/bin/python3 setup.py install
 
 ------------------------------------------------------
 
 3. Go to this repo, connect your motor.
-4. Check moveto.py, you can specify the parameters in 
+4. Check AMC_oneleg_newapi.py, you can specify the parameters in 
 
 ------------------------------------------------------
 
-    motor0 = DxlAPI(13, 'COM3')
+    motor0 = DxlAPI(range(3), '/dev/ttyUSB0')
 
 ------------------------------------------------------
 
-The first parameter is to set the motor's ID, the second one is to set the port(in Ubuntu is like '/dev/ttyUSB0', in Windows is like 'COM1'), the third one is to set baurdrate. Make sure you have make these parameters right.
+The first parameter is to set the motor's ID, it should like [0,1,2]. The second one is to set the port(in Ubuntu is like '/dev/ttyUSB0', in Windows is like 'COM1'), the third one is to set baurdrate. Make sure you have make these parameters right.
 
