@@ -16,7 +16,7 @@ On the other way, you may change it permenantly by doing this:
 
 ------------------------------------------------------
 
-sudo nano /etc/udev/rules.d/latency-usb.rules
+    sudo nano /etc/udev/rules.d/latency-usb.rules
 
 
 ------------------------------------------------------
@@ -27,22 +27,22 @@ Add these codes:
 ------------------------------------------------------
 
 
-ACTION=="add", SUBSYSTEM=="usb-serial", DRIVER=="ftdi_sio", ATTR{latency_timer}="1" 
+    ACTION=="add", SUBSYSTEM=="usb-serial", DRIVER=="ftdi_sio", ATTR{latency_timer}="1" 
 
 
 ------------------------------------------------------
 
 
-Save. Finally:
+    Save. Finally:
 
 
 ------------------------------------------------------
 
 
 
-sudo udevadm control --reload-rules
+    sudo udevadm control --reload-rules
 
-sudo udevadm trigger --action=add
+    sudo udevadm trigger --action=add
 
 
 ------------------------------------------------------
@@ -53,7 +53,7 @@ You may check the result like:
 ------------------------------------------------------
 
 
-cat /sys/bus/usb-serial/devices/ttyUSB0/latency_timer
+    cat /sys/bus/usb-serial/devices/ttyUSB0/latency_timer
 
 
 ------------------------------------------------------
