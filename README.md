@@ -9,6 +9,56 @@ In Ubuntu, you should run the codes below in terminnal to reduce the USB latency
     sudo usermod -aG dialout $USER && echo 1 | sudo tee /sys/bus/usb-serial/devices/ttyUSB0/latency_timer
    
 ------------------------------------------------------
+
+
+On the other way, you may change it permenantly by doing this:
+
+
+------------------------------------------------------
+
+sudo nano /etc/udev/rules.d/latency-usb.rules
+
+
+------------------------------------------------------
+
+Add these codes:
+
+
+------------------------------------------------------
+
+
+ACTION=="add", SUBSYSTEM=="usb-serial", DRIVER=="ftdi_sio", ATTR{latency_timer}="1" 
+
+
+------------------------------------------------------
+
+
+Save. Finally:
+
+
+------------------------------------------------------
+
+
+
+sudo udevadm control --reload-rules
+
+sudo udevadm trigger --action=add
+
+
+------------------------------------------------------
+
+You may check the result like:
+
+
+------------------------------------------------------
+
+
+cat /sys/bus/usb-serial/devices/ttyUSB0/latency_timer
+
+
+------------------------------------------------------
+
+
 In windows, check https://www.instructables.com/id/Lampduino-an-8x8-RGB-Floor-Lamp/, you can find it in step 20.
 
 Then, following the tutorial below:
