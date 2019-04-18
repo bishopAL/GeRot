@@ -1,7 +1,7 @@
 from Target_Generator import TargetGene
 import numpy as np
 
-width = 40  # 30
+width = 70  # 30
 height = 60
 depth = 5
 time_period = 0.01
@@ -14,8 +14,8 @@ moving_time = 0.5
 
 gecko.present_position = {'rf': np.array([gecko.L1, gecko.L2 - width/2, -gecko.L3]),
                           'rh': np.array([gecko.L1, gecko.L2 - width/2, -gecko.L3 - 8]),
-                          'lf': np.array([gecko.L1, gecko.L2 - width/2, -gecko.L3]),
-                          'lh': np.array([gecko.L1, gecko.L2 - width/2, -gecko.L3 - 8])}
+                          'lf': np.array([gecko.L1, gecko.L2, -gecko.L3]),
+                          'lh': np.array([gecko.L1, gecko.L2, -gecko.L3 - 8])}
 
 # step 0
 p_detach, v_detach = gecko.detach('rf', detach_time, time_period, width, height)

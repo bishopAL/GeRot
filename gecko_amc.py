@@ -15,7 +15,7 @@ target_p[:, 5] = -target_p[:, 5]
 target_v[:, 5] = -target_v[:, 5]
 target_p[:, 11] = -target_p[:, 11]
 target_v[:, 11] = -target_v[:, 11]
-motor_group = DxlAPI(range(12), 'COM3')
+motor_group = DxlAPI(range(12), '/dev/ttyUSB0')
 # position initialize
 motor_group.set_operating_mode('p')
 motor_group.torque_enable()
@@ -31,8 +31,8 @@ t_rec = []
 calc_torque_rec = []
 beta = np.array([[0.02], [0.01], [0.01], [0.02], [0.01], [0.01], [0.02], [0.01], [0.01], [0.02], [0.01], [0.01]])
 # a = np.array([[2.0, 1.5, 7.0, 2.0, 1.5, 7.0, 2.0, 1.5, 7.0, 2.0, 1.5, 7.0]]) # cannot detach
-a = np.array([[1.0, 1.5, 4.0, 1.0, 1.5, 4.0, 1.0, 1.5, 4.0, 1.0, 1.5, 4.0]])
-b = np.array([[0.7, 0.8, 2.2, 0.7, 0.8, 2.2, 0.7, 0.8, 2.2, 0.7, 0.8, 2.2]])
+a = np.array([[1.6, 1.5, 4.0, 1.6, 1.5, 4.0, 1.6, 1.5, 4.0, 1.6, 1.5, 4.0]])
+b = np.array([[0.7, 0.8, 2.0, 0.7, 0.8, 2.0, 0.7, 0.8, 2.0, 0.7, 0.8, 2.0]])
 TA = time.time()
 for j in range(3):
     for i in range(target_p.shape[0]):
@@ -49,8 +49,10 @@ for j in range(3):
         ff = tra_diff / co_diff.T  # force F(t) nx1
         # p_gain = np.dot(ff, p_e.T)  # nxn
         # d_gain = np.dot(ff, v_e.T)  # nxn
-        p_gain = ff * p_e  # nx1
-        d_gain = ff * v_e  # nx1
+        # p_gain = ff * p_e  # nx1
+        # d_gain = ff * v_e  # nx1
+        p_gain = np.array([[0.010, 0.02, 0.01, 0.010, 0.02, 0.01, 0.010, 0.02, 0.01, 0.010, 0.02, 0.01]]).T
+        d_gain = np.array([[0.010, 0.02, 0.01, 0.010, 0.02, 0.01, 0.010, 0.02, 0.01, 0.010, 0.02, 0.01]]).T
         # calc_torque = (-ff - np.dot(p_gain, p_e) - np.dot(d_gain, v_e)).T[0]  # (nx1).T[0]
         calc_torque = (-ff - p_gain * p_e - d_gain * v_e).T[0]
         for t in calc_torque.tolist():
@@ -112,5 +114,6 @@ plt.plot(t_rec[:, 2], label='j2_present')
 plt.legend()
 plt.show()
 
-
-
+np.savetxt('p_rec.csv', p_rec, delimiter=',')
+np.savetxt('t_rec.csv', t_rec, delimiter=',')
+np.savetxt('calc_torque_rec.csv', calc_torque_rec, delimiter=',')

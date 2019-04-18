@@ -10,7 +10,7 @@ class TargetGene(object):
 
         self.L1 = 70.0
         self.L2 = 50.0
-        self.L3 = 10.0  # three parts of one leg
+        self.L3 = 24.0  # three parts of one leg
         self.present_position = {'rf': np.array([self.L1, self.L2, -self.L3]),
                                  'rh': np.array([self.L1, self.L2, -self.L3]),
                                  'lf': np.array([self.L1, self.L2, -self.L3]),
