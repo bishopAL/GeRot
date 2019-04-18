@@ -5,8 +5,16 @@ import time
 
 target_p = np.loadtxt("target_p.csv", delimiter=",")
 target_v = np.loadtxt("target_v.csv", delimiter=",")
-target_p[:, 1:7] = -target_p[:, 1:7]
-target_v[:, 1:7] = -target_v[:, 1:7]
+target_p[:, 3:9] = -target_p[:, 3:9]
+target_v[:, 3:9] = -target_v[:, 3:9]
+target_p[:, 4] = -target_p[:, 4]
+target_v[:, 4] = -target_v[:, 4]
+target_p[:, 10] = -target_p[:, 10]
+target_v[:, 10] = -target_v[:, 10]
+target_p[:, 5] = -target_p[:, 5]
+target_v[:, 5] = -target_v[:, 5]
+target_p[:, 11] = -target_p[:, 11]
+target_v[:, 11] = -target_v[:, 11]
 motor_group = DxlAPI(range(12), 'COM3')
 # position initialize
 motor_group.set_operating_mode('p')
@@ -24,7 +32,7 @@ calc_torque_rec = []
 beta = np.array([[0.02], [0.01], [0.01], [0.02], [0.01], [0.01], [0.02], [0.01], [0.01], [0.02], [0.01], [0.01]])
 # a = np.array([[2.0, 1.5, 7.0, 2.0, 1.5, 7.0, 2.0, 1.5, 7.0, 2.0, 1.5, 7.0]]) # cannot detach
 a = np.array([[1.0, 1.5, 4.0, 1.0, 1.5, 4.0, 1.0, 1.5, 4.0, 1.0, 1.5, 4.0]])
-b = np.array([[0.7, 0.8, 2.0, 0.7, 0.8, 2.0, 0.7, 0.8, 2.0, 0.7, 0.8, 2.0]])
+b = np.array([[0.7, 0.8, 2.2, 0.7, 0.8, 2.2, 0.7, 0.8, 2.2, 0.7, 0.8, 2.2]])
 TA = time.time()
 for j in range(3):
     for i in range(target_p.shape[0]):

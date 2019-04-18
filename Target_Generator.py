@@ -36,13 +36,13 @@ class TargetGene(object):
         for i in time_serial:
             p_alpha = asin(-self.L3 / (px ** 2 + pz ** 2) ** 0.5) - atan2(pz, px)
             v_alpha = diff(p_alpha, t)
-            p_beta = asin(
+            p_gamma = asin(
                 (self.L1 ** 2 + self.L2 ** 2 + self.L3 ** 2 - px ** 2 - py ** 2 - pz ** 2) / (2 * self.L1 * self.L2))
-            v_beta = diff(p_beta, t)
-            p_gamma = asin((px ** 2 + py ** 2 + pz ** 2 + self.L1 ** 2 - self.L2 ** 2 - self.L3 ** 2) / (
+            v_gamma = diff(p_gamma, t)
+            p_beta = asin((px ** 2 + py ** 2 + pz ** 2 + self.L1 ** 2 - self.L2 ** 2 - self.L3 ** 2) / (
                     2 * self.L1 * (px ** 2 + py ** 2 + pz ** 2 - self.L3 ** 2) ** 0.5)) - atan2(
                 (px ** 2 + pz ** 2 - self.L3 ** 2) ** 0.5, py)
-            v_gamma = diff(p_gamma, t)
+            v_beta = diff(p_beta, t)
             p_array.append([float(p_alpha.subs(t, i)), float(p_beta.subs(t, i)), float(p_gamma.subs(t, i))])
             v_array.append([float(v_alpha.subs(t, i)), float(v_beta.subs(t, i)), float(v_gamma.subs(t, i))])
 
@@ -69,13 +69,13 @@ class TargetGene(object):
         for i in time_serial:
             p_alpha = asin(-self.L3 / (px ** 2 + pz ** 2) ** 0.5) - atan2(pz, px)
             v_alpha = diff(p_alpha, t)
-            p_beta = asin(
+            p_gamma = asin(
                 (self.L1 ** 2 + self.L2 ** 2 + self.L3 ** 2 - px ** 2 - py ** 2 - pz ** 2) / (2 * self.L1 * self.L2))
-            v_beta = diff(p_beta, t)
-            p_gamma = asin((px ** 2 + py ** 2 + pz ** 2 + self.L1 ** 2 - self.L2 ** 2 - self.L3 ** 2) / (
+            v_gamma = diff(p_gamma, t)
+            p_beta = asin((px ** 2 + py ** 2 + pz ** 2 + self.L1 ** 2 - self.L2 ** 2 - self.L3 ** 2) / (
                     2 * self.L1 * (px ** 2 + py ** 2 + pz ** 2 - self.L3 ** 2) ** 0.5)) - atan2(
                 (px ** 2 + pz ** 2 - self.L3 ** 2) ** 0.5, py)
-            v_gamma = diff(p_gamma, t)
+            v_beta = diff(p_beta, t)
             p_array.append([float(p_alpha.subs(t, i)), float(p_beta.subs(t, i)), float(p_gamma.subs(t, i))])
             v_array.append([float(v_alpha.subs(t, i)), float(v_beta.subs(t, i)), float(v_gamma.subs(t, i))])
 
@@ -91,9 +91,9 @@ class TargetGene(object):
         py = self.present_position[flag][1]
         pz = self.present_position[flag][2]
         p_alpha = asin(-self.L3 / (px ** 2 + pz ** 2) ** 0.5) - atan2(pz, px)
-        p_beta = asin(
+        p_gamma = asin(
             (self.L1 ** 2 + self.L2 ** 2 + self.L3 ** 2 - px ** 2 - py ** 2 - pz ** 2) / (2 * self.L1 * self.L2))
-        p_gamma = asin((px ** 2 + py ** 2 + pz ** 2 + self.L1 ** 2 - self.L2 ** 2 - self.L3 ** 2) / (
+        p_beta = asin((px ** 2 + py ** 2 + pz ** 2 + self.L1 ** 2 - self.L2 ** 2 - self.L3 ** 2) / (
                 2 * self.L1 * (px ** 2 + py ** 2 + pz ** 2 - self.L3 ** 2) ** 0.5)) - atan2(
             (px ** 2 + pz ** 2 - self.L3 ** 2) ** 0.5, py)
         p_array = []
