@@ -34,7 +34,7 @@ beta = np.array([[0.02], [0.01], [0.01], [0.02], [0.01], [0.01], [0.02], [0.01],
 a = np.array([[1.6, 1.5, 4.0, 1.6, 1.5, 4.0, 1.6, 1.5, 4.0, 1.6, 1.5, 4.0]])
 b = np.array([[0.7, 0.8, 2.0, 0.7, 0.8, 2.0, 0.7, 0.8, 2.0, 0.7, 0.8, 2.0]])
 TA = time.time()
-for j in range(3):
+for j in range(5):
     for i in range(target_p.shape[0]):
         t0 = time.time()
         v_t = target_v[i]
