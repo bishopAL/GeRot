@@ -1,4 +1,4 @@
-from mt_dxl import DxlAPI
+from dynamixel.mt_dxl import DxlAPI
 import math
 import time
 import numpy as np
@@ -32,20 +32,20 @@ p_moving1, v_moving1 = gecko.moving('rf', attach_time1, time_period, np.array([g
 target_p = np.vstack((p_detach, p_moving0, p_moving1))
 target_v = np.vstack((v_detach, v_moving0, v_moving1))
 
-target_p[:, 1] = -target_p[:, 1]
-target_p[:, 2] = -target_p[:, 2]
-target_v[:, 1] = -target_v[:, 1]
-target_v[:, 2] = -target_v[:, 2]
+target_p[:, 1] = target_p[:, 1]
+target_p[:, 2] = target_p[:, 2]
+target_v[:, 1] = target_v[:, 1]
+target_v[:, 2] = target_v[:, 2]
 # Setting running mode
 MODE = 1  # 1 is AMC, 2 is Spring Damping Control
 
 # motor initialize
-motor_group = DxlAPI([0, 1, 2], 'COM3')
+motor_group = DxlAPI([0, 1, 2], '/dev/ttyUSB0')
 # position initialize
 motor_group.set_operating_mode('p')
 motor_group.torque_enable()
 motor_group.set_position(target_p[0, :])
-time.sleep(1)
+time.sleep(3)
 motor_group.torque_disable()
 # torque control mode initialize
 motor_group.set_operating_mode('t')
@@ -82,10 +82,15 @@ if MODE == 1:
         ff = tra_diff / co_diff.T  # force F(t) nx1
         # p_gain = np.dot(ff, p_e.T)  # nxn
         # d_gain = np.dot(ff, v_e.T)  # nxn
-        p_gain = ff * p_e  # nx1
-        d_gain = ff * v_e  # nx1
+        # p_gain = ff * p_e  # nx1
+        # d_gain = ff * v_e  # nx1
+        p_gain = np.array([[0.010, 0.02, 0.01]]).T
+        d_gain = np.array([[0.010, 0.02, 0.01]]).T
         # calc_torque = (-ff - np.dot(p_gain, p_e) - np.dot(d_gain, v_e)).T[0]  # (nx1).T[0]
-        calc_torque = (-ff - p_gain * p_e - d_gain * v_e).T[0]
+        if i<150:
+            calc_torque = (-1 * ff - p_gain * p_e - d_gain * v_e).T[0]
+        else:
+            calc_torque = (-0.1 * ff - p_gain * p_e - d_gain * v_e).T[0]
         for t in calc_torque.tolist():
             if t > 5 or t < -5:
                 motor_group.torque_disable()
@@ -119,6 +124,5 @@ if MODE == 2:
         calc_torque = - K * p_e - D * v_e
         motor_group.set_torque(calc_torque.tolist())
         B = time.time()
-        print i, calc_torque, B-A
     motor_group.torque_disable()
     motor_group.portHandler.closePort()
