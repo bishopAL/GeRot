@@ -79,7 +79,19 @@ NOTICE: If you have installed anaconda in Ubuntu and you want to use the API wit
     sudo ~/Anaconda3/bin/python3 setup.py install
 
 
-3. Go to this repo, connect your motor.
+3. Go to this repo, 
+
+
+    cd dynamixel-egg
+   
+
+then, 
+
+
+    python setup.py install
+
+
+now you have installed the driver package, now you may connect your motor to your pc.
 4. Check AMC_oneleg_newapi.py, you can specify the parameters in 
 
 
