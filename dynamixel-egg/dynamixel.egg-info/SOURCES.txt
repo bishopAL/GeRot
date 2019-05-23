@@ -1,0 +1,9 @@
+setup.py
+dynamixel/__init__.py
+dynamixel/dxl_api.py
+dynamixel/mt_dxl.py
+dynamixel.egg-info/PKG-INFO
+dynamixel.egg-info/SOURCES.txt
+dynamixel.egg-info/dependency_links.txt
+dynamixel.egg-info/requires.txt
+dynamixel.egg-info/top_level.txt

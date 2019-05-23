@@ -1,5 +1,5 @@
 import numpy as np
-from mt_dxl import DxlAPI
+from dynamixel.mt_dxl import DxlAPI
 import time
 
 target_p = np.loadtxt("target_p_left.csv", delimiter=",")

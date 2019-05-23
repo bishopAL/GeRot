@@ -1,0 +1,11 @@
+Metadata-Version: 1.0
+Name: dynamixel
+Version: 0.0.1
+Summary: API to drive Dynamixel Motors
+Home-page: https://github.com/bishopAL/GeRo_V1
+Author: Bingbing
+Author-email: 470797339@qq.com
+License: MIT License
+Description: UNKNOWN
+Keywords: dynamixel,egg
+Platform: any
