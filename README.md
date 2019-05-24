@@ -91,7 +91,8 @@ then,
     python setup.py install
 
 
-now you have installed the driver package, now you may connect your motor to your pc.
+now you have installed the driver package, you may connect your motor to your pc.
+
 4. Check AMC_oneleg_newapi.py, you can specify the parameters in 
 
 
