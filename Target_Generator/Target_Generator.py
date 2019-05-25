@@ -31,7 +31,7 @@ class TargetGene(object):
         time_serial = np.linspace(0, time_period, int(time_period / time_for_one_period + 1))
         p_array = []
         v_array = []
-
+        para_array = []
         # Calculate detach array
         for i in time_serial:
             p_alpha = asin(-self.L3 / (px ** 2 + pz ** 2) ** 0.5) - atan2(pz, px)
@@ -45,15 +45,16 @@ class TargetGene(object):
             v_beta = diff(p_beta, t)
             p_array.append([float(p_alpha.subs(t, i)), float(p_beta.subs(t, i)), float(p_gamma.subs(t, i))])
             v_array.append([float(v_alpha.subs(t, i)), float(v_beta.subs(t, i)), float(v_gamma.subs(t, i))])
-
+            para_array.append([1, 1, 1])
         p_array = np.array(p_array)
         v_array = np.array(v_array)
+        para_array = np.array(para_array)
         self.present_position[flag][0] = self.present_position[flag][0]
         self.present_position[flag][1] = self.present_position[flag][1] + width
         self.present_position[flag][2] = self.present_position[flag][2] + height
-        return p_array, v_array
+        return p_array, v_array, para_array
 
-    def moving(self, flag, time_period, time_for_one_period, target):  # make sure time_for_one_period is same
+    def moving(self, flag, time_period, time_for_one_period, target, para=1):  # make sure time_for_one_period is same
         t = symbols('t', real=True)
         if time_for_one_period == 0:
             time_for_one_period = self.time_for_one_period
@@ -64,7 +65,7 @@ class TargetGene(object):
         pz = self.present_position[flag][2] + (target[2] - self.present_position[flag][2]) / time_period * t
         p_array = []
         v_array = []
-
+        para_array = []
         # Calculate moving array
         for i in time_serial:
             p_alpha = asin(-self.L3 / (px ** 2 + pz ** 2) ** 0.5) - atan2(pz, px)
@@ -78,13 +79,14 @@ class TargetGene(object):
             v_beta = diff(p_beta, t)
             p_array.append([float(p_alpha.subs(t, i)), float(p_beta.subs(t, i)), float(p_gamma.subs(t, i))])
             v_array.append([float(v_alpha.subs(t, i)), float(v_beta.subs(t, i)), float(v_gamma.subs(t, i))])
-
+            para_array.append([para, para, para])
         p_array = np.array(p_array)
         v_array = np.array(v_array)
+        para_array = np.array(para_array)
         self.present_position[flag][0] = target[0]
         self.present_position[flag][1] = target[1]
         self.present_position[flag][2] = target[2]
-        return p_array, v_array
+        return p_array, v_array, para_array
 
     def steady(self, flag, data_num):
         px = self.present_position[flag][0]
@@ -98,12 +100,15 @@ class TargetGene(object):
             (px ** 2 + pz ** 2 - self.L3 ** 2) ** 0.5, py)
         p_array = []
         v_array = []
+        para_array = []
+        para_array = []
         for i in range(data_num):
             p_array.append([p_alpha, p_beta, p_gamma])
             v_array.append([0, 0, 0])
+            para_array.append([1, 1, 1])
         p_array = np.array(p_array)
         v_array = np.array(v_array)
-        return p_array, v_array
+        return p_array, v_array, para_array
 
     def dna(self, flag, time_period, time_for_one_period, width, height):
         t = symbols('t', real=True)

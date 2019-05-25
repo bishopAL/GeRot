@@ -60,7 +60,7 @@ calc_torque_rec = []
 if MODE == 1:
     beta = np.array([[0.02], [0.01], [0.01]])  # parameter # looks good
     a = np.array([[1.0, 1.5, 4.0]])  # parameter # 17
-    b = np.array([[0.7, 0.8, 2.2]])  # parameter # 8
+    b = np.array([[0.6, 0.8, 2.2]])  # parameter # 8
 if MODE == 2:
     K = 0.3
     D = 0.2
