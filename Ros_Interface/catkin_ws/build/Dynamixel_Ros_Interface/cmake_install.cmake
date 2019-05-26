@@ -1,4 +1,4 @@
-# Install script for directory: /home/sdh/dyna_ros_inter/GeRo_V1/Ros_Interface/catkin_ws/src/Dynamixel_Ros_Interface
+# Install script for directory: /home/sdh/dyna_ros_inter/GeRo_V1/Ros_Interface/catkin_ws/src/dynamixel_ros_interface
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -38,17 +38,17 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/sdh/dyna_ros_inter/GeRo_V1/Ros_Interface/catkin_ws/build/Dynamixel_Ros_Interface/catkin_generated/installspace/Dynamixel_Ros_Interface.pc")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/sdh/dyna_ros_inter/GeRo_V1/Ros_Interface/catkin_ws/build/dynamixel_ros_interface/catkin_generated/installspace/dynamixel_ros_interface.pc")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/Dynamixel_Ros_Interface/cmake" TYPE FILE FILES
-    "/home/sdh/dyna_ros_inter/GeRo_V1/Ros_Interface/catkin_ws/build/Dynamixel_Ros_Interface/catkin_generated/installspace/Dynamixel_Ros_InterfaceConfig.cmake"
-    "/home/sdh/dyna_ros_inter/GeRo_V1/Ros_Interface/catkin_ws/build/Dynamixel_Ros_Interface/catkin_generated/installspace/Dynamixel_Ros_InterfaceConfig-version.cmake"
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/dynamixel_ros_interface/cmake" TYPE FILE FILES
+    "/home/sdh/dyna_ros_inter/GeRo_V1/Ros_Interface/catkin_ws/build/dynamixel_ros_interface/catkin_generated/installspace/dynamixel_ros_interfaceConfig.cmake"
+    "/home/sdh/dyna_ros_inter/GeRo_V1/Ros_Interface/catkin_ws/build/dynamixel_ros_interface/catkin_generated/installspace/dynamixel_ros_interfaceConfig-version.cmake"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/Dynamixel_Ros_Interface" TYPE FILE FILES "/home/sdh/dyna_ros_inter/GeRo_V1/Ros_Interface/catkin_ws/src/Dynamixel_Ros_Interface/package.xml")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/dynamixel_ros_interface" TYPE FILE FILES "/home/sdh/dyna_ros_inter/GeRo_V1/Ros_Interface/catkin_ws/src/dynamixel_ros_interface/package.xml")
 endif()
 
