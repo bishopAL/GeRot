@@ -1,0 +1,6 @@
+setup.py
+ds4drv.egg-info/PKG-INFO
+ds4drv.egg-info/SOURCES.txt
+ds4drv.egg-info/dependency_links.txt
+ds4drv.egg-info/requires.txt
+ds4drv.egg-info/top_level.txt
