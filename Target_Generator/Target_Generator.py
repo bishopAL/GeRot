@@ -101,7 +101,6 @@ class TargetGene(object):
         p_array = []
         v_array = []
         para_array = []
-        para_array = []
         for i in range(data_num):
             p_array.append([p_alpha, p_beta, p_gamma])
             v_array.append([0, 0, 0])
