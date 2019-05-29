@@ -23,8 +23,6 @@ class DxlAPI(object):
         self.ADDR_PRO_GOAL_CURRENT_LENGTH = 2
         self.ADDR_PRO_PROFILE_VELOCITY = 112  # 4 Bytes
         self.ADDR_PRO_PROFILE_VELOCITY_LENGTH = 4
-        self.ADDR_PRO_PROFILE_ACCELERATION = 108  # 4 Bytes
-        self.ADDR_PRO_PROFILE_ACCELERATION_LENGTH = 4
         self.ADDR_PRO_PRESENT_CURRENT = 126  # 2 Bytes
         self.ADDR_PRO_PRESENT_CURRENT_LENGTH = 2
         self.ADDR_PRO_PRESENT_VELOCITY = 128  # 4 Bytes
@@ -41,12 +39,8 @@ class DxlAPI(object):
                                                      self.ADDR_PRO_GOAL_POSITION_LENGTH)
         self.groupSyncWriteVelocity = GroupSyncWrite(self.portHandler, self.packetHandler, self.ADDR_PRO_GOAL_VELOCITY,
                                                      self.ADDR_PRO_GOAL_VELOCITY_LENGTH)
-        self.groupSyncWriteProfileVelocity = GroupSyncWrite(self.portHandler, self.packetHandler,
-                                                            self.ADDR_PRO_PRESENT_VELOCITY,
+        self.groupSyncWriteProfileVelocity = GroupSyncWrite(self.portHandler, self.packetHandler, self.ADDR_PRO_PRESENT_VELOCITY,
                                                             self.ADDR_PRO_PRESENT_VELOCITY_LENGTH)
-        self.groupSyncWriteProfileAcceleration = GroupSyncWrite(self.portHandler, self.packetHandler,
-                                                            self.ADDR_PRO_PROFILE_ACCELERATION,
-                                                            self.ADDR_PRO_PROFILE_ACCELERATION_LENGTH)
         self.groupSyncWriteTorqueEnable = GroupSyncWrite(self.portHandler, self.packetHandler,
                                                          self.ADDR_PRO_TORQUE_ENABLE,
                                                          self.ADDR_PRO_TORQUE_ENABLE_LENGTH)
@@ -141,24 +135,6 @@ class DxlAPI(object):
 
         # Clear syncwrite parameter storage
         self.groupSyncWriteProfileVelocity.clearParam()
-
-    def set_profile_acceleration(self, dxl_profile_acceleration):
-        param_profile_acceleration = []
-        for item in dxl_profile_acceleration:
-            param_profile_acceleration.append([DXL_LOBYTE(DXL_LOWORD(item)),
-                                          DXL_HIBYTE(DXL_LOWORD(item)),
-                                          DXL_LOBYTE(DXL_HIWORD(item)),
-                                          DXL_HIBYTE(DXL_HIWORD(item))])
-        for i, item in enumerate(self.DXL_ID):
-            dxl_addparam_result = self.groupSyncWriteProfileAcceleration.addParam(item, param_profile_acceleration[i])
-            if dxl_addparam_result != True:
-                print("[ID:%03d] groupSyncWrite addparam failed" % item)
-        dxl_comm_result = self.groupSyncWriteProfileAcceleration.txPacket()
-        if dxl_comm_result != COMM_SUCCESS:
-            print("%s" % self.packetHandler.getTxRxResult(dxl_comm_result))
-
-        # Clear syncwrite parameter storage
-        self.groupSyncWriteProfileAcceleration.clearParam()
 
     def set_operating_mode(self, flag):
         if flag == 'p':  # p is Position Control Mode, and t is Torque Control Mode
