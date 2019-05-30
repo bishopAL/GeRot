@@ -38,9 +38,9 @@ target_para0 = np.hstack((rf_target_para, rh_target_para, lf_target_para, lh_tar
 # step 2
 p_detach, v_detach, para_detach = gecko.detach('rh', detach_time, time_period, width, height)
 p_moving0, v_moving0, para_moving0 = gecko.moving('rh', attach_time0, time_period, np.array([gecko.L1, gecko.present_position['rh'][1],
-                                                             gecko.present_position['rh'][2] - (height + depth)]))
+                                                             gecko.present_position['rh'][2] - (height + depth)]), para=0.1)
 p_moving1, v_moving1, para_moving1 = gecko.moving('rh', attach_time1, time_period, np.array([gecko.L1, gecko.present_position['rh'][1],
-                                                               gecko.present_position['rh'][2] + depth]))
+                                                               gecko.present_position['rh'][2] + depth]), para=0.1)
 rh_target_p = np.vstack((p_detach, p_moving0, p_moving1))
 rh_target_v = np.vstack((v_detach, v_moving0, v_moving1))
 rh_target_para = np.vstack((para_detach, para_moving0, para_moving1))
@@ -55,13 +55,13 @@ target_para2 = np.hstack((rf_target_para, rh_target_para, lf_target_para, lh_tar
 
 # moving 0
 rf_target_p, rf_target_v, rf_target_para = gecko.moving('rf', moving_time, time_period, np.array([gecko.L1, gecko.present_position['rf'][1] - width/2,
-                                                                 gecko.present_position['rf'][2]]))
+                                                                 gecko.present_position['rf'][2]]), para=0.5)
 rh_target_p, rh_target_v, rh_target_para = gecko.moving('rh', moving_time, time_period, np.array([gecko.L1, gecko.present_position['rh'][1] - width/2,
-                                                                 gecko.present_position['rh'][2]]))
+                                                                 gecko.present_position['rh'][2]]), para=0.5)
 lf_target_p, lf_target_v, lf_target_para = gecko.moving('lf', moving_time, time_period, np.array([gecko.L1, gecko.present_position['lf'][1] - width/2,
-                                                                 gecko.present_position['lf'][2]]))
+                                                                 gecko.present_position['lf'][2]]), para=0.5)
 lh_target_p, lh_target_v, lh_target_para = gecko.moving('lh', moving_time, time_period, np.array([gecko.L1, gecko.present_position['lh'][1] - width/2,
-                                                                 gecko.present_position['lh'][2]]))
+                                                                 gecko.present_position['lh'][2]]), para=0.5)
 target_p_m0 = np.hstack((rf_target_p, rh_target_p, lf_target_p, lh_target_p))
 target_v_m0 = np.hstack((rf_target_v, rh_target_v, lf_target_v, lh_target_v))
 target_para_m0 = np.hstack((rf_target_para, rh_target_para, lf_target_para, lh_target_para))
@@ -69,9 +69,9 @@ target_para_m0 = np.hstack((rf_target_para, rh_target_para, lf_target_para, lh_t
 # step 1
 p_detach, v_detach, para_detach = gecko.detach('lf', detach_time, time_period, width, height)
 p_moving0, v_moving0, para_moving0 = gecko.moving('lf', attach_time0, time_period, np.array([gecko.L1, gecko.present_position['lf'][1],
-                                                             gecko.present_position['lf'][2] - (height + depth)]))
+                                                             gecko.present_position['lf'][2] - (height + depth)]), para=0.1)
 p_moving1, v_moving1, para_moving1 = gecko.moving('lf', attach_time1, time_period, np.array([gecko.L1, gecko.present_position['lf'][1],
-                                                               gecko.present_position['lf'][2] + depth]))
+                                                               gecko.present_position['lf'][2] + depth]), para=0.1)
 lf_target_p = np.vstack((p_detach, p_moving0, p_moving1))
 lf_target_v = np.vstack((v_detach, v_moving0, v_moving1))
 lf_target_para = np.vstack((para_detach, para_moving0, para_moving1))
@@ -87,9 +87,9 @@ target_para1 = np.hstack((rf_target_para, rh_target_para, lf_target_para, lh_tar
 # step 3
 p_detach, v_detach, para_detach = gecko.detach('lh', detach_time, time_period, width, height)
 p_moving0, v_moving0, para_moving0 = gecko.moving('lh', attach_time0, time_period, np.array([gecko.L1, gecko.present_position['lh'][1],
-                                                             gecko.present_position['lh'][2] - (height + depth)]))
+                                                             gecko.present_position['lh'][2] - (height + depth)]), para=0.1)
 p_moving1, v_moving1, para_moving1 = gecko.moving('lh', attach_time1, time_period, np.array([gecko.L1, gecko.present_position['lh'][1],
-                                                               gecko.present_position['lh'][2] + depth]))
+                                                               gecko.present_position['lh'][2] + depth]), para=0.1)
 lh_target_p = np.vstack((p_detach, p_moving0, p_moving1))
 lh_target_v = np.vstack((v_detach, v_moving0, v_moving1))
 lh_target_para = np.vstack((para_detach, para_moving0, para_moving1))
@@ -104,13 +104,13 @@ target_para3 = np.hstack((rf_target_para, rh_target_para, lf_target_para, lh_tar
 
 # moving 1
 rf_target_p, rf_target_v, rf_target_para = gecko.moving('rf', moving_time, time_period, np.array([gecko.L1, gecko.present_position['rf'][1] - width/2,
-                                                                 gecko.present_position['rf'][2]]))
+                                                                 gecko.present_position['rf'][2]]), para=0.5)
 rh_target_p, rh_target_v, rh_target_para = gecko.moving('rh', moving_time, time_period, np.array([gecko.L1, gecko.present_position['rh'][1] - width/2,
-                                                                 gecko.present_position['rh'][2]]))
+                                                                 gecko.present_position['rh'][2]]), para=0.5)
 lf_target_p, lf_target_v, lf_target_para = gecko.moving('lf', moving_time, time_period, np.array([gecko.L1, gecko.present_position['lf'][1] - width/2,
-                                                                 gecko.present_position['lf'][2]]))
+                                                                 gecko.present_position['lf'][2]]), para=0.5)
 lh_target_p, lh_target_v, lh_target_para = gecko.moving('lh', moving_time, time_period, np.array([gecko.L1, gecko.present_position['lh'][1] - width/2,
-                                                                 gecko.present_position['lh'][2]]))
+                                                                 gecko.present_position['lh'][2]]), para=0.5)
 
 target_p_m1 = np.hstack((rf_target_p, rh_target_p, lf_target_p, lh_target_p))
 target_v_m1 = np.hstack((rf_target_v, rh_target_v, lf_target_v, lh_target_v))

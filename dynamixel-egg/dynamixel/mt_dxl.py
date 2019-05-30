@@ -45,8 +45,8 @@ class DxlAPI(object):
                                                             self.ADDR_PRO_PRESENT_VELOCITY,
                                                             self.ADDR_PRO_PRESENT_VELOCITY_LENGTH)
         self.groupSyncWriteProfileAcceleration = GroupSyncWrite(self.portHandler, self.packetHandler,
-                                                            self.ADDR_PRO_PROFILE_ACCELERATION,
-                                                            self.ADDR_PRO_PROFILE_ACCELERATION_LENGTH)
+                                                                self.ADDR_PRO_PROFILE_ACCELERATION,
+                                                                self.ADDR_PRO_PROFILE_ACCELERATION_LENGTH)
         self.groupSyncWriteTorqueEnable = GroupSyncWrite(self.portHandler, self.packetHandler,
                                                          self.ADDR_PRO_TORQUE_ENABLE,
                                                          self.ADDR_PRO_TORQUE_ENABLE_LENGTH)

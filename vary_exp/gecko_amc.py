@@ -5,6 +5,7 @@ import time
 
 target_p = np.loadtxt("target_p.csv", delimiter=",")
 target_v = np.loadtxt("target_v.csv", delimiter=",")
+target_para = np.loadtxt("target_para.csv", delimiter=",")
 target_p[:, 3:9] = -target_p[:, 3:9]
 target_v[:, 3:9] = -target_v[:, 3:9]
 target_p[:, 4] = -target_p[:, 4]
@@ -54,14 +55,14 @@ for j in range(3):
         p_gain = np.array([[0.010, 0.02, 0.01, 0.010, 0.02, 0.01, 0.010, 0.02, 0.01, 0.010, 0.02, 0.01]]).T
         d_gain = np.array([[0.010, 0.02, 0.01, 0.010, 0.02, 0.01, 0.010, 0.02, 0.01, 0.010, 0.02, 0.01]]).T
         # calc_torque = (-ff - np.dot(p_gain, p_e) - np.dot(d_gain, v_e)).T[0]  # (nx1).T[0]
-        calc_torque = (-ff - p_gain * p_e - d_gain * v_e).T[0]
-        for t in calc_torque.tolist():
-            if t > 5 or t < -5:
-                motor_group.torque_disable()
-                motor_group.portHandler.closePort()
-                breaking_flag = 1
-        if breaking_flag == 1:
-            break
+        calc_torque = (-ff*target_para[i] - p_gain * p_e - d_gain * v_e).T[0]
+        # for t in calc_torque.tolist():
+        #     if t > 5 or t < -5:
+        #         motor_group.torque_disable()
+        #         motor_group.portHandler.closePort()
+        #         breaking_flag = 1
+        # if breaking_flag == 1:
+        #     break
         motor_group.set_torque(calc_torque.tolist())
         v_rec.append(v_p)
         p_rec.append(p_p)
