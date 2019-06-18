@@ -1,7 +1,5 @@
 # Gero_V1
 
-标签（空格分隔）： GeRo Document
-
 ---
 
 ## 1. Environmental Configuration
@@ -32,7 +30,7 @@ In Fact, RS-485 with its USB device is not a good way to control a robot, EtherC
 
 + In windows, check https://www.instructables.com/id/Lampduino-an-8x8-RGB-Floor-Lamp/, you can find it in step 20.
 
-##2. Python Package Install
+## 2. Python Package Install
 
 
 1. Go to https://github.com/ROBOTIS-GIT/DynamixelSDK, clone this repo.
