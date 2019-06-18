@@ -28,7 +28,7 @@ In Fact, RS-485 with its USB device is not a good way to control a robot, EtherC
     
     >cat /sys/bus/usb-serial/devices/ttyUSB0/latency_timer
 
-+ In windows, check https://www.instructables.com/id/Lampduino-an-8x8-RGB-Floor-Lamp/, you can find it in step 20.
++ In windows, check [this](https://www.instructables.com/id/Lampduino-an-8x8-RGB-Floor-Lamp/), you can find it in step 20.
 
 ## 2. Python Package Install
 
