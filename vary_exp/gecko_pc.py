@@ -2,8 +2,8 @@ import numpy as np
 from dynamixel.mt_dxl import DxlAPI
 import time
 
-target_p = np.loadtxt("target_p_left.csv", delimiter=",")
-target_v = np.loadtxt("target_v_left.csv", delimiter=",")
+target_p = np.loadtxt("target_p.csv", delimiter=",")
+target_v = np.loadtxt("target_v.csv", delimiter=",")
 target_p[:, 3:9] = -target_p[:, 3:9]
 target_v[:, 3:9] = -target_v[:, 3:9]
 target_p[:, 4] = -target_p[:, 4]
