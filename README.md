@@ -1,4 +1,4 @@
-# Gero_V1
+# Gerot
 
 ---
 
@@ -55,3 +55,49 @@ In Fact, RS-485 with its USB device is not a good way to control a robot, EtherC
     >motor0 = DxlAPI(range(3), '/dev/ttyUSB0')
 
     The first parameter is to set the motor's ID, it should like [0,1,2]. The second one is to set the port(in Ubuntu is like '/dev/ttyUSB0', in Windows is like 'COM1'), the third one is to set baurdrate. Make sure you have make these parameters right.
+
+## 3. How to Use
+
+
+In the example, we test 3 motors in position control mode.
+
+Here are the things need to be done:
+
+
+1. import the package we need, like
+```python
+from dynamixel.mt_dxl import DxlAPI
+```
+
+2. init, like
+```python
+motor_group = DxlAPI(range(3), '/dev/ttyUSB0')
+```
+
+3. set the operating mode, like
+```python
+motor_group.set_operating_mode('p')
+```
+if you want to use torque control mode, input 't' instead of 'p'.
+
+4. turn on the motor, like
+```python
+motor_group.torque_enable()
+```
+
+5. drive the motor with your code, like
+```python
+motor_group.set_position([0, 0, 0])
+```
+each element in [0, 0, 0] is a angle in (-pi, pi).
+
+If you want to set the torque, use *motor_group.set_torque()* instead, this function has to be used in torque control mode.
+
+If everything is good, the motor moves.
+
+6. shutdown the motor, like
+```python
+motor_group.torque_disable()
+motor_group.portHandler.closePort()
+```
+You can check more examples in *YOUR_DIR/vary_exp/gecko_amc.py* and *YOUR_DIR/vary_exp/gecko_pc.py*
