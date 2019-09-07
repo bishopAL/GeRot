@@ -1,6 +1,6 @@
 # Gerot
 
----
+GeRot is a gecko-inspired wall-climbing robot with Dynamixel motors. This Document will guide you to use this API correctly.
 
 ## 1. Environmental Configuration
 
