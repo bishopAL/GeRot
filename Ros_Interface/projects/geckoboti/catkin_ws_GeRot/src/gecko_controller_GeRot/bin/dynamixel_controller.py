@@ -22,7 +22,7 @@ def listener():
     # spin() simply keeps python from exiting until this node is stopped
     rospy.spin()
 
-motor_group = DxlAPI(range(12), '/dev/ttyUSB0', 4000000)
+motor_group = DxlAPI(range(12), '/dev/ROB', 4000000)
 motor_group.set_operating_mode('p')
 motor_group.torque_enable()
 
