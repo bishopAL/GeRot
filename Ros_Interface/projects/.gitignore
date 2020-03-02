@@ -1,0 +1,5 @@
+# Text, data, and logfiles with obvious extensions
+# *.txt
+*.dat
+*.log
+#*.xml

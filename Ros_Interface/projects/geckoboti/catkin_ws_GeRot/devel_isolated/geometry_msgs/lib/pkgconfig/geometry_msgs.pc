@@ -1,0 +1,8 @@
+prefix=/home/pi/gorobots/projects/geckoboti/catkin_ws_GeRot/devel_isolated/geometry_msgs
+
+Name: geometry_msgs
+Description: Description of geometry_msgs
+Version: 1.12.7
+Cflags: -I/home/pi/gorobots/projects/geckoboti/catkin_ws_GeRot/devel_isolated/geometry_msgs/include
+Libs: -L${prefix}/lib 
+Requires: message_runtime std_msgs

@@ -1,0 +1,9 @@
+libdir=/home/pi/gorobots/projects/geckoboti/catkin_ws_GeRot/install_isolated/lib
+includedir=/home/pi/gorobots/projects/geckoboti/catkin_ws_GeRot/install_isolated/include
+
+Name: gmock
+Description: GoogleMock (without main() function)
+Version: 1.9.0
+URL: https://github.com/google/googletest
+Libs: -L${libdir} -lgmock -pthread
+Cflags: -I${includedir} -DGTEST_HAS_PTHREAD=1 -pthread

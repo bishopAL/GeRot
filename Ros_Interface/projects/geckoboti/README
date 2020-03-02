@@ -1,0 +1,270 @@
+ Vrep Geckoboti
+
+By Zumo Arthicha Srisuchinnawong 
+
+=================================================================================
+                                  Quick Install
+
+(tested on ubuntu 16.04 LTS)
+=================================================================================
+
+  - Run following commands (install ros kinentic and more):
+    $sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
+    $sudo apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-key 421C365BD9FF1F717815A3895523BAEEB01FA116
+    $sudo apt-get update
+    $sudo apt-get install -y git ros-kinetic-desktop-full git cmake python-tempita python-catkin-tools python-lxml xsltproc
+
+  - Download: V-REP_PRO_EDU_V3_5_0_Linux.tar.gz from http://www.coppeliarobotics.com/downloads.html 
+
+  - Extract it in you home folder (e.g. /home/{username}/)
+
+  - Run the following command in the V-REP root folder to launch the program (i.e. /home/mat/V-REP_PRO_EDU_V3_5_0_Linux)
+    $./vrep.sh
+
+  - Go to the catkin folder:
+    $cd /home/{username}/workspace/gorobots/projects/pendulum/catkin_ws
+
+  - write the following commands
+    $source /opt/ros/kinetic/setup.bash
+    $export VREP_ROOT="/home/{username}/V-REP_PRO_EDU_V3_5_0_Linux/"
+    $export VREP_DIR="/home/{username}/V-REP_PRO_EDU_V3_5_0_Linux/"
+    $catkin clean
+    $catkin build
+    $catkin build
+
+  - Add the following lines to your .bashrc file in your home folder
+    make sure tha paths are matching your installation of V-REP and
+    gorobots!
+
+    export VREP_ROOT="/home/{username}/V-REP_PRO_EDU_V3_5_0_Linux/"
+    export VREP_DIR="/home/{username}/V-REP_PRO_EDU_V3_5_0_Linux/"
+    export VREP_ROOT_DIR="/home/{username}/V-REP_PRO_EDU_V3_5_0_Linux/"
+    export GOROBOTS="/home/{username}/workspace/gorobots/"
+    source /opt/ros/kinetic/setup.bash
+
+
+
+=================================================================================
+                                      Run geckoboti
+=================================================================================
+
+  - Install VORTEX physical engine
+	1. Go to: https://www.cm-labs.com/licenses/ 
+	2. Create free account
+	3. Go to: My Account > Downloads (the download page)
+	4. Press: Optional Download > Vortex Studio (Linux)
+	5. Then go to: My Account > Licenses
+	6. Then request a license for Vortex Studio Essentials
+	7. Extract the downloaded folder
+	8. Go to “Vortex_Studio…/bin” (in the terminal)
+	9. Then run “./VortexLicenseManager --activate KEY”
+	10. Restart V-REP
+
+  - Open a terminal and write the following commands:
+    $roscore
+
+  - Open a new terminal and write the following commands:
+    $rosparam set use_sim_time true
+    $cd "${GOROBOTS}/projects/geckoboti/catkin_ws"
+    $catkin_make
+    $source ${GOROBOTS}/projects/geckoboti/catkin_ws/devel/setup.bash
+    $cd $VREP_ROOT
+    $./vrep.sh 
+
+  - In VREP open a new model: file > open scene > {path to GoRobots}/utils/v-rep_simulations/geckoboti/geckoboti.ttt
+
+  - You should now be able to run the simulation
+
+  - If you want to run the real robot, after you run the simulation then
+   $ sudo chmod 666 /dev/<PORT>. for example sudo chmod 666 /dev/ttyS2
+   $ rosrun geckoSerial_controller geckoSerial_controller
+
+  - after that you can set the initial position of every motor using ros parameter by
+   $ rosparam set init_m0 0.12 <set initial position of motor 0 to be 0.12>
+
+
+
+
+=================================================================================
+                                      Support             
+=================================================================================
+
+zumoarthicha@gmail.co
+
+=================================================================================
+                                      My .Bashrc             
+=================================================================================
+
+# ~/.bashrc: executed by bash(1) for non-login shells.
+# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
+# for examples
+
+# If not running interactively, don't do anything
+case $- in
+    *i*) ;;
+      *) return;;
+esac
+
+# don't put duplicate lines or lines starting with space in the history.
+# See bash(1) for more options
+HISTCONTROL=ignoreboth
+
+# append to the history file, don't overwrite it
+shopt -s histappend
+
+# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+HISTSIZE=1000
+HISTFILESIZE=2000
+
+# check the window size after each command and, if necessary,
+# update the values of LINES and COLUMNS.
+shopt -s checkwinsize
+
+# If set, the pattern "**" used in a pathname expansion context will
+# match all files and zero or more directories and subdirectories.
+#shopt -s globstar
+
+# make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+# set variable identifying the chroot you work in (used in the prompt below)
+if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
+    debian_chroot=$(cat /etc/debian_chroot)
+fi
+
+# set a fancy prompt (non-color, unless we know we "want" color)
+case "$TERM" in
+    xterm-color|*-256color) color_prompt=yes;;
+esac
+
+# uncomment for a colored prompt, if the terminal has the capability; turned
+# off by default to not distract the user: the focus in a terminal window
+# should be on the output of commands, not on the prompt
+#force_color_prompt=yes
+
+if [ -n "$force_color_prompt" ]; then
+    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+	# We have color support; assume it's compliant with Ecma-48
+	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+	# a case would tend to support setf rather than setaf.)
+	color_prompt=yes
+    else
+	color_prompt=
+    fi
+fi
+
+if [ "$color_prompt" = yes ]; then
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+else
+    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+fi
+unset color_prompt force_color_prompt
+
+# If this is an xterm set the title to user@host:dir
+case "$TERM" in
+xterm*|rxvt*)
+    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+    ;;
+*)
+    ;;
+esac
+
+# enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+    #alias dir='dir --color=auto'
+    #alias vdir='vdir --color=auto'
+
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+fi
+
+# colored GCC warnings and errors
+#export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+
+# some more ls aliases
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+
+# Add an "alert" alias for long running commands.  Use like so:
+#   sleep 10; alert
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
+# Alias definitions.
+# You may want to put all your additions into a separate file like
+# ~/.bash_aliases, instead of adding them here directly.
+# See /usr/share/doc/bash-doc/examples in the bash-doc package.
+
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+fi
+
+# enable programmable completion features (you don't need to enable
+# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
+# sources /etc/bash.bashrc).
+if ! shopt -oq posix; then
+  if [ -f /usr/share/bash-completion/bash_completion ]; then
+    . /usr/share/bash-completion/bash_completion
+  elif [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+  fi
+fi
+
+export VREP_ROOT=~/V-REP_PRO_EDU_V3_5_0_Linux
+source /opt/ros/kinetic/setup.bash
+source ~/workspace/src/gorobots/projects/geckoboti/catkin_ws/devel/setup.bash
+
+
+=================================================================================
+  ______      _             
+ |  ____|    | |            
+ | |__  __  _| |_ _ __ __ _ 
+ |  __| \ \/ / __| '__/ _` |
+ | |____ >  <| |_| | | (_| |
+ |______/_/\_\\__|_|  \__,_|
+
+Setting up RosInterface Plugin for V-REP Manually:
+!Not needed if the above succeeded!
+=================================================================================
+
+Manual Build steps:
+  - Clone this repository in the directory of your choice.
+    $git clone -q --recursive https://github.com/fferri/v_repStubsGen.git
+
+  - Go to the v_repStubsGen directory
+
+  - Add its path to the search path for importing python modules
+    $export PYTHONPATH=$PYTHONPATH:$PWD
+
+  - Create a temporary catkin workspace
+    $mkdir -p /tmp/quickstart_ws/src
+
+  - Initialize this workspace
+    $cd /tmp/quickstart_ws
+    $catkin init
+
+  - Clone & build the RosInterface in this workspace
+    $cd src/
+    $git clone --recursive https://github.com/fferri/v_repExtRosInterface.git vrep_ros_interface
+    $catkin build
+
+  - Check that the resulting vrep-ros library is in the devel folder “libv_repExtRosInterface.so”
+    $cd
+    $cd ..
+
+  - Source the workspace from /tmp/quickstart_ws
+    $source devel/setup.zsh
+
+  - export paths (you can also add this to your baschrc or zshrc)
+    $export VREP_ROOT="/home/mat/V-REP_PRO_EDU_V3_5_0_Linux/"
+
+  - Run build and move the generated lib file
+    $catkin build
+    $cp -iv devel/lib/libv_repExtRosInterface.so "$VREP_ROOT/"
+
+How to use:
+  - It is important to launch a roscore before launching v-rep.
+    - Else the plugin wont work.

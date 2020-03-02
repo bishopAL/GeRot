@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/pi/gorobots/projects/geckoboti/catkin_ws_GeRot/devel_isolated/visualization_msgs/setup.sh
