@@ -1,3 +1,4 @@
+#!/usr/bin/python
 import serial
 import rospy
 from std_msgs.msg import Float32MultiArray
@@ -12,8 +13,12 @@ while not rospy.is_shutdown():
     if response != b'':
         response = str(response)
         data = response.split(',')
-        data[1] = data[1][:3]
-        data = [int(i) for i in data]
+        #data[1] = data[1][:-4]
+        data = [float(i) for i in data]
+        if data[0]>40:
+            data[0] = 10000
+        if data[1]>40:
+            data[1] = 10000
         pub.publish(Float32MultiArray(data=data))
     rate.sleep()
     
