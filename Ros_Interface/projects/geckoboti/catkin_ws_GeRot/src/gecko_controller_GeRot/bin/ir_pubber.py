@@ -15,10 +15,6 @@ while not rospy.is_shutdown():
         data = response.split(',')
         #data[1] = data[1][:-4]
         data = [float(i) for i in data]
-        if data[0]>40:
-            data[0] = 10000
-        if data[1]>40:
-            data[1] = 10000
         pub.publish(Float32MultiArray(data=data))
     rate.sleep()
     
