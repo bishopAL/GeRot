@@ -23,8 +23,15 @@ def listener():
     rospy.spin()
 
 motor_group = DxlAPI(range(12), '/dev/ROB', 4000000)
+motor_group.set_profile_acceleration([20 for i in range(12)])
+motor_group.set_profile_velocity([70 for i in range(12)])
 motor_group.set_operating_mode('p')
+motor_group.set_profile_acceleration([20 for i in range(12)])
+motor_group.set_profile_velocity([70 for i in range(12)])
 motor_group.torque_enable()
+motor_group.set_profile_acceleration([20 for i in range(12)])
+motor_group.set_profile_velocity([70 for i in range(12)])
+print(motor_group.get_profile_velocity())
 
 if __name__ == '__main__':
     listener()
