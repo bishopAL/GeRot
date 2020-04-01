@@ -34,74 +34,78 @@ ModularNeuralControl::ModularNeuralControl(){
 
 	ppn = new PMN();
 
-	w(ppn->getNeuron(0), inputNeurons[0], 0.2);
+	// preprocessed IMU signal: N0, N1, N2, and N3 + I0 (manual) and I1 (feedback)
+	w(ppn->getNeuron(0), inputNeurons[1], 0.2);
 	w(ppn->getNeuron(0),ppn->getNeuron(0),0.8);
 	ppn->setTransferFunction(0,ppn->identityFunction());
 
-	w(ppn->getNeuron(1) ,inputNeurons[6], 0.1);
-	w(ppn->getNeuron(1),ppn->getNeuron(1),0.995);
-	ppn->setTransferFunction(1,ppn->identityFunction());
+	w(ppn->getNeuron(1), ppn->getNeuron(0), -1.0);
+	b(ppn->getNeuron(1),35);
+	ppn->setTransferFunction(1,ppn->thresholdFunction());
+
+	w(ppn->getNeuron(2), ppn->getNeuron(0), -1.0);
+	b(ppn->getNeuron(2),55);
+	ppn->setTransferFunction(2,ppn->thresholdFunction());
+
+	w(ppn->getNeuron(3), ppn->getNeuron(1), 0.02);
+	w(ppn->getNeuron(3), ppn->getNeuron(2), 0.005);
+	w(ppn->getNeuron(3), inputNeurons[0], 1.0);
+	b(ppn->getNeuron(3),0.075);
+	ppn->setTransferFunction(3,ppn->identityFunction());
+
+	// preprocessed IR signal (forward): N4, N5, N6, N7, N8, and N9 + I2 (manual), I3 (feedback), I4 (feedback), and I5 (manual)
 
 
-	w(ppn->getNeuron(2), inputNeurons[7], 0.1);
-	w(ppn->getNeuron(2),ppn->getNeuron(2),0.995);
-	ppn->setTransferFunction(2,ppn->identityFunction());
+	w(ppn->getNeuron(4) ,inputNeurons[3], 0.1);
+	w(ppn->getNeuron(4),ppn->getNeuron(4),0.99);
+	ppn->setTransferFunction(4,ppn->identityFunction());
 
-	w(ppn->getNeuron(3), ppn->getNeuron(1), 0.5);
-	w(ppn->getNeuron(3), ppn->getNeuron(2), 0.5);
-	w(ppn->getNeuron(3),ppn->getNeuron(3),0.2);
 
-	ppn->setTransferFunction(3,ppn->tanhFunction());
-
-	w(ppn->getNeuron(4), ppn->getNeuron(3), -25.0);
-	b(ppn->getNeuron(4),4.0);
-	ppn->setTransferFunction(4,ppn->logisticFunction());
-
-	w(ppn->getNeuron(5), ppn->getNeuron(4), 1.0);
-	w(ppn->getNeuron(5),inputNeurons[2],1.0);
-	b(ppn->getNeuron(5),0.1*0.0);
+	w(ppn->getNeuron(5), inputNeurons[4], 0.1);
+	w(ppn->getNeuron(5),ppn->getNeuron(5),0.99);
 	ppn->setTransferFunction(5,ppn->identityFunction());
 
-	w(ppn->getNeuron(6), ppn->getNeuron(4), 1.0);
-	w(ppn->getNeuron(6),inputNeurons[3],1.0);
-	b(ppn->getNeuron(6),0.1*0.0);
-	ppn->setTransferFunction(6,ppn->identityFunction());
+	w(ppn->getNeuron(6), ppn->getNeuron(4), 0.5);
+	w(ppn->getNeuron(6), ppn->getNeuron(5), 0.5);
+	//w(ppn->getNeuron(6),ppn->getNeuron(6),0.2);
+	ppn->setTransferFunction(6,ppn->tanhFunction());
 
-	
-	w(ppn->getNeuron(7), ppn->getNeuron(1), 20);
-	//w(ppn->getNeuron(7),ppn->getNeuron(4),-20);
-	b(ppn->getNeuron(7),-10);
+	w(ppn->getNeuron(7), ppn->getNeuron(6), -25.0);
+	b(ppn->getNeuron(7),4.0);
 	ppn->setTransferFunction(7,ppn->logisticFunction());
 
-	w(ppn->getNeuron(8), ppn->getNeuron(2), 20);
-	//w(ppn->getNeuron(8),ppn->getNeuron(4),-20);
-	b(ppn->getNeuron(8),-10);
-	ppn->setTransferFunction(8,ppn->logisticFunction());
+	w(ppn->getNeuron(8), ppn->getNeuron(7), 1.0);
+	b(ppn->getNeuron(8),0.0);
+	w(ppn->getNeuron(8),inputNeurons[2],1.0);
+	ppn->setTransferFunction(8,ppn->identityFunction());
 
+	w(ppn->getNeuron(9), ppn->getNeuron(7), 1.0);
+	b(ppn->getNeuron(9),0.0);
+	w(ppn->getNeuron(9),inputNeurons[5],1.0);
+	ppn->setTransferFunction(9,ppn->identityFunction());
 
-	w(ppn->getNeuron(9), ppn->getNeuron(7), 3.0);
-	w(ppn->getNeuron(9),ppn->getNeuron(8),-3.0);
-	ppn->setTransferFunction(9,ppn->tanhFunction());
+	// preprocessed IR signal (sideways): N10, N11, N12, N13, and N14 + I6 (manual) and I7 (manual)
+	
+	w(ppn->getNeuron(10), ppn->getNeuron(4), 20);
+	b(ppn->getNeuron(10),-10);
+	ppn->setTransferFunction(10,ppn->logisticFunction());
 
-	w(ppn->getNeuron(10), ppn->getNeuron(0), -1.0);
-	b(ppn->getNeuron(10),35);
-	ppn->setTransferFunction(10,ppn->thresholdFunction());
+	w(ppn->getNeuron(11), ppn->getNeuron(5), 20);
+	b(ppn->getNeuron(11),-10);
+	ppn->setTransferFunction(11,ppn->logisticFunction());
 
-	w(ppn->getNeuron(11), ppn->getNeuron(0), -1.0);
-	b(ppn->getNeuron(11),55);
-	ppn->setTransferFunction(11,ppn->thresholdFunction());
+	w(ppn->getNeuron(12), ppn->getNeuron(10), 3.0);
+	w(ppn->getNeuron(12),ppn->getNeuron(11),-3.0);
+	ppn->setTransferFunction(12,ppn->tanhFunction());
 
-	w(ppn->getNeuron(12), ppn->getNeuron(10), 0.02);
-	w(ppn->getNeuron(12), ppn->getNeuron(11), 0.05);
-	b(ppn->getNeuron(12),0.03);
-	ppn->setTransferFunction(12,ppn->identityFunction());
-
-	w(ppn->getNeuron(13), ppn->getNeuron(12), 0.02);
-	w(ppn->getNeuron(13), ppn->getNeuron(13), 0.98);
+	
+	w(ppn->getNeuron(13), ppn->getNeuron(12), 1.0);
+	//w(ppn->getNeuron(13),inputNeurons[6],1.0);
 	ppn->setTransferFunction(13,ppn->identityFunction());
 
-
-
+	w(ppn->getNeuron(14), ppn->getNeuron(12), 1.0);
+	//w(ppn->getNeuron(14),inputNeurons[7],1.0);
+	ppn->setTransferFunction(14,ppn->identityFunction());
 
 
 	addSubnet(ppn);
@@ -167,7 +171,7 @@ ModularNeuralControl::ModularNeuralControl(){
 
 
 	pcpg     = new PCPG();
-	pcpg->setParameters(-0.4,-50);
+	pcpg->setParameters(-0.52,-50);
 	//cpg to pcpg
 	w(pcpg->getNeuron(0),cpg->getNeuron(0),1.0);
 	w(pcpg->getNeuron(1),cpg->getNeuron(1),1.0);
@@ -220,19 +224,19 @@ ModularNeuralControl::ModularNeuralControl(){
 	// create connections from pcpg and RBF to VRN
 	// lift
 	w(vrn[0]->getNeuron(0), pcpg->getNeuron(1), 1.0);
-	w(vrn[0] ->getNeuron(1), inputNeurons[1], 1.0);
+	w(vrn[0] ->getNeuron(1), inputNeurons[8], 1.0);
 	// left
 	w(vrn[1]->getNeuron(0), pcpg->getNeuron(0), 1.0);
-	w(vrn[1] ->getNeuron(1), ppn->getNeuron(5), 1.0);
+	w(vrn[1] ->getNeuron(1), ppn->getNeuron(8), 1.0);
 	// right
 	w(vrn[2]->getNeuron(0), pcpg->getNeuron(0), 1.0);
-	w(vrn[2] ->getNeuron(1), ppn->getNeuron(6), 1.0);
+	w(vrn[2] ->getNeuron(1), ppn->getNeuron(9), 1.0);
 	// front joint 2
 	w(vrn[3]->getNeuron(0), rbf->getNeuron(2), 1.0);
-	w(vrn[3] ->getNeuron(1), ppn->getNeuron(9), 1.0);
+	w(vrn[3] ->getNeuron(1), ppn->getNeuron(13), 1.0);
 	// rear joint 2
 	w(vrn[4]->getNeuron(0), rbf->getNeuron(2), 1.0);
-	w(vrn[4] ->getNeuron(1), ppn->getNeuron(9), 1.0);
+	w(vrn[4] ->getNeuron(1), ppn->getNeuron(14), 1.0);
 
 	for(int v=0;v<n_vrn;v++)
 	{
@@ -273,16 +277,16 @@ ModularNeuralControl::ModularNeuralControl(){
 
 	//lift
 	//w(pmn->getNeuron(0), inputNeurons[1], 1.0);  
-	w(pmn->getNeuron(1), inputNeurons[1], 0.4);  
+	w(pmn->getNeuron(1), inputNeurons[8], 0.4);  
 	w(pmn->getNeuron(1), vrn[0]->getNeuron(6), 0.4);  
 	// left and right (when walk forward)
 	w(pmn->getNeuron(2), vrn[1]->getNeuron(6), 0.4);
 	w(pmn->getNeuron(3), vrn[2]->getNeuron(6), 0.4); 
 	// front and rear (when walk sideway;joint 1 and 2)
 	w(pmn->getNeuron(4), vrn[3]->getNeuron(6), 0.2);
-	b(pmn->getNeuron(4),0.0);
+	b(pmn->getNeuron(4),0.0); // add small forward when moves sideways here !!!! (with the same value)
 	w(pmn->getNeuron(5), vrn[4]->getNeuron(6), 0.2);
-	b(pmn->getNeuron(5),0.0);
+	b(pmn->getNeuron(5),0.0); // add small forward when moves sideways here !!!! (with the same value)
 
 
 	addSubnet(pmn);
@@ -468,8 +472,8 @@ void ModularNeuralControl::disableContactForce()
 void ModularNeuralControl::step()
 {
 
-	changeMI(ppn->getOutput(13));
-	pcpg->cpgSetMI(ppn->getOutput(13));
+	changeMI(ppn->getOutput(3));
+	pcpg->cpgSetMI(ppn->getOutput(3));
 
 	updateActivities();
 	updateWeights();
@@ -723,3 +727,4 @@ void ModularNeuralControl::changeGaitpattern(int gaitPattern)
 }*/
 
 
+

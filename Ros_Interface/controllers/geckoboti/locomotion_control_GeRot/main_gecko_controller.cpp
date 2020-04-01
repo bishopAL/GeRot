@@ -28,6 +28,7 @@
 
 void positionCB(const std_msgs::Float32MultiArray::ConstPtr& array);
 void irCB(const std_msgs::Float32MultiArray::ConstPtr& array);
+void imuCB(const std_msgs::Float32MultiArray::ConstPtr& array);
 
 
 // buffer (array of float) to store signal before publish to ros
@@ -35,6 +36,7 @@ std_msgs::Float32MultiArray cpgSignal;
 std_msgs::Float32MultiArray motorSignal;
 std_msgs::Float32MultiArray pcpgSignal;
 std_msgs::Float32MultiArray realMotorSignal;
+std_msgs::Float32MultiArray csvArray;
 
 // modular neural control object
 ModularNeuralControl mnc;
@@ -46,6 +48,7 @@ float pcpg[2] = {0.0,0.0};
 
 float robotPosition[3] = {0.0,0.0,0.0};
 float irDist[2] = {0.0,0.0};
+float imuAngle[3] = {0.0,0.0,0.0};
 
 
 int main(int argc, char *argv[]){
@@ -80,22 +83,41 @@ int main(int argc, char *argv[]){
     ros::Publisher outputREALMOTOR;
     outputREALMOTOR = node.advertise<std_msgs::Float32MultiArray>("/multi_joint_command",1);
 
+    ros::Publisher outputCSV;
+    outputCSV = node.advertise<std_msgs::Float32MultiArray>("/csv_topic",1);
+
     ros::Subscriber positionSub = node.subscribe("/position_topic",10,positionCB);
     ros::Subscriber irSub = node.subscribe("/ir_topic",10,irCB);
+    ros::Subscriber imuSub = node.subscribe("/imu_topic",10,imuCB);
     
     //**********************  set up ROS  **********************//
 
     long cnt = 0;
     float psnInput = 1.0;
 
-    mnc.setInputNeuronInput(0, 90); // cpg input
-    mnc.setInputNeuronInput(1, 1.5); // lift VRN
-    mnc.setInputNeuronInput(2, 0.0); // left VRN
-    mnc.setInputNeuronInput(3, 0.0); // right VRN
-    mnc.setInputNeuronInput(4, 0.0); // front VRN 2
-    mnc.setInputNeuronInput(5, 0.0); // rear VRN 2
-    mnc.setInputNeuronInput(6, 0.0); // ir1
-    mnc.setInputNeuronInput(7, 0.0); // ir2
+    /*
+    input definition
+    i0 => manual cpg input, frequency, gait (range : 0.03-0.10 MI))
+    i1 => MI, cpg input, frequency, gait (range: 0-90 degree)
+    i2 => manual left (forward motion)
+    i3 => ir left
+    i4 => ir right
+    i5 => manual right (forward motion)
+    i6 => manual left (sideways motion)
+    i7 => manual right (sideways motion)
+    i8 => lift
+    */
+
+
+    mnc.setInputNeuronInput(0, 0.0); // manual gait
+    mnc.setInputNeuronInput(1, 0.0); // gait (feedback from imu)
+    mnc.setInputNeuronInput(2, 0.5); // manual left (forward motion)
+    mnc.setInputNeuronInput(3, 0.0); // ir left
+    mnc.setInputNeuronInput(4, 0.0); // ir right
+    mnc.setInputNeuronInput(5, 0.5); // manual right (forward motion)
+    mnc.setInputNeuronInput(6, 0.0); // manual left (sideways motion)
+    mnc.setInputNeuronInput(7, 0.0); // manual right (sideways motion)
+    mnc.setInputNeuronInput(8, 1.5); // lift
 
 
     while(ros::ok())
@@ -111,14 +133,16 @@ int main(int argc, char *argv[]){
 
 
         // obstacle avoidance
-        mnc.setInputNeuronInput(6, irDist[0]); // ir1
-        mnc.setInputNeuronInput(7, irDist[1]); // ir2
+        //mnc.setInputNeuronInput(3, irDist[0]); // ir1
+        //mnc.setInputNeuronInput(4, irDist[1]); // ir2
+        //mnc.setInputNeuronInput(1, imuAngle[1]); // imu_pitch
         // forward
-        //mnc.setInputNeuronInput(6, 0.0); // ir1
-        //mnc.setInputNeuronInput(7, 0.0); // ir2
+        mnc.setInputNeuronInput(3, 1.0); // ir1
+        mnc.setInputNeuronInput(4, 0.0); // ir2
         // sidewat
-        //mnc.setInputNeuronInput(6, 1.0); // ir1
-        //mnc.setInputNeuronInput(7, 0.0); // ir2
+        //mnc.setInputNeuronInput(3, 1.0); // ir1
+        //mnc.setInputNeuronInput(4, 0.0); // ir2
+	mnc.setInputNeuronInput(1, 70); // imu_pitch
         
 
 
@@ -148,12 +172,15 @@ int main(int argc, char *argv[]){
         pcpgSignal.data.clear();
         motorSignal.data.clear();
         realMotorSignal.data.clear();
+        csvArray.data.clear();
 
         // append data in the buffers
         for(int i=0;i<2;i++)
         {
             cpgSignal.data.push_back(cpg[i]);
-            pcpgSignal.data.push_back(pcpg[i]);
+            pcpgSignal.data.push_back(mnc.getPpnOutput(3));
+            csvArray.data.push_back(cpg[i]);
+            csvArray.data.push_back(pcpg[i]);
         }
         //printf("%f",cpg[0]);
 
@@ -163,7 +190,20 @@ int main(int argc, char *argv[]){
         for(int j=0;j<12;j++)
         {
             motorSignal.data.push_back(motorSig[j]);
+            csvArray.data.push_back(motorSig[j]);
         }
+
+        csvArray.data.push_back(irDist[0]);
+        csvArray.data.push_back(irDist[1]);
+        csvArray.data.push_back(imuAngle[0]);
+        csvArray.data.push_back(imuAngle[1]);
+        csvArray.data.push_back(imuAngle[2]);
+
+        for(int j=0;j<14;j++)
+        {
+            csvArray.data.push_back(mnc.getPpnOutput(j));
+        }
+        
 
         realMotorSignal.data.push_back(0);realMotorSignal.data.push_back(-1.0*motorSig[3]);
         realMotorSignal.data.push_back(1);realMotorSignal.data.push_back(motorSig[4]);
@@ -183,6 +223,7 @@ int main(int argc, char *argv[]){
         outputPCPG.publish(pcpgSignal);
         outputMOTOR.publish(motorSignal);
         outputREALMOTOR.publish(realMotorSignal);
+        outputCSV.publish(csvArray);
 
         //*********************  publish ROS topic  **********************//
 
@@ -226,6 +267,19 @@ void irCB(const std_msgs::Float32MultiArray::ConstPtr& array)
     for(std::vector<float>::const_iterator it = array->data.begin(); it != array->data.end(); ++it)
     {
         irDist[i] = *it;
+
+        i++;
+    }
+    return;
+}
+
+void imuCB(const std_msgs::Float32MultiArray::ConstPtr& array)
+{
+    int i = 0;
+    // print all the remaining numbers
+    for(std::vector<float>::const_iterator it = array->data.begin(); it != array->data.end(); ++it)
+    {
+        imuAngle[i] = *it;
 
         i++;
     }
