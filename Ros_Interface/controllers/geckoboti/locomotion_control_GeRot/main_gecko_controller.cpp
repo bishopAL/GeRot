@@ -110,39 +110,39 @@ int main(int argc, char *argv[]){
 
 
     mnc.setInputNeuronInput(0, 0.0); // manual gait
-    mnc.setInputNeuronInput(1, 0.0); // gait (feedback from imu)
-    mnc.setInputNeuronInput(2, 0.5); // manual left (forward motion)
     mnc.setInputNeuronInput(3, 0.0); // ir left
     mnc.setInputNeuronInput(4, 0.0); // ir right
-    mnc.setInputNeuronInput(5, 0.5); // manual right (forward motion)
-    mnc.setInputNeuronInput(6, 0.0); // manual left (sideways motion)
-    mnc.setInputNeuronInput(7, 0.0); // manual right (sideways motion)
-    mnc.setInputNeuronInput(8, 1.5); // lift
-
+    mnc.setInputNeuronInput(8, 1.0); // lift
 
     while(ros::ok())
     {
         //*******************  modular neural control  *******************//
         mnc.step();
-        cnt += 1;
+        /*cnt += 1;
 
-        /*if (cnt > 300)
+        if (cnt > 200)
         {
-            mnc.setInputNeuronInput(0, 0.0);
+            mnc.setInputNeuronInput(1, 90.0);
+        }else{
+            mnc.setInputNeuronInput(1, 900.0);
+        }
+        if (cnt >= 400)
+        {
+            cnt = 0;
         }*/
 
 
         // obstacle avoidance
-        //mnc.setInputNeuronInput(3, irDist[0]); // ir1
-        //mnc.setInputNeuronInput(4, irDist[1]); // ir2
-        //mnc.setInputNeuronInput(1, imuAngle[1]); // imu_pitch
+        mnc.setInputNeuronInput(3, irDist[0]); // ir1
+        mnc.setInputNeuronInput(4, irDist[1]); // ir2
+        mnc.setInputNeuronInput(1, 0.0*imuAngle[1]); // imu_pitch
+
         // forward
-        mnc.setInputNeuronInput(3, 1.0); // ir1
-        mnc.setInputNeuronInput(4, 0.0); // ir2
+        //mnc.setInputNeuronInput(3, 0.0); // ir1
+        //mnc.setInputNeuronInput(4, 0.0); // ir2
         // sidewat
         //mnc.setInputNeuronInput(3, 1.0); // ir1
         //mnc.setInputNeuronInput(4, 0.0); // ir2
-	mnc.setInputNeuronInput(1, 70); // imu_pitch
         
 
 
@@ -157,7 +157,7 @@ int main(int argc, char *argv[]){
         {
             for(int j=0;j<3;j++)
             {
-                motorSig[int((i*3)+j)] = mnc.getDelayLineOutput(j,i);
+                motorSig[int((i*3)+j)] = mnc.getMotorOutput(j,i);
             }
         }
 
@@ -177,15 +177,16 @@ int main(int argc, char *argv[]){
         // append data in the buffers
         for(int i=0;i<2;i++)
         {
-            cpgSignal.data.push_back(cpg[i]);
-            pcpgSignal.data.push_back(mnc.getPpnOutput(3));
+            //cpgSignal.data.push_back(cpg[i]);
+            //pcpgSignal.data.push_back(mnc.getDLOutput(0+2*i));
             csvArray.data.push_back(cpg[i]);
             csvArray.data.push_back(pcpg[i]);
         }
         //printf("%f",cpg[0]);
-
-        //pcpgSignal.data.push_back(mnc.getPpnOutput(12));
-        //pcpgSignal.data.push_back(mnc.getPpnOutput(12));
+        cpgSignal.data.push_back(mnc.getPpnOutput(4));
+        cpgSignal.data.push_back(mnc.getPpnOutput(5));
+        pcpgSignal.data.push_back(mnc.getPpnOutput(8));
+        pcpgSignal.data.push_back(mnc.getPpnOutput(11));
 
         for(int j=0;j<12;j++)
         {

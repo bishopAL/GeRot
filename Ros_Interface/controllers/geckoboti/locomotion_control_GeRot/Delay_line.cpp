@@ -17,16 +17,18 @@ Delay_line::Delay_line()
     // initial class attributes
     this->delaySize = 0;
     this->step = 0;
+    setNeuronNumber(2);
 }
 
 // set the size of delay line.
-void Delay_line::setParameter(int delaySize){
+void Delay_line::setParameter(int delaySize,int delayNeuronNum){
 
     this->delaySize = delaySize;
     this->delay_lf_ptr = new float[delaySize];
+    this->delayNeuronNum  = delayNeuronNum;
     for(int i=0;i<this->delaySize;i++)
     {
-        this->delay_lf_ptr[i] = 0;
+        this->delay_lf_ptr[i] = -1.0;
     }
 }
   
@@ -57,7 +59,7 @@ int Delay_line::mod(int x,int m){
 // get data from delay line
 float Delay_line::read(int delay)
 {
-    float y = this->delay_lf_ptr[this->mod(this->step+1- delay, this->delaySize)];
+    float y = this->delay_lf_ptr[this->mod(this->step+1-delay, this->delaySize)];
     return y;
 }
 
@@ -69,4 +71,14 @@ void Delay_line::step_one(){
     }
 }
 
+void Delay_line::updateOutputs()
+{
+    double input = getActivity(0);
+    this->writeIn(input);
+    this->step_one();
+    
+    float output = read(this->delayNeuronNum);
+    //printf("%f/n/r",output);
+    setOutput(1,output);
+}
 

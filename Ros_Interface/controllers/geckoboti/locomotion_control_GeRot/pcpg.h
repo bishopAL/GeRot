@@ -12,19 +12,19 @@ public:
     void setParameters(float value1,float value2);
 
     void cpgStep();
-    void cpgSetMI(float mi);
-    void cpgSetActivity(float c1,float c2);
+    void cpgSetMI(double mi);
+    void cpgSetActivity(double c1,double c2);
 
-    void cpgSim(float c1,float c2, float mi);
+    void cpgSim(double c1,double c2, double mi);
 
 private:
 
-	float mu_0 = 0.85; // threshold for digital comparison event
-	float mu_1 = 2; // falling slope
+	double mu_0 = 0.85; // threshold for digital comparison event
+	double mu_1 = 2; // falling slope
 
-	float cpg[2] = {0,01};
-	float w[4] = {1.4,1.4,0.18,0.18};
-	float MI = 0.03;
+	double cpg[2] = {0,0.1};
+	double w[4] = {1.4,1.4,0.18,0.18};
+	double MI = 0.03;
 
 
 	//std::vector<double> set;
@@ -45,8 +45,9 @@ private:
 	//std::vector<double> ydown;
 	//std::vector<double> pcpg_output;
 
-	float cpg_step[2] = {0.0};
+	double cpg_step[2] = {0.0};
 	float pcpg_max[2] = {0.0};
+	//float pcpg_maxx[2] = {0.0};
 	float pcpg_out[2] = {0.0};
 	float countup[2] = {0.0};
 	float countdown[2] = {0.0};

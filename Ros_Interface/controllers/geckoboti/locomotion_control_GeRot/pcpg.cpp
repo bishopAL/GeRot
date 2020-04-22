@@ -28,8 +28,8 @@ PCPG::PCPG()//:set(2),countup(2),countdown(2)
 
 void PCPG::cpgStep()
 {
-		float c0 = cpg[0];
-		float c1 = cpg[1];
+		double c0 = cpg[0];
+		double c1 = cpg[1];
 		cpg[0] = w[0]*c0 + (w[2]+MI)*c1;
         cpg[1] = w[1]*c1 - (w[3]+MI)*c0;
 
@@ -39,11 +39,11 @@ void PCPG::cpgStep()
 
 
 
-void PCPG::cpgSetMI(float mi)
+void PCPG::cpgSetMI(double mi)
 {
 	MI = mi;
 }
-void PCPG::cpgSetActivity(float c1,float c2)
+void PCPG::cpgSetActivity(double c1,double c2)
 {
 	cpg[0] = c1;
 	cpg[1] = c2;
@@ -55,19 +55,19 @@ void PCPG::setParameters(float value1,float value2){
 	mu_1 = value2;
 }
 
-void PCPG::cpgSim(float c1,float c2, float mi)
+void PCPG::cpgSim(double c1,double c2, double mi)
 {
 		cpgSetMI(mi);
         cpgSetActivity(c1,c2);
 
         
-        float pastP = 0.0;
-        float p = 0.0;
+        double pastP = 0.0;
+        double p = 0.0;
 
 
 
-        pcpg_max[0] = 0.0;
-        pcpg_max[1] = 0.0;
+       	//pcpg_maxx[0] = 1.0;
+        //pcpg_maxx[1] = 0.0;
         for (int i=0;i<3;i++)
         {
         	pastP = 0.0;
@@ -75,7 +75,7 @@ void PCPG::cpgSim(float c1,float c2, float mi)
         	{
         		cpgStep();
         		p = 0.0;
-        		if ((cpg[0] >= 0.0) && (cpg[1] <= mu_0))
+        		if ((cpg[1] >= 0.0) && (cpg[0] <= mu_0))
         		{
         			p = 1.0;
         		}else{
@@ -84,13 +84,13 @@ void PCPG::cpgSim(float c1,float c2, float mi)
 
         		if (p*pastP >= 0.0)
         		{
-        			if (i != 0)
+        			if (i >= 1)
         			{
         				if(p == 1.0)
         				{
-        					pcpg_max[0] += 1;
+        					//pcpg_maxx[0] += 1;
         				}else{
-        					pcpg_max[1] += 1;
+        					//pcpg_maxx[1] += 1;
         				}
 
         			}
@@ -117,7 +117,7 @@ void PCPG::updateOutputs(){
         }*/
         
 
-		cpgSim(cpg_step[0],cpg_step[1],MI);
+		//cpgSim(cpg_step[0],cpg_step[1],MI);
 
 		if ((cpg_step[1] >= 0.0)&&(cpg_step[0]<=mu_0))
 		{
@@ -125,12 +125,16 @@ void PCPG::updateOutputs(){
 		}else{
 			sett = -1.0;
 		}
-
+		
 		for (int i=0;i<2;i++)
 		{
 			if (sett >= 0.0)
 			{
 				countup[i] = countup[i] + 1.0;
+				if (setold < 0.0)
+				{
+					pcpg_max[1] = countdown[i];
+				}
 				countdown[i] = 0.0;
 
 				if (pcpg_max[0] == 0.0)
@@ -141,6 +145,10 @@ void PCPG::updateOutputs(){
 				}
 			}else{
 				countdown[i] = countdown[i] + 1.0;
+				if (setold >= 0.0)
+				{
+					pcpg_max[0] = countup[i];
+				}
 				countup[i] = 0.0;
 
 				if (pcpg_max[1] == 0.0){
@@ -154,7 +162,9 @@ void PCPG::updateOutputs(){
 					}
 				}
 			}
+			
 		}
+		setold = sett;
 
 		for (int i=0;i<2;i++){
 

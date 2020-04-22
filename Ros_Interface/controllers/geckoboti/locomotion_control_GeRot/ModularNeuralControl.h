@@ -49,7 +49,8 @@ public:
 	double getCpgOutput(int output);
 	double getCpgActivity(int output);
 	double getpcpgOutput(int output);
-	double getDelayLineOutput(int jointNum, int legNum);
+	double getMotorOutput(int jointNum, int legNum);
+	double getDLOutput(int line);
 	//double getPsnOutput(int output);
 	double getPmnOutput(int output);
 	double getPpnOutput(int output);
@@ -100,20 +101,24 @@ private:
 	SO2CPG * cpg;
 	SO2CPG * cpg_sim;
 	PCPG * pcpg;
-	VRN * vrn[5];
+	VRN * vrn[12];
+
 
 	PMN* pmn;
 	PMN* ppn;
 	//PSN * psn;
 	RBF * rbf;
 	ANN * log_ann;
-	Delay_line delayLineArray[9];
+	Delay_line * DL[12];
 
-	int delaySize = 121;
-	int delayNeuronNum[4] = {64,43,86,21};//{59,37,81,15};
+	int delaySize = 67;
+	int delayNeuronNum[4] = {43,22,66,0};//{63,43,86,20};//{59,37,81,15};
 	float swingAmp[2] = {0.5,0.4};
-	/*AdaptiveSO2CPGSynPlas * cpg_s;	
-	*/
+	
+	int swgain[4] = {-1,-1,1,1}; //{RH,_,_,RF}
+
+	float l1 = 1.0;
+	float l2 = 1.0;
 
 	vector<Neuron*> inputNeurons;
 	//vector<Neuron*> outputNeurons;
