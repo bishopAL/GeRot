@@ -1,8 +1,8 @@
 file(REMOVE_RECURSE
-  "../bin/test"
-  "../bin/test.pdb"
+  "CMakeFiles/test.dir/src/admitance_controller.cpp.o"
   "CMakeFiles/test.dir/src/dynamixel.cpp.o"
-  "CMakeFiles/test.dir/src/sync_read_write.cpp.o"
+  "../bin/test.pdb"
+  "../bin/test"
 )
 
 # Per-language clean rules from dependency scanning.

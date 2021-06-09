@@ -11,5 +11,5 @@ LINK_DIRECTORIES(${PROJECT_SOURCE_DIR}/lib)
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
 
-add_executable(test src/sync_read_write.cpp src/dynamixel.cpp)
-target_link_libraries(test dxl_mac_cpp)
+add_executable(test src/admitance_controller.cpp src/dynamixel.cpp)
+target_link_libraries(test dxl_sbc_cpp)

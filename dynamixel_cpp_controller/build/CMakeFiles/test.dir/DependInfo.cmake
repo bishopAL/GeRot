@@ -4,10 +4,10 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/Users/wangbingcheng/Documents/Codes/Python/GeRot/dynamixel_cpp_controller/src/dynamixel.cpp" "/Users/wangbingcheng/Documents/Codes/Python/GeRot/dynamixel_cpp_controller/build/CMakeFiles/test.dir/src/dynamixel.cpp.o"
-  "/Users/wangbingcheng/Documents/Codes/Python/GeRot/dynamixel_cpp_controller/src/sync_read_write.cpp" "/Users/wangbingcheng/Documents/Codes/Python/GeRot/dynamixel_cpp_controller/build/CMakeFiles/test.dir/src/sync_read_write.cpp.o"
+  "/home/pi/GeRot/dynamixel_cpp_controller/src/admitance_controller.cpp" "/home/pi/GeRot/dynamixel_cpp_controller/build/CMakeFiles/test.dir/src/admitance_controller.cpp.o"
+  "/home/pi/GeRot/dynamixel_cpp_controller/src/dynamixel.cpp" "/home/pi/GeRot/dynamixel_cpp_controller/build/CMakeFiles/test.dir/src/dynamixel.cpp.o"
   )
-set(CMAKE_CXX_COMPILER_ID "Clang")
+set(CMAKE_CXX_COMPILER_ID "GNU")
 
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
