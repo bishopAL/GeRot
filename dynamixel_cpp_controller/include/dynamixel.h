@@ -20,31 +20,13 @@ DXL_ID = dxl_id
 BAUDRATE = baudrate
 DEVICENAME = port_name
 PROTOCOL_VERSION = 2.0
-ADDR_OPERATING_MODE = 11  # 1 Byte
-ADDR_OPERATING_MODE_LENGTH = 1  # 1 Byte
-ADDR_PRO_TORQUE_ENABLE = 64  # Control table address is different in Dynamixel model   # 1 Byte
-ADDR_PRO_TORQUE_ENABLE_LENGTH = 1
-ADDR_PRO_GOAL_POSITION = 116  # 4 Bytes
-ADDR_PRO_GOAL_POSITION_LENGTH = 4
-ADDR_PRO_PRESENT_POSITION = 132  # 4 Bytes
-ADDR_PRO_PRESENT_POSITION_LENGTH = 4
-ADDR_PRO_GOAL_CURRENT = 102  # 2 Bytes
-ADDR_PRO_GOAL_CURRENT_LENGTH = 2
-ADDR_PRO_PROFILE_VELOCITY = 112  # 4 Bytes
-ADDR_PRO_PROFILE_VELOCITY_LENGTH = 4
-ADDR_PRO_PROFILE_ACCELERATION = 108  # 4 Bytes
-ADDR_PRO_PROFILE_ACCELERATION_LENGTH = 4
-ADDR_PRO_PRESENT_CURRENT = 126  # 2 Bytes
-ADDR_PRO_PRESENT_CURRENT_LENGTH = 2
-ADDR_PRO_PRESENT_VELOCITY = 128  # 4 Bytes
-ADDR_PRO_PRESENT_VELOCITY_LENGTH = 4
-ADDR_PRO_GOAL_VELOCITY = 104  # 4 Bytes
-ADDR_PRO_GOAL_VELOCITY_LENGTH = 4
+
 */
 
 class DxlAPI
 {
-    void setID(int id[]);
+public:
+    int setID(vector<int> ids);
     void setPort(string port);
     void setBaudRate(int baudRate);
     void connectToMotors();
@@ -54,6 +36,41 @@ class DxlAPI
     vector<int> ID;
     int BAUDRATE;
     string DEVICENAME;
-    // dynamixel::PortHandler *portHandler;
-    // dynamixel::PacketHandler *packetHandler;
+    int ADDR_OPERATING_MODE;
+    int ADDR_OPERATING_MODE_LENGTH;
+    int ADDR_PRO_TORQUE_ENABLE;
+    int ADDR_PRO_TORQUE_ENABLE_LENGTH;
+    int ADDR_PRO_GOAL_POSITION;
+    int ADDR_PRO_GOAL_POSITION_LENGTH;
+    int ADDR_PRO_PRESENT_POSITION;
+    int ADDR_PRO_PRESENT_POSITION_LENGTH;
+    int ADDR_PRO_GOAL_CURRENT;
+    int ADDR_PRO_GOAL_CURRENT_LENGTH;
+    int ADDR_PRO_PROFILE_VELOCITY;
+    int ADDR_PRO_PROFILE_VELOCITY_LENGTH;
+    int ADDR_PRO_PROFILE_ACCELERATION;
+    int ADDR_PRO_PROFILE_ACCELERATION_LENGTH;
+    int ADDR_PRO_PRESENT_CURRENT;
+    int ADDR_PRO_PRESENT_CURRENT_LENGTH;
+    int ADDR_PRO_PRESENT_VELOCITY;
+    int ADDR_PRO_PRESENT_VELOCITY_LENGTH;
+    int ADDR_PRO_GOAL_VELOCITY;
+    int ADDR_PRO_GOAL_VELOCITY_LENGTH;
+    dynamixel::PortHandler *portHandler;
+    dynamixel::PacketHandler *packetHandler;
+// Initialize GroupSyncWrite
+    dynamixel::GroupSyncWrite groupSyncWriteCurrent(dynamixel::PortHandler *portHandler, dynamixel::PacketHandler *packetHandler, int ADDR_PRO_GOAL_CURRENT, int ADDR_PRO_GOAL_CURRENT_LENGTH);
+    /*
+    dynamixel::GroupSyncWrite groupSyncWritePosition(portHandler, packetHandler, ADDR_PRO_GOAL_POSITION, ADDR_PRO_GOAL_POSITION_LENGTH);
+    dynamixel::GroupSyncWrite groupSyncWriteVelocity(portHandler, packetHandler, ADDR_PRO_GOAL_VELOCITY, ADDR_PRO_GOAL_VELOCITY_LENGTH);
+    dynamixel::GroupSyncWrite groupSyncWriteProfileVelocity(portHandler, packetHandler, ADDR_PRO_PROFILE_VELOCITY, ADDR_PRO_PROFILE_VELOCITY_LENGTH);
+    dynamixel::GroupSyncWrite groupSyncWriteProfileAcceleration(portHandler, packetHandler, ADDR_PRO_PROFILE_ACCELERATION, ADDR_PRO_PROFILE_ACCELERATION_LENGTH);
+    dynamixel::GroupSyncWrite groupSyncWriteTorqueEnable(portHandler, packetHandler, ADDR_PRO_TORQUE_ENABLE, ADDR_PRO_TORQUE_ENABLE_LENGTH);
+// Initialize GroupSyncRead
+    dynamixel::GroupSyncRead groupSyncReadPosition(portHandler, packetHandler, ADDR_PRO_PRESENT_POSITION, ADDR_PRO_PRESENT_POSITION_LENGTH);
+    dynamixel::GroupSyncRead groupSyncReadVelocity(portHandler, packetHandler, ADDR_PRO_PRESENT_VELOCITY, ADDR_PRO_PRESENT_VELOCITY_LENGTH);
+    dynamixel::GroupSyncRead groupSyncReadProfileVelocity(portHandler, packetHandler, ADDR_PRO_PROFILE_VELOCITY, ADDR_PRO_PROFILE_VELOCITY_LENGTH);
+    dynamixel::GroupSyncRead groupSyncReadProfileAcceleration(portHandler, packetHandler, ADDR_PRO_PROFILE_ACCELERATION, ADDR_PRO_PROFILE_ACCELERATION_LENGTH);
+    dynamixel::GroupSyncRead groupSyncReadCurrent(portHandler, packetHandler, ADDR_PRO_PRESENT_CURRENT, ADDR_PRO_PRESENT_CURRENT_LENGTH);
+*/
 };

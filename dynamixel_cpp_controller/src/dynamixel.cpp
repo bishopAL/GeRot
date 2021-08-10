@@ -1,39 +1,63 @@
 #include "dynamixel.h"
 
 using namespace std;
+using namespace dynamixel;
 DxlAPI::DxlAPI()
 {
     BAUDRATE = 1000000;
+    ADDR_OPERATING_MODE = 11;
+    ADDR_OPERATING_MODE_LENGTH = 1;
+    ADDR_PRO_TORQUE_ENABLE = 64;
+    ADDR_PRO_TORQUE_ENABLE_LENGTH = 1;
+    ADDR_PRO_GOAL_POSITION = 116;
+    ADDR_PRO_GOAL_POSITION_LENGTH = 4;
+    ADDR_PRO_PRESENT_POSITION = 132;
+    ADDR_PRO_PRESENT_POSITION_LENGTH = 4;
+    ADDR_PRO_GOAL_CURRENT = 102;
+    ADDR_PRO_GOAL_CURRENT_LENGTH = 2;
+    ADDR_PRO_PROFILE_VELOCITY = 112;
+    ADDR_PRO_PROFILE_VELOCITY_LENGTH = 4;
+    ADDR_PRO_PROFILE_ACCELERATION = 108;
+    ADDR_PRO_PROFILE_ACCELERATION_LENGTH = 4;
+    ADDR_PRO_PRESENT_CURRENT = 126;
+    ADDR_PRO_PRESENT_CURRENT_LENGTH = 2;
+    ADDR_PRO_PRESENT_VELOCITY = 128;
+    ADDR_PRO_PRESENT_VELOCITY_LENGTH = 4;
+    ADDR_PRO_GOAL_VELOCITY = 104;
+    ADDR_PRO_GOAL_VELOCITY_LENGTH = 4;
 }
 
-DxlAPI::setID(int id[])
+int DxlAPI::setID(vector<int> ids)
 {
     ID.clear();
-    int size;
-    size = sizeof(id)/sizeof(int);
-    for(int i=0; i<size; i++)
+    for(int i=0; i<ids.size(); i++)
     {
-        ID.push_back(id[i]);
+        ID.push_back(ids[i]);
+        cout << "The ID has been set to " << ids[i] << " ." << endl;
     }
-    std::cout << "The ID has been set to " << ID << " ." << std::endl;
+    
+    return 0;
+
 }
 
-DxlAPI::setPort(string port)
+void DxlAPI::setPort(string port)
 {
     DEVICENAME = port;
     std::cout << "The port has been set to " << DEVICENAME << " ." << std::endl;
 }
 
-DxlAPI::setBaudRate(int baudRate)
+void DxlAPI::setBaudRate(int baudRate)
 {
     BAUDRATE = baudRate;
     std::cout << "The baudRate has been set to " << BAUDRATE << " ." << std::endl;
 }
 
-DxlAPI::connectToMotors()
+void DxlAPI::connectToMotors()
 {
-    dynamixel::PortHandler *portHandler = dynamixel::PortHandler::getPortHandler(DEVICENAME);
+    const char *temp = DEVICENAME.c_str();
+    dynamixel::PortHandler *portHandler = dynamixel::PortHandler::getPortHandler(temp);
     dynamixel::PacketHandler *packetHandler = dynamixel::PacketHandler::getPacketHandler(2.0);
+
     // Initialize GroupSyncWrite
     dynamixel::GroupSyncWrite groupSyncWriteCurrent(portHandler, packetHandler, ADDR_PRO_GOAL_CURRENT, ADDR_PRO_GOAL_CURRENT_LENGTH);
     dynamixel::GroupSyncWrite groupSyncWritePosition(portHandler, packetHandler, ADDR_PRO_GOAL_POSITION, ADDR_PRO_GOAL_POSITION_LENGTH);
@@ -47,6 +71,7 @@ DxlAPI::connectToMotors()
     dynamixel::GroupSyncRead groupSyncReadProfileVelocity(portHandler, packetHandler, ADDR_PRO_PROFILE_VELOCITY, ADDR_PRO_PROFILE_VELOCITY_LENGTH);
     dynamixel::GroupSyncRead groupSyncReadProfileAcceleration(portHandler, packetHandler, ADDR_PRO_PROFILE_ACCELERATION, ADDR_PRO_PROFILE_ACCELERATION_LENGTH);
     dynamixel::GroupSyncRead groupSyncReadCurrent(portHandler, packetHandler, ADDR_PRO_PRESENT_CURRENT, ADDR_PRO_PRESENT_CURRENT_LENGTH);
+
     if (portHandler->openPort())
     {
         printf("Succeeded to open the port!\n");
@@ -55,4 +80,10 @@ DxlAPI::connectToMotors()
     {
         printf("Succeeded to change the baudrate!\n");
     }
+
+}
+
+DxlAPI::~DxlAPI()
+{
+    portHandler->closePort();
 }

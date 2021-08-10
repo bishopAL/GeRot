@@ -98,7 +98,11 @@ port_handler.h
 stdint.h
 -
 
-/Users/wangbingcheng/Documents/Codes/Python/GeRot/dynamixel_cpp_controller/src/dynamixel.cpp
+/home/pi/GeRot/dynamixel_cpp_controller/src/admitance_controller.cpp
 dynamixel.h
-/Users/wangbingcheng/Documents/Codes/Python/GeRot/dynamixel_cpp_controller/src/dynamixel.h
+-
+
+/home/pi/GeRot/dynamixel_cpp_controller/src/dynamixel.cpp
+dynamixel.h
+/home/pi/GeRot/dynamixel_cpp_controller/src/dynamixel.h
 
