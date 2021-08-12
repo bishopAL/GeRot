@@ -6,7 +6,7 @@ import numpy as np
 
 class DxlAPI(object):
 
-    def __init__(self, dxl_id, port_name, baudrate=4000000):
+    def __init__(self, dxl_id, port_name, baudrate=4000000, model='XM430-W350'):
         self.DXL_ID = dxl_id
         self.BAUDRATE = baudrate
         self.DEVICENAME = port_name
@@ -34,7 +34,12 @@ class DxlAPI(object):
         self.portHandler = PortHandler(self.DEVICENAME)
         self.packetHandler = PacketHandler(self.PROTOCOL_VERSION)
         # Initialize GroupSyncWrite
-
+        supportMotorModel = ['XM430-W350', 'XH540-W270', 'XL330-W288']
+        if model in supportMotorModel:
+            self.MODEL = model
+        else:
+            self.MODEL = 'XM430-W350'
+            print('Unsupported motor founded. Please check the motor model.')
         self.groupSyncWriteCurrent = GroupSyncWrite(self.portHandler, self.packetHandler, self.ADDR_PRO_GOAL_CURRENT,
                                                     self.ADDR_PRO_GOAL_CURRENT_LENGTH)
         self.groupSyncWritePosition = GroupSyncWrite(self.portHandler, self.packetHandler, self.ADDR_PRO_GOAL_POSITION,
@@ -129,13 +134,30 @@ class DxlAPI(object):
                                                                      self.ADDR_PRO_PRESENT_CURRENT_LENGTH)
             if dxl_present_current > 0x7fff:
                 dxl_present_current -= 65536
-            dxl_present_current = dxl_present_current * 2.69 / 1000
-            if dxl_present_current < - 0.00269 * 4:
-                dxl_present_torque = (dxl_present_current + 0.00269 * 4) / 0.578
-            elif dxl_present_current > 0.00269:
-                dxl_present_torque = (dxl_present_current - 0.00269) / 0.578
-            else:
-                dxl_present_torque = 0
+            if self.MODEL == 'XM430-W350':
+                dxl_present_current = dxl_present_current * 2.69 / 1000
+                if dxl_present_current < - 0.00269 * 4:
+                    dxl_present_torque = (dxl_present_current + 0.00269 * 4) / 0.578
+                elif dxl_present_current > 0.00269:
+                    dxl_present_torque = (dxl_present_current - 0.00269) / 0.578
+                else:
+                    dxl_present_torque = 0
+            elif self.MODEL == 'XH540-W270':
+                dxl_present_current = dxl_present_current * 2.69 / 1000
+                if dxl_present_current < - 0.00269 * 4:
+                    dxl_present_torque = (dxl_present_current + 0.00269 * 4) / 0.578
+                elif dxl_present_current > 0.00269:
+                    dxl_present_torque = (dxl_present_current - 0.00269) / 0.578
+                else:
+                    dxl_present_torque = 0
+            elif self.MODEL == 'XL330-W288':
+                dxl_present_current = dxl_present_current * 2.69 / 1000
+                if dxl_present_current < - 0.00269 * 4:
+                    dxl_present_torque = (dxl_present_current + 0.00269 * 4) / 0.578
+                elif dxl_present_current > 0.00269:
+                    dxl_present_torque = (dxl_present_current - 0.00269) / 0.578
+                else:
+                    dxl_present_torque = 0
             torque_list.append(dxl_present_torque)
         return np.array(torque_list)
 
@@ -227,23 +249,38 @@ class DxlAPI(object):
         self.groupSyncWriteVelocity.clearParam()
 
     def set_torque(self, dxl_goal_torque):
-        dxl_goal_current = []
-        for item in dxl_goal_torque:
-            if item >= 0:
-                dxl_goal_current.append(int((0.578 * item + 0.00269) * 1000 / 2.69))
-            else:
-                dxl_goal_current.append(int((0.578 * item - 0.00269 * 4) * 1000 / 2.69))
-        param_goal_current = []
-        for item in dxl_goal_current:
-            param_goal_current.append([DXL_LOBYTE(item),
-                                      DXL_HIBYTE(item)])
-        for i, item in enumerate(self.DXL_ID):
-            dxl_addparam_result = self.groupSyncWriteCurrent.addParam(item, param_goal_current[i])
-            if dxl_addparam_result != True:
-                print("[ID:%03d] groupSyncWrite addparam failed" % item)
-        dxl_comm_result = self.groupSyncWriteCurrent.txPacket()
-        if dxl_comm_result != COMM_SUCCESS:
-            print("%s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+        if self.MODEL == 'XM430-W350':
+            dxl_goal_current = []
+            for item in dxl_goal_torque:
+                if item >= 0:
+                    dxl_goal_current.append(int((0.578 * item + 0.00269) * 1000 / 2.69))
+                else:
+                    dxl_goal_current.append(int((0.578 * item - 0.00269 * 4) * 1000 / 2.69))
+        elif self.MODEL == 'XH540-W270':
+            dxl_goal_current = []
+            for item in dxl_goal_torque:
+                if item >= 0:
+                    dxl_goal_current.append(int((0.578 * item + 0.00269) * 1000 / 2.69))
+                else:
+                    dxl_goal_current.append(int((0.578 * item - 0.00269 * 4) * 1000 / 2.69))
+        elif self.MODEL == 'XL330-W288':
+            dxl_goal_current = []
+            for item in dxl_goal_torque:
+                if item >= 0:
+                    dxl_goal_current.append(int((0.578 * item + 0.00269) * 1000 / 2.69))
+                else:
+                    dxl_goal_current.append(int((0.578 * item - 0.00269 * 4) * 1000 / 2.69))
+            param_goal_current = []
+            for item in dxl_goal_current:
+                param_goal_current.append([DXL_LOBYTE(item),
+                                        DXL_HIBYTE(item)])
+            for i, item in enumerate(self.DXL_ID):
+                dxl_addparam_result = self.groupSyncWriteCurrent.addParam(item, param_goal_current[i])
+                if dxl_addparam_result != True:
+                    print("[ID:%03d] groupSyncWrite addparam failed" % item)
+            dxl_comm_result = self.groupSyncWriteCurrent.txPacket()
+            if dxl_comm_result != COMM_SUCCESS:
+                print("%s" % self.packetHandler.getTxRxResult(dxl_comm_result))
 
         # Clear syncwrite parameter storage
         self.groupSyncWriteCurrent.clearParam()

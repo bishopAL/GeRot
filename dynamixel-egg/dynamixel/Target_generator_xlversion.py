@@ -1,4 +1,5 @@
 from sympy import symbols, diff, asin, atan2
+import math
 import numpy as np
 
 
@@ -21,12 +22,38 @@ class TargetGene(object):
         print("\__> |___ |  \ \__/ ")
         print("                    ")
 
-    def detach(self, flag, time_period, time_for_one_period, width, height):  # make sure time_for_one_period is same
+    def detach(self, flag, time_period, time_for_one_period, width, height, alpha):  # make sure time_for_one_period is same
         t = symbols('t', real=True)
         if time_for_one_period == 0:
             time_for_one_period = self.time_for_one_period
-        px = self.present_position[flag][0]
+        px = self.present_position[flag][0] - (- height / time_period ** 2 * t ** 2 + 2 * height / time_period * t) * math.sin(alpha)
         py = self.present_position[flag][1] + width / time_period * t
+        pz = self.present_position[flag][2] + (- height / time_period ** 2 * t ** 2 + 2 * height / time_period * t) * math.cos(alpha)
+        time_serial = np.linspace(0, time_period, int(time_period / time_for_one_period + 1))
+        p_array = []
+        v_array = []
+        para_array = []
+        # Calculate detach array
+        for i in time_serial:
+            p_alpha = asin(-self.L3 / (px ** 2 + pz ** 2) ** 0.5) - atan2(pz, px)
+            p_gamma = asin(
+                (self.L1 ** 2 + self.L2 ** 2 + self.L3 ** 2 - px ** 2 - py ** 2 - pz ** 2) / (2 * self.L1 * self.L2))           
+            p_beta = asin((px ** 2 + py ** 2 + pz ** 2 + self.L1 ** 2 - self.L2 ** 2 - self.L3 ** 2) / (
+                    2 * self.L1 * (px ** 2 + py ** 2 + pz ** 2 - self.L3 ** 2) ** 0.5)) - atan2(
+                (px ** 2 + pz ** 2 - self.L3 ** 2) ** 0.5, py)
+            p_array.append([float(p_alpha.subs(t, i)), float(p_beta.subs(t, i)), float(p_gamma.subs(t, i))])    
+        p_array = np.array(p_array)
+        self.present_position[flag][0] = self.present_position[flag][0] - height * math.sin(alpha)
+        self.present_position[flag][1] = self.present_position[flag][1] + width
+        self.present_position[flag][2] = self.present_position[flag][2] + height * math.cos(alpha)
+        return p_array, v_array, para_array
+
+    def detachxz(self, flag, time_period, time_for_one_period, width, height):  # make sure time_for_one_period is same
+        t = symbols('t', real=True)
+        if time_for_one_period == 0:
+            time_for_one_period = self.time_for_one_period
+        px = self.present_position[flag][0] + width / time_period * t
+        py = self.present_position[flag][1] 
         pz = self.present_position[flag][2] - height / time_period ** 2 * t ** 2 + 2 * height / time_period * t
         time_serial = np.linspace(0, time_period, int(time_period / time_for_one_period + 1))
         p_array = []
@@ -49,8 +76,8 @@ class TargetGene(object):
         p_array = np.array(p_array)
         v_array = np.array(v_array)
         para_array = np.array(para_array)
-        self.present_position[flag][0] = self.present_position[flag][0]
-        self.present_position[flag][1] = self.present_position[flag][1] + width
+        self.present_position[flag][0] = self.present_position[flag][0] + width
+        self.present_position[flag][1] = self.present_position[flag][1] 
         self.present_position[flag][2] = self.present_position[flag][2] + height
         return p_array, v_array, para_array
 

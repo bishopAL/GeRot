@@ -7,7 +7,7 @@ setup(
     description = 'API to drive Dynamixel Motors',
     license = 'MIT License',
 
-    url = 'https://github.com/bishopAL/GeRo_V1',
+    url = 'https://github.com/bishopAL/GeRot',
     author = 'Bingbing',
     author_email = '470797339@qq.com',
 
