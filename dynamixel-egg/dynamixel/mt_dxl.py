@@ -228,13 +228,14 @@ class DxlAPI(object):
 
     def set_torque(self, dxl_goal_torque):
         dxl_goal_current = []
-        for item in dxl_goal_torque:
-            if item >= 0:
-                dxl_goal_current.append(int((0.578 * item + 0.00269) * 1000 / 2.69))
-            else:
-                dxl_goal_current.append(int((0.578 * item - 0.00269 * 4) * 1000 / 2.69))
+#         for item in dxl_goal_torque:
+#             if item >= 0:
+#                 dxl_goal_current.append(int((0.578 * item + 0.00269) * 1000 / 2.69))
+#             else:
+#                 dxl_goal_current.append(int((0.578 * item - 0.00269 * 4) * 1000 / 2.69))
         param_goal_current = []
-        for item in dxl_goal_current:
+#         for item in dxl_goal_current:
+        for item in dxl_goal_torque:
             param_goal_current.append([DXL_LOBYTE(item),
                                       DXL_HIBYTE(item)])
         for i, item in enumerate(self.DXL_ID):
