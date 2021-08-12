@@ -46,7 +46,7 @@ class TargetGene(object):
         self.present_position[flag][0] = self.present_position[flag][0] - height * math.sin(alpha)
         self.present_position[flag][1] = self.present_position[flag][1] + width
         self.present_position[flag][2] = self.present_position[flag][2] + height * math.cos(alpha)
-        return p_array, v_array, para_array
+        return p_array
 
     def detachxz(self, flag, time_period, time_for_one_period, width, height):  # make sure time_for_one_period is same
         t = symbols('t', real=True)
@@ -96,24 +96,19 @@ class TargetGene(object):
         # Calculate moving array
         for i in time_serial:
             p_alpha = asin(-self.L3 / (px ** 2 + pz ** 2) ** 0.5) - atan2(pz, px)
-            v_alpha = diff(p_alpha, t)
             p_gamma = asin(
                 (self.L1 ** 2 + self.L2 ** 2 + self.L3 ** 2 - px ** 2 - py ** 2 - pz ** 2) / (2 * self.L1 * self.L2))
-            v_gamma = diff(p_gamma, t)
             p_beta = asin((px ** 2 + py ** 2 + pz ** 2 + self.L1 ** 2 - self.L2 ** 2 - self.L3 ** 2) / (
                     2 * self.L1 * (px ** 2 + py ** 2 + pz ** 2 - self.L3 ** 2) ** 0.5)) - atan2(
                 (px ** 2 + pz ** 2 - self.L3 ** 2) ** 0.5, py)
-            v_beta = diff(p_beta, t)
             p_array.append([float(p_alpha.subs(t, i)), float(p_beta.subs(t, i)), float(p_gamma.subs(t, i))])
-            v_array.append([float(v_alpha.subs(t, i)), float(v_beta.subs(t, i)), float(v_gamma.subs(t, i))])
             para_array.append([para, para, para])
         p_array = np.array(p_array)
-        v_array = np.array(v_array)
         para_array = np.array(para_array)
         self.present_position[flag][0] = target[0]
         self.present_position[flag][1] = target[1]
         self.present_position[flag][2] = target[2]
-        return p_array, v_array, para_array
+        return p_array
 
     def steady(self, flag, data_num):
         px = self.present_position[flag][0]
