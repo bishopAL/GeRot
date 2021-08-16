@@ -173,11 +173,9 @@ class DxlAPI(object):
             if dxl_addparam_result != True:
                 print("[ID:%03d] groupSyncWrite addparam failed" % item)
         dxl_comm_result = self.groupSyncWriteProfileVelocity.txPacket()
-        if dxl_comm_result != COMM_SUCCESS:
-            print("%s" % self.packetHandler.getTxRxResult(dxl_comm_result))
-
         # Clear syncwrite parameter storage
         self.groupSyncWriteProfileVelocity.clearParam()
+        return dxl_comm_result
 
     def set_profile_acceleration(self, dxl_profile_acceleration):
         param_profile_acceleration = []
@@ -191,11 +189,9 @@ class DxlAPI(object):
             if dxl_addparam_result != True:
                 print("[ID:%03d] groupSyncWrite addparam failed" % item)
         dxl_comm_result = self.groupSyncWriteProfileAcceleration.txPacket()
-        if dxl_comm_result != COMM_SUCCESS:
-            print("%s" % self.packetHandler.getTxRxResult(dxl_comm_result))
-
         # Clear syncwrite parameter storage
         self.groupSyncWriteProfileAcceleration.clearParam()
+        return dxl_comm_result
 
     def set_operating_mode(self, flag):
         if flag == 'p':  # p is Position Control Mode, and t is Torque Control Mode
@@ -210,6 +206,7 @@ class DxlAPI(object):
             for i in self.DXL_ID:
                 dxl_comm_result, dxl_error = self.packetHandler.write1ByteTxRx(self.portHandler, i,
                                                                                self.ADDR_OPERATING_MODE, 1)
+        return dxl_comm_result
 
     def set_position(self, dxl_goal_position):
         dxl_goal_position = [int(i * 4096 / 2 / math.pi) + 2047 for i in dxl_goal_position]
@@ -224,11 +221,9 @@ class DxlAPI(object):
             if dxl_addparam_result != True:
                 print("[ID:%03d] groupSyncWrite addparam failed" % item)
         dxl_comm_result = self.groupSyncWritePosition.txPacket()
-        if dxl_comm_result != COMM_SUCCESS:
-            print("%s" % self.packetHandler.getTxRxResult(dxl_comm_result))
-
         # Clear syncwrite parameter storage
         self.groupSyncWritePosition.clearParam()
+        return dxl_comm_result
 
     def set_velocity(self, dxl_goal_velocity):
         param_goal_velocity = []
@@ -242,11 +237,9 @@ class DxlAPI(object):
             if dxl_addparam_result != True:
                 print("[ID:%03d] groupSyncWrite addparam failed" % item)
         dxl_comm_result = self.groupSyncWriteVelocity.txPacket()
-        if dxl_comm_result != COMM_SUCCESS:
-            print("%s" % self.packetHandler.getTxRxResult(dxl_comm_result))
-
         # Clear syncwrite parameter storage
         self.groupSyncWriteVelocity.clearParam()
+        return dxl_comm_result
 
     def set_torque(self, dxl_goal_torque):
         if self.MODEL == 'XM430-W350':
@@ -279,11 +272,9 @@ class DxlAPI(object):
                 if dxl_addparam_result != True:
                     print("[ID:%03d] groupSyncWrite addparam failed" % item)
             dxl_comm_result = self.groupSyncWriteCurrent.txPacket()
-            if dxl_comm_result != COMM_SUCCESS:
-                print("%s" % self.packetHandler.getTxRxResult(dxl_comm_result))
-
         # Clear syncwrite parameter storage
         self.groupSyncWriteCurrent.clearParam()
+        return dxl_comm_result
 
     def torque_enable(self):
         for i in self.DXL_ID:
