@@ -2,6 +2,8 @@
 
 GeRot is a gecko-inspired wall-climbing robot with Dynamixel motors. This Document will guide you to use this API correctly.
 
+We provide C++ and Python API to the robot, you can check them in [Here](https://github.com/bishopAL/GeRot/tree/master/API). We take the Python version as an example.
+
 ## 1. Environmental Configuration
 
 
