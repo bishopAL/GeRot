@@ -1,3 +1,0 @@
-/home/pi/GeRot/dynamixel_cpp_controller/build/CMakeFiles/rebuild_cache.dir
-/home/pi/GeRot/dynamixel_cpp_controller/build/CMakeFiles/test.dir
-/home/pi/GeRot/dynamixel_cpp_controller/build/CMakeFiles/edit_cache.dir

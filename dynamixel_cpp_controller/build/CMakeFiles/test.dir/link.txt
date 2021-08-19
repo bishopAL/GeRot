@@ -1,1 +1,0 @@
-/usr/bin/c++  -O0 -Wall -g -ggdb  -rdynamic CMakeFiles/test.dir/src/admitance_controller.cpp.o CMakeFiles/test.dir/src/dynamixel.cpp.o  -o ../bin/test  -L/home/pi/GeRot/dynamixel_cpp_controller/lib -Wl,-rpath,/home/pi/GeRot/dynamixel_cpp_controller/lib -ldxl_sbc_cpp 
