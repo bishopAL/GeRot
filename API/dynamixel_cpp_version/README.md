@@ -3,18 +3,21 @@
 Although this package is for C++, but it still uses Dynamixel C Library. So we need to install the C lib of Dynamixel.
 1. Go to https://github.com/ROBOTIS-GIT/DynamixelSDK, clone this repo.
 2. Open the repo in your terminal, then
-    >cd c/build/YOUR_PLATFORM
+>cd c/build/YOUR_PLATFORM
 
-    run 
-    >make
-
-    >sudo make install
+run 
+> make
+> 
+> sudo make install
     
 3. You can comile this program by:
 
 > mkdir build && cd build
+> 
 > cmake ..
+> 
 > make
+> 
 > sudo ./test
 # 2. How to Use
 
