@@ -1,0 +1,32 @@
+# 1. C Package Install
+
+Although this package is for C++, but it still uses Dynamixel C Library. So we need to install the C lib of Dynamixel.
+1. Go to https://github.com/ROBOTIS-GIT/DynamixelSDK, clone this repo.
+2. Open the repo in your terminal, then
+    >cd c/build/YOUR_PLATFORM
+
+    run 
+    >make
+
+    >sudo make install
+    
+3. You can comile this program by:
+
+> mkdir build && cd build
+cmake ..
+make
+sudo ./test
+# 2. How to Use
+
+Check the example in *test.cpp*.
+
+First, you need to specify the port, the baudrate of the motor and the ID numbers(as well as the numbers of motor).
+
+
+```C
+set_port_baudrate_ID("/dev/ttyUSB1", 4000000, ID, num);
+```
+
+Then, set PID of position controll or control mode if you want.
+
+Finally, enable the torque of the motor. you can get the position and current feedback via *get_position* and *get_torque*.
