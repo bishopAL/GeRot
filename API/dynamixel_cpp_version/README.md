@@ -13,9 +13,9 @@ Although this package is for C++, but it still uses Dynamixel C Library. So we n
 3. You can comile this program by:
 
 > mkdir build && cd build
-cmake ..
-make
-sudo ./test
+> cmake ..
+> make
+> sudo ./test
 # 2. How to Use
 
 Check the example in *test.cpp*.
