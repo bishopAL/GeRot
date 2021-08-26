@@ -29,6 +29,7 @@ int ID[num] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
 int main(void) 
 {
 	vector<float> present_position;
+	vector<float> present_velocity;
 	vector<int> present_torque;
 	set_port_baudrate_ID("/dev/ttyUSB1", 4000000, ID, num);
 	dxl_init();
@@ -41,6 +42,7 @@ int main(void)
 		gettimeofday(&startTime,NULL);
 		set_position(angle);
 		get_position(present_position);
+		get_velocity(present_velocity);
 		get_torque(present_torque);
 		/*
 		cout<<"Position: ";

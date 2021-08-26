@@ -14,6 +14,8 @@
 #define LEN_PRO_GOAL_POSITION           4
 #define ADDR_PRO_PRESENT_POSITION       132
 #define LEN_PRO_PRESENT_POSITION        4
+#define ADDR_PRO_PRESENT_VELOCITY       128
+#define LEN_PRO_PRESENT_VELOCITY        4
 
 #define ADDR_PRO_GOAL_CURRENT           102  
 #define LEN_PRO_GOAL_CURRENT            2
@@ -58,9 +60,10 @@ void torque_disable();
 void set_position(float *ang_rec);
 void set_torque(float *tor);
 void get_position(vector<float> &pos_present);
+void get_velocity(vector<float> &vel_present);
 void get_torque(vector<int> &tor_present);
 void dxl_init();
 void dxl_close();
 void set_port_baudrate_ID(char *port, int baudrate_set, int *ID, int num);
-
+void set_motor_name(string strMotorName);
 #endif 

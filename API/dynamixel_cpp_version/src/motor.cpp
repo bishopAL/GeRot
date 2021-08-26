@@ -20,6 +20,8 @@ vector<int> dxl_ID;
 uint8_t dxl_ID_num;
 uint8_t dxl_addparam_pos_result = False;              // AddParam result
 uint8_t dxl_getdata_pos_result = False;               // GetParam result
+uint8_t dxl_addparam_vel_result = False;              // AddParam result
+uint8_t dxl_getdata_vel_result = False;               // GetParam result
 uint8_t dxl_addparam_tor_result = False;              // AddParam result
 uint8_t dxl_getdata_tor_result = False;               // GetParam result
 uint8_t dxl_error = 0;                            // Dynamixel error
@@ -29,7 +31,24 @@ int groupread_pos_num = 0;
 int groupwrite_tor_num = 0;
 int groupread_tor_num = 0;
 char *device_name = "/dev/ttyUSB0";
+uint8_t motor_name = 0; // 0: XM430-W350, 1: XL330-W288, 2: XH540-W270
 int baudrate = 4000000;
+
+void set_motor_name(string strMotorName)
+{
+  if(strMotorName == "XM430-W350")
+  {
+    motor_name = 0;
+  }
+  else if(strMotorName == "XL330-W288")
+  {
+    motor_name = 1;
+  }
+  else
+  {
+    motor_name = 2;
+  }
+}
 
 void set_port_baudrate_ID(char *port, int baudrate_set, int *ID, int num)
 {
@@ -235,6 +254,40 @@ void get_position(vector<float> &pos_present)
     pos_present.push_back((float(temp)-2048.0)/4096.0*(2*3.1416));  // value range 0~4095  <--> angle range -3.1416~3.1416
   }
   groupSyncReadClearParam(groupread_pos_num);
+}
+
+void get_velocity(vector<float> &vel_present)
+{
+  // define the groupSyncRead port
+  int groupread_vel_num = groupSyncRead(port_num, PROTOCOL_VERSION, ADDR_PRO_PRESENT_VELOCITY, LEN_PRO_PRESENT_VELOCITY); 
+  for(int i =0; i<dxl_ID_num; i++)
+  {
+    dxl_addparam_pos_result = groupSyncReadAddParam(groupread_vel_num, dxl_ID[i]);
+    if (dxl_addparam_pos_result != True)
+      {  fprintf(stderr, "init velocityRead [ID:%03d] groupSyncRead vel addparam failed", dxl_ID[i]);}
+  }
+  
+  vel_present.clear();// clean the former vector
+  groupSyncReadTxRxPacket(groupread_vel_num); // Syncread present position
+  {
+    if ((dxl_comm_result = getLastTxRxResult(port_num, PROTOCOL_VERSION)) != COMM_SUCCESS)
+      printf("%s\n", getTxRxResult(PROTOCOL_VERSION, dxl_comm_result));
+  }
+    // Check if groupsyncread data of Dynamixel is available
+  for(int i =0 ;i<dxl_ID_num ;i++)
+    {
+      dxl_getdata_vel_result = groupSyncReadIsAvailable(groupread_vel_num, dxl_ID[i], ADDR_PRO_PRESENT_VELOCITY, LEN_PRO_PRESENT_VELOCITY);
+      if (dxl_getdata_vel_result != True)
+      { fprintf(stderr, "get velocity [ID:%d] groupSyncRead tor getdata failed \n", dxl_ID[i]);}
+    }
+    
+    // Get Dynamixel present position value
+  for(int i =0 ;i<dxl_ID_num ;i++)
+  { 
+    uint32_t temp = groupSyncReadGetData(groupread_vel_num, dxl_ID[i], ADDR_PRO_PRESENT_VELOCITY, LEN_PRO_PRESENT_VELOCITY);
+    vel_present.push_back(float(temp) * 0.229 * 2 * 3.1416 / 60);
+  }
+  groupSyncReadClearParam(groupread_vel_num);
 }
 
 void set_torque(float *tor_set)
