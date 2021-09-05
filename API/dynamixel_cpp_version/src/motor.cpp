@@ -251,7 +251,7 @@ void get_position(vector<float> &pos_present)
   for(int i =0 ;i<dxl_ID_num ;i++)
   { 
     uint32_t temp = groupSyncReadGetData(groupread_pos_num, dxl_ID[i], ADDR_PRO_PRESENT_POSITION, LEN_PRO_PRESENT_POSITION);
-    pos_present.push_back((float(temp)-2048.0)/4096.0*(2*3.1416));  // value range 0~4095  <--> angle range -3.1416~3.1416
+    pos_present.push_back((float(temp)-2047.0)/4096.0*(2*3.1416));  // value range 0~4095  <--> angle range -3.1416~3.1416
   }
   groupSyncReadClearParam(groupread_pos_num);
 }
@@ -284,7 +284,8 @@ void get_velocity(vector<float> &vel_present)
     // Get Dynamixel present position value
   for(int i =0 ;i<dxl_ID_num ;i++)
   { 
-    uint32_t temp = groupSyncReadGetData(groupread_vel_num, dxl_ID[i], ADDR_PRO_PRESENT_VELOCITY, LEN_PRO_PRESENT_VELOCITY);
+    int temp = groupSyncReadGetData(groupread_vel_num, dxl_ID[i], ADDR_PRO_PRESENT_VELOCITY, LEN_PRO_PRESENT_VELOCITY);
+    if (temp>0x7fffffff) temp -= 0xffffffff;
     vel_present.push_back(float(temp) * 0.229 * 2 * 3.1416 / 60);
   }
   groupSyncReadClearParam(groupread_vel_num);
