@@ -37,27 +37,7 @@ uint8_t motor_type = 0;  // 0: XM430; 1: XL330; 2: XC330
 float K_torque2current[3] = {1,1,1};
 float B_torque2current[3] = {0,0,0};
 
-<<<<<<< HEAD
 void set_port_baudrate_ID(char *port, int baudrate_set, int *ID, int num, uint8_t type)
-=======
-void set_motor_name(string strMotorName)
-{
-  if(strMotorName == "XM430-W350")
-  {
-    motor_name = 0;
-  }
-  else if(strMotorName == "XL330-W288")
-  {
-    motor_name = 1;
-  }
-  else
-  {
-    motor_name = 2;
-  }
-}
-
-void set_port_baudrate_ID(char *port, int baudrate_set, int *ID, int num)
->>>>>>> 2f192966fc3e424db48e831b45a038f8e9e80a36
 {
   device_name = port;
   baudrate = baudrate_set;
