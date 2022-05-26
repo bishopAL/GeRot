@@ -58,9 +58,11 @@ void torque_disable();
 void set_position(float *ang_rec);
 void set_torque(float *tor);
 void get_position(vector<float> &pos_present);
-void get_torque(vector<int> &tor_present);
+void get_torque(vector<float> &tor_present);
 void dxl_init();
 void dxl_close();
-void set_port_baudrate_ID(char *port, int baudrate_set, int *ID, int num);
+void set_port_baudrate_ID(char *port, int baudrate_set, int *ID, int num, uint8_t type);
+int torque2current(float tor);
+float current2torque(int current);
 
 #endif 

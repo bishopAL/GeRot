@@ -29,30 +29,22 @@ int ID[num] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
 int main(void) 
 {
 	vector<float> present_position;
-	vector<int> present_torque;
-	set_port_baudrate_ID("/dev/ttyUSB1", 4000000, ID, num);
+	vector<float> present_torque;
+	set_port_baudrate_ID("/dev/ttyUSB1", 4000000, ID, num, 2);  // 2 means XC330
 	dxl_init();
-	set_P_I_D(50,0,0); //P,I,D
-	set_operation_mode(3); //3 position control; 0 current control
+	// set_P_I_D(50,0,0); //P,I,D
+	set_operation_mode(0); //3 position control; 0 current control
 	torque_enable();
-	for(int times=0; times<2000; times++)
+	for(int times=0; times<20; times++)
 	{
-		float angle[num] = {0, 0};
-		gettimeofday(&startTime,NULL);
-		set_position(angle);
-		get_position(present_position);
-		get_torque(present_torque);
-		/*
-		cout<<"Position: ";
-		for (vector<float>::iterator it = present_position.begin(); it != present_position.end(); it++) 
-		{
-        cout << *it <<", ";
-    	}
-		cout<<"end. "<<endl;
-		*/
-		gettimeofday(&endTime,NULL);
-		double timeUse = (1000000.0*(endTime.tv_sec - startTime.tv_sec) + endTime.tv_usec - startTime.tv_usec)/1000.0; //ms
-		cout<<"Time used: "<<timeUse<<endl;
+		float calib_torque[1]={50};
+		float zero_torque[1]={50};
+		calib_torque[0] = 50 + 5 * times;
+		set_torque(calib_torque);
+		usleep(5*1e6); // 5 s
+		set_torque(zero_torque);
+		usleep(100*1e3); // 100 ms
+		cout<<"Time: "<< times<<" , calib_torque: "<<calib_torque[0]<<endl;
 	}
 	dxl_close();
 

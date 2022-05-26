@@ -30,12 +30,17 @@ int groupwrite_tor_num = 0;
 int groupread_tor_num = 0;
 char *device_name = "/dev/ttyUSB0";
 int baudrate = 4000000;
+uint8_t motor_type = 0;  // 0: XM430; 1: XL330; 2: XC330 
+float K_torque2current[3] = {1,1,1};
+float B_torque2current[3] = {0,0,0};
 
-void set_port_baudrate_ID(char *port, int baudrate_set, int *ID, int num)
+void set_port_baudrate_ID(char *port, int baudrate_set, int *ID, int num, uint8_t type)
 {
   device_name = port;
   baudrate = baudrate_set;
   dxl_ID_num = num;
+  motor_type = type;
+
   for(int i=0; i<num; i++)
   {
     dxl_ID.push_back(ID[i]);
@@ -242,7 +247,7 @@ void set_torque(float *tor_set)
   int tor[dxl_ID_num];
   for(int i =0;i<dxl_ID_num;i++)
   {
-    tor[i] = int(tor_set[i]);
+    tor[i] = torque2current(tor_set[i]);
   }
   int groupwrite_tor_num = groupSyncWrite(port_num, PROTOCOL_VERSION, ADDR_PRO_GOAL_CURRENT, LEN_PRO_GOAL_CURRENT);
      // Add Dynamixel goal position value to the Syncwrite storage 
@@ -262,7 +267,7 @@ void set_torque(float *tor_set)
 
 }
 
-void get_torque(vector<int> &tor_present)
+void get_torque(vector<float> &tor_present)
 {
   int groupread_tor_num = groupSyncRead(port_num, PROTOCOL_VERSION, ADDR_PRO_PRESENT_CURRENT, LEN_PRO_PRESENT_CURRENT);
   for(int i =0; i<dxl_ID_num; i++)
@@ -291,7 +296,7 @@ void get_torque(vector<int> &tor_present)
     { 
       uint32_t temp = groupSyncReadGetData(groupread_tor_num, dxl_ID[i], ADDR_PRO_PRESENT_CURRENT, LEN_PRO_PRESENT_CURRENT);
       if (temp > 0x7fff) temp -= 65536;
-      tor_present.push_back(temp);
+      tor_present.push_back(current2torque(temp));
     }
     groupSyncReadClearParam(groupread_tor_num);
 }
@@ -304,6 +309,26 @@ void dxl_close()
   }
   // Close port
   closePort(port_num);
- 
 }
 
+int torque2current(float tor)
+{
+  int current;
+  if(tor>0)
+  current = int(tor*K_torque2current[motor_type]+B_torque2current[motor_type]);
+  else
+  current = int(tor*K_torque2current[motor_type]-B_torque2current[motor_type]);
+  return current;
+}
+
+float current2torque(int current)
+{
+  float torque;
+  if(current > -B_torque2current[motor_type] && current < B_torque2current[motor_type])
+  torque = 0;
+  else if (current > B_torque2current[motor_type])
+  torque = (float(current) - B_torque2current[motor_type])/K_torque2current[motor_type];
+  else
+  torque = (float(current) + B_torque2current[motor_type])/K_torque2current[motor_type];
+  return torque;
+}
