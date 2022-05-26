@@ -12,7 +12,7 @@
 #include "motor.h"                             // Uses Dynamixel SDK library
 extern "C" {
 #include "../include/dynamixel_sdk.h"   
-} 
+}
 
 using namespace std;
 int dxl_comm_result = COMM_TX_FAIL;               // Communication result
@@ -31,9 +31,8 @@ int groupread_pos_num = 0;
 int groupwrite_tor_num = 0;
 int groupread_tor_num = 0;
 char *device_name = "/dev/ttyUSB0";
-uint8_t motor_name = 0; // 0: XM430-W350, 1: XL330-W288, 2: XH540-W270
 int baudrate = 4000000;
-uint8_t motor_type = 0;  // 0: XM430; 1: XL330; 2: XC330 
+uint8_t motor_type = 0;  // 0: XM430; 1: XL330; 2: XC330; 3: XH540
 float K_torque2current[3] = {1,1,1};
 float B_torque2current[3] = {0,0,0};
 
