@@ -14,6 +14,8 @@
 #define LEN_PRO_GOAL_POSITION           4
 #define ADDR_PRO_PRESENT_POSITION       132
 #define LEN_PRO_PRESENT_POSITION        4
+#define ADDR_PRO_PRESENT_VELOCITY       128
+#define LEN_PRO_PRESENT_VELOCITY        4
 
 #define ADDR_PRO_GOAL_CURRENT           102  
 #define LEN_PRO_GOAL_CURRENT            2
