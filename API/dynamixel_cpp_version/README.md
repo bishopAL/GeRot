@@ -33,7 +33,7 @@ First, you need to specify the port, the baudrate of the motor and the ID number
 
 
 ```C
-set_port_baudrate_ID("/dev/ttyUSB1", 4000000, ID, num);
+set_port_baudrate_ID("/dev/ttyUSB1", 3000000, ID, num, 2);
 ```
 
 Then, set PID of position controll or control mode if you want.
