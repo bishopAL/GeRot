@@ -33,8 +33,14 @@ int groupread_tor_num = 0;
 char *device_name = "/dev/ttyUSB0";
 int baudrate = 4000000;
 uint8_t motor_type = 0;  // 0: XM430; 1: XL330; 2: XC330; 3: XH540
-float K_torque2current[3] = {1,1,1};
-float B_torque2current[3] = {0,0,0};
+// current-torque relationship X: torque Y: current
+// XM430: wait for measurement
+// XL330: not good
+// XC330: X>0: Y = 2.096 * X + 0.025; X<0: Y = 2.096 * X - 0.025
+// XH540: wait for measurement
+
+float K_torque2current[4] = {1,1,2.096,1};
+float B_torque2current[4] = {0,0,0.025,0};
 
 void set_port_baudrate_ID(char *port, int baudrate_set, int *ID, int num, uint8_t type)
 {
