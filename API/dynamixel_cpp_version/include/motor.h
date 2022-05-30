@@ -60,6 +60,7 @@ void torque_disable();
 void set_position(float *ang_rec);
 void set_torque(float *tor);
 void get_position(vector<float> &pos_present);
+void get_velocity(vector<float> &vel_present);
 void get_torque(vector<float> &tor_present);
 void dxl_init();
 void dxl_close();
