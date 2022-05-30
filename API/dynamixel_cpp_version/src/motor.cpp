@@ -358,9 +358,9 @@ int torque2current(float tor)
 {
   int current;
   if(tor>0)
-  current = int(tor*K_torque2current[motor_type]+B_torque2current[motor_type]);
+  current = int((tor*K_torque2current[motor_type]+B_torque2current[motor_type])*1000);
   else
-  current = int(tor*K_torque2current[motor_type]-B_torque2current[motor_type]);
+  current = int((tor*K_torque2current[motor_type]-B_torque2current[motor_type])*1000);
   return current;
 }
 
@@ -370,8 +370,8 @@ float current2torque(int current)
   if(current > -B_torque2current[motor_type] && current < B_torque2current[motor_type])
   torque = 0;
   else if (current > B_torque2current[motor_type])
-  torque = (float(current) - B_torque2current[motor_type])/K_torque2current[motor_type];
+  torque = (float(current)/1000 - B_torque2current[motor_type])/K_torque2current[motor_type];
   else
-  torque = (float(current) + B_torque2current[motor_type])/K_torque2current[motor_type];
+  torque = (float(current)/1000 + B_torque2current[motor_type])/K_torque2current[motor_type];
   return torque;
 }
