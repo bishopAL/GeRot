@@ -24,22 +24,22 @@
      
 using namespace std;
 struct timeval startTime, endTime;
-const int num = 12;
-int ID[num] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+const int num = 1;
+int ID[num] = {1};
+float calib_torque[1]={-50};
+float zero_torque[1]={50};
 int main(void) 
 {
 	vector<float> present_position;
 	vector<float> present_torque;
-	set_port_baudrate_ID("/dev/ttyUSB1", 4000000, ID, num, 2);  // 2 means XC330
+	set_port_baudrate_ID("/dev/tty.usbserial-FT5WJ7O9", 3000000, ID, num, 2);  // 2 means XC330
 	dxl_init();
 	// set_P_I_D(50,0,0); //P,I,D
 	set_operation_mode(0); //3 position control; 0 current control
 	torque_enable();
 	for(int times=0; times<20; times++)
 	{
-		float calib_torque[1]={50};
-		float zero_torque[1]={50};
-		calib_torque[0] = 50 + 5 * times;
+		calib_torque[0] = -50 - 5 * times;
 		set_torque(calib_torque);
 		usleep(5*1e6); // 5 s
 		set_torque(zero_torque);
