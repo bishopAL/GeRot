@@ -31,7 +31,7 @@ int groupread_pos_num = 0;
 int groupwrite_tor_num = 0;
 int groupread_tor_num = 0;
 char *device_name = "/dev/ttyUSB0";
-int baudrate = 4000000;
+int baudrate = 3000000;
 uint8_t motor_type = 0;  // 0: XM430; 1: XL330; 2: XC330; 3: XH540
 // current-torque relationship X: torque Y: current
 // XM430: wait for measurement
@@ -40,7 +40,7 @@ uint8_t motor_type = 0;  // 0: XM430; 1: XL330; 2: XC330; 3: XH540
 // XH540: wait for measurement
 
 float K_torque2current[4] = {1,1,2.096,1};
-float B_torque2current[4] = {0,0,0.025,0};
+float B_torque2current[4] = {0,0,0.040,0};
 
 void set_port_baudrate_ID(char *port, int baudrate_set, int *ID, int num, uint8_t type)
 {
@@ -358,9 +358,9 @@ int torque2current(float tor)
 {
   int current;
   if(tor>0)
-  current = int(tor*K_torque2current[motor_type]+B_torque2current[motor_type]);
+  current = int((tor*K_torque2current[motor_type]+B_torque2current[motor_type])*1000);
   else
-  current = int(tor*K_torque2current[motor_type]-B_torque2current[motor_type]);
+  current = int((tor*K_torque2current[motor_type]-B_torque2current[motor_type])*1000);
   return current;
 }
 
@@ -370,8 +370,8 @@ float current2torque(int current)
   if(current > -B_torque2current[motor_type] && current < B_torque2current[motor_type])
   torque = 0;
   else if (current > B_torque2current[motor_type])
-  torque = (float(current) - B_torque2current[motor_type])/K_torque2current[motor_type];
+  torque = (float(current)/1000 - B_torque2current[motor_type])/K_torque2current[motor_type];
   else
-  torque = (float(current) + B_torque2current[motor_type])/K_torque2current[motor_type];
+  torque = (float(current)/1000 + B_torque2current[motor_type])/K_torque2current[motor_type];
   return torque;
 }
