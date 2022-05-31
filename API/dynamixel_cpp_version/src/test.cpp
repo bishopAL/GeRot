@@ -32,8 +32,8 @@ float start_pos[1] = {0.0};
 vector<float> present_position;
 vector<float> present_velocity;
 vector<float> present_torque;
-float K = 0.0;
-float D = 0.01;
+float K = 0.1;
+float D = 0.005;
 
 int main(void) 
 {
