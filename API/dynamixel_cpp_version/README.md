@@ -1,3 +1,5 @@
+This version is aborted, please use Ver2.0 instead.
+
 # 1. C Package Install
 
 Although this package is for C++, but it still uses Dynamixel C Library. So we need to install the C lib of Dynamixel.
