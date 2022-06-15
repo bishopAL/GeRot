@@ -64,7 +64,7 @@ public:
     int ADDR_PRO_GOAL_VELOCITY;
     int ADDR_PRO_GOAL_VELOCITY_LENGTH;
     vector<float> present_position;
-    vector<float> present_current;
+    vector<float> present_torque;
     vector<float> present_velocity;
     // current-torque relationship X: torque Y: current
     // XM430: X>0: Y = 1.2 * (X/2.69) + 0.006; X<0: Y = 1.2 * (X/2.69) - 0.006
