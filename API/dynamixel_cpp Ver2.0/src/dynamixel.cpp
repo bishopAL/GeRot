@@ -242,7 +242,7 @@ void DxlAPI::setTorque(vector<float> torVector)
 
 void DxlAPI::getTorque()
 {
-    present_current.clear();
+    present_torque.clear();
     int dxl_comm_result;
     bool dxl_addparam_result, dxl_getdata_result;
     dynamixel::GroupSyncRead groupSyncReadCurrent(portHandler, packetHandler, ADDR_PRO_PRESENT_CURRENT, ADDR_PRO_PRESENT_CURRENT_LENGTH);
@@ -265,7 +265,7 @@ void DxlAPI::getTorque()
     {
         uint32_t temp = groupSyncReadCurrent.getData(ID[i], ADDR_PRO_PRESENT_CURRENT, ADDR_PRO_PRESENT_CURRENT_LENGTH);
         if (temp > 0x7fff) temp -= 65536;
-        present_current.push_back(current2torque(temp));
+        present_torque.push_back(current2torque(temp));
     }
     groupSyncReadCurrent.clearParam();
 }
