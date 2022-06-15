@@ -67,9 +67,9 @@ public:
     vector<float> present_current;
     vector<float> present_velocity;
     // current-torque relationship X: torque Y: current
-    // XM430: X>0: Y = 1.2 * (X/2.69) + 0.006; X<0: Y = 1.2 * (X/2.69) - 0.006 (X unit: 2.69 mA)
+    // XM430: X>0: Y = 1.2 * (X/2.69) + 0.006; X<0: Y = 1.2 * (X/2.69) - 0.006
     // XL330: not good
-    // XC330: X>0: Y = 2.096 * X + 0.025; X<0: Y = 2.096 * X - 0.025 (X unit: 1 mA)
+    // XC330: X>0: Y = 2.096 * X + 0.025; X<0: Y = 2.096 * X - 0.025
     // XH540: wait for measurement
     float K_torque2current[4] = {1.2/2.69,1,2.096,1};
     float B_torque2current[4] = {0.006,0,0.040,0};
