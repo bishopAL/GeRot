@@ -64,17 +64,15 @@ public:
     int ADDR_PRO_GOAL_VELOCITY;
     int ADDR_PRO_GOAL_VELOCITY_LENGTH;
     vector<float> present_position;
-    vector<float> present_current;
+    vector<float> present_torque;
     vector<float> present_velocity;
     // current-torque relationship X: torque Y: current
-    // XM430: wait for measurement
+    // XM430: X>0: Y = 1.2 * (X/2.69) + 0.006; X<0: Y = 1.2 * (X/2.69) - 0.006
     // XL330: not good
     // XC330: X>0: Y = 2.096 * X + 0.025; X<0: Y = 2.096 * X - 0.025
     // XH540: wait for measurement
-    float K_torque2current[4] = {1,1,2.096,1};
-    float B_torque2current[4] = {0,0,0.040,0};
-    // dynamixel::PortHandler *portHandler;
-    // dynamixel::PacketHandler *packetHandler;
-    dynamixel::PortHandler portHandler;
-    dynamixel::PacketHandler packetHandler;
+    float K_torque2current[4] = {1.2/2.69,1,2.096,1};
+    float B_torque2current[4] = {0.006,0,0.040,0};
+    dynamixel::PortHandler *portHandler;
+    dynamixel::PacketHandler *packetHandler;
 };
