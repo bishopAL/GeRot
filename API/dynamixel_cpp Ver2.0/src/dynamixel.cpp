@@ -1,7 +1,25 @@
+/**
+ * @file dynamixel.cpp
+ * @author Bingcheng Wang(bishop-222@nuaa.edu.cn)
+ * @brief 
+ * @version 2.0
+ * @date 2022-07-11
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #include "dynamixel.h"
 
 using namespace std;
 using namespace dynamixel;
+/**
+ * @brief Construct a new DxlAPI:: DxlAPI object
+ * 
+ * @param port port name. Example: in linux should be "/dev/tty*"
+ * @param baudrate_set target baudrate. Example: the dynamixel default baudrate should be 57600 if you've never changed that, the normal baudrate should be 1M or 3M.
+ * @param ids the ID vector of motors. Example: vector<int> id; for(int i=0; i<12; i++) id.push_back(i);
+ * @param type the motor type. Example: 0: XM430; 1: XL330; 2: XC330; 3: XH540
+ */
 DxlAPI::DxlAPI(char *port, int baudrate_set, vector<int> ids, uint8_t type)
 {
     BAUDRATE = baudrate_set;
@@ -62,7 +80,11 @@ DxlAPI::~DxlAPI()
 {
     portHandler->closePort();
 }
-
+/**
+ * @brief Set the operating mode of the motors
+ * 
+ * @param mode 0 presents current control, 3 presents position control
+ */
 void DxlAPI::setOperatingMode(uint8_t mode)
 {
     uint8_t dxl_error = 0;
@@ -86,6 +108,10 @@ void DxlAPI::setOperatingMode(uint8_t mode)
     }
 }
 
+/**
+ * @brief Enable the torque of motors
+ * 
+ */
 void DxlAPI::torqueEnable()
 {
     uint8_t dxl_error = 0;
@@ -109,6 +135,10 @@ void DxlAPI::torqueEnable()
     }
 }
 
+/**
+ * @brief Disable the torque of motors
+ * 
+ */
 void DxlAPI::torqueDisable()
 {
     uint8_t dxl_error = 0;
@@ -132,6 +162,11 @@ void DxlAPI::torqueDisable()
     }
 }
 
+/**
+ * @brief send the target position vector to the motors
+ * 
+ * @param posVector the target position vector, the size of vector should equal to that of ID. The unit adopts rad.
+ */
 void DxlAPI::setPosition(vector<float> posVector)
 {
     int ang[MOTOR_NUM];
@@ -157,6 +192,10 @@ void DxlAPI::setPosition(vector<float> posVector)
     groupSyncWritePosition.clearParam();
 }
 
+/**
+ * @brief Get the present position vector of motors, the feedback is given by present_position. The unit adopts radian.
+ * 
+ */
 void DxlAPI::getPosition()
 {
     present_position.clear();
@@ -186,6 +225,10 @@ void DxlAPI::getPosition()
     groupSyncReadPosition.clearParam();
 }
 
+/**
+ * @brief Get the present velocity vector of motors, the feedback is given by present_velocity. The unit adopts rad/s.
+ * 
+ */
 void DxlAPI::getVelocity()
 {
     present_velocity.clear();
@@ -216,6 +259,11 @@ void DxlAPI::getVelocity()
     groupSyncReadVelocity.clearParam();
 }
 
+/**
+ * @brief Set the target torque vector of motors.
+ * 
+ * @param torVector The target torque vector.  The unit adopts NM.
+ */
 void DxlAPI::setTorque(vector<float> torVector)
 {
     uint8_t param_goal_current[2];
@@ -240,6 +288,10 @@ void DxlAPI::setTorque(vector<float> torVector)
     groupSyncWriteCurrent.clearParam();
 }
 
+/**
+ * @brief Get the present torque vector of motors, the feedback is given by present_torque. The unit adopts NM.
+ * 
+ */
 void DxlAPI::getTorque()
 {
     present_torque.clear();
@@ -270,6 +322,12 @@ void DxlAPI::getTorque()
     groupSyncReadCurrent.clearParam();
 }
 
+/**
+ * @brief Change torque into current based on motor's current-torque model.
+ * 
+ * @param tor torque to change
+ * @return int result current
+ */
 int DxlAPI::torque2current(float tor)
 {
   int current;
@@ -280,6 +338,12 @@ int DxlAPI::torque2current(float tor)
   return current;
 }
 
+/**
+ * @brief Change current into torque based on motor's current-torque model.
+ * 
+ * @param current current to change
+ * @return float result torque
+ */
 float DxlAPI::current2torque(int current)
 {
   float torque;

@@ -1,3 +1,13 @@
+/**
+ * @file dynamixel.h
+ * @author Bingcheng Wang(bishop-222@nuaa.edu.cn)
+ * @brief Dynamixel motors C++ API
+ * @version 2.0
+ * @date 2022-07-11
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #if defined(__linux__) || defined(__APPLE__)
 #include <fcntl.h>
 #include <termios.h>
