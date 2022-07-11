@@ -15,10 +15,12 @@ using namespace dynamixel;
 /**
  * @brief Construct a new DxlAPI:: DxlAPI object
  * 
- * @param port port name. Example: in linux should be "/dev/tty*"
- * @param baudrate_set target baudrate. Example: the dynamixel default baudrate should be 57600 if you've never changed that, the normal baudrate should be 1M or 3M.
- * @param ids the ID vector of motors. Example: vector<int> id; for(int i=0; i<12; i++) id.push_back(i);
- * @param type the motor type. Example: 0: XM430; 1: XL330; 2: XC330; 3: XH540
+ * @param port: port name. Example: in linux should be "/dev/tty*"
+ * @param baudrate_set: target baudrate. Example: the dynamixel default baudrate should be 57600 if you've never changed that, the normal baudrate should be 1M or 3M.
+ * @param ids: the ID vector of motors. Example: vector<int> id; for(int i=0; i<12; i++) id.push_back(i);
+ * @param type: the motor type. Example: 0: XM430; 1: XL330; 2: XC330; 3: XH540
+ * 
+ * @note In this step, only the Port and PackatHandle are set, so the communication with motors still can be checked!
  */
 DxlAPI::DxlAPI(char *port, int baudrate_set, vector<int> ids, uint8_t type)
 {
@@ -29,7 +31,6 @@ DxlAPI::DxlAPI(char *port, int baudrate_set, vector<int> ids, uint8_t type)
     for(int i=0; i<ids.size(); i++)
     {
         ID.push_back(ids[i]);
-        cout << "The ID has been set to " << ids[i] << " ." << endl;
     }
     MOTOR_NUM = ID.size();
     ADDR_OPERATING_MODE = 11;
@@ -138,6 +139,8 @@ void DxlAPI::torqueEnable()
 /**
  * @brief Disable the torque of motors
  * 
+ * @note Don't forget to disable the torque after finishing.
+ * 
  */
 void DxlAPI::torqueDisable()
 {
@@ -165,7 +168,9 @@ void DxlAPI::torqueDisable()
 /**
  * @brief send the target position vector to the motors
  * 
- * @param posVector the target position vector, the size of vector should equal to that of ID. The unit adopts rad.
+ * @param posVector: the target position vector, the size of vector should equal to that of ID. 
+ * 
+ * @note The unit adopts rad.
  */
 void DxlAPI::setPosition(vector<float> posVector)
 {
@@ -193,7 +198,9 @@ void DxlAPI::setPosition(vector<float> posVector)
 }
 
 /**
- * @brief Get the present position vector of motors, the feedback is given by present_position. The unit adopts radian.
+ * @brief Get the present position vector of motors, the feedback is given by present_position. 
+ * 
+ * @note The unit adopts radian.
  * 
  */
 void DxlAPI::getPosition()
@@ -226,8 +233,9 @@ void DxlAPI::getPosition()
 }
 
 /**
- * @brief Get the present velocity vector of motors, the feedback is given by present_velocity. The unit adopts rad/s.
+ * @brief Get the present velocity vector of motors, the feedback is given by present_velocity. 
  * 
+ * @note The unit adopts rad/s.
  */
 void DxlAPI::getVelocity()
 {
@@ -262,7 +270,8 @@ void DxlAPI::getVelocity()
 /**
  * @brief Set the target torque vector of motors.
  * 
- * @param torVector The target torque vector.  The unit adopts NM.
+ * @param torVector The target torque vector.
+ * @note The unit adopts NM.
  */
 void DxlAPI::setTorque(vector<float> torVector)
 {
@@ -289,8 +298,8 @@ void DxlAPI::setTorque(vector<float> torVector)
 }
 
 /**
- * @brief Get the present torque vector of motors, the feedback is given by present_torque. The unit adopts NM.
- * 
+ * @brief Get the present torque vector of motors, the feedback is given by present_torque. 
+ * @note The unit adopts NM.
  */
 void DxlAPI::getTorque()
 {
@@ -325,8 +334,8 @@ void DxlAPI::getTorque()
 /**
  * @brief Change torque into current based on motor's current-torque model.
  * 
- * @param tor torque to change
- * @return int result current
+ * @param tor: torque to change
+ * @return : result current
  */
 int DxlAPI::torque2current(float tor)
 {
@@ -341,8 +350,8 @@ int DxlAPI::torque2current(float tor)
 /**
  * @brief Change current into torque based on motor's current-torque model.
  * 
- * @param current current to change
- * @return float result torque
+ * @param current: current to change
+ * @return  : result torque
  */
 float DxlAPI::current2torque(int current)
 {
