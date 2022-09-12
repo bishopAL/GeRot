@@ -24,7 +24,7 @@ Change the *dxl_x64_cpp* in CMakeLists.txt to your lib. If you don't know the li
 ```
 # 2. How to Use
 
-Check the example in *test.cpp*.
+Check the example in *admitance_controller.cpp*.
 
 First, you need to specify the port, the baudrate of the motor and the ID numbers(as well as the numbers of motor).
 
