@@ -20,7 +20,7 @@ using namespace dynamixel;
  * @param ids: the ID vector of motors. Example: vector<int> id; for(int i=0; i<12; i++) id.push_back(i);
  * @param type: the motor type. Example: 0: XM430; 1: XL330; 2: XC330; 3: XH540
  * 
- * @note In this step, only the Port and PackatHandle are set, so the communication with motors still can be checked!
+ * @note In this step, only the Port and PackatHandle are set, so the communication with motors still can't be checked!
  */
 DxlAPI::DxlAPI(char *port, int baudrate_set, vector<int> ids, uint8_t type)
 {
@@ -110,7 +110,7 @@ void DxlAPI::setOperatingMode(uint8_t mode)
 }
 
 /**
- * @brief Enable the torque of motors
+ * @brief Enable the torque output of motors
  * 
  */
 void DxlAPI::torqueEnable()
@@ -137,7 +137,7 @@ void DxlAPI::torqueEnable()
 }
 
 /**
- * @brief Disable the torque of motors
+ * @brief Disable the torque output of motors
  * 
  * @note Don't forget to disable the torque after finishing.
  * 
